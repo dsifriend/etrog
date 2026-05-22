@@ -1,0 +1,19 @@
+{
+  "name": "@etrog/dbnary",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": {
+    "build": "bun build ./src/index.ts --outdir ./dist --target bun",
+    "test": "bun test",
+    "typecheck": "tsc --noEmit",
+    "lint": "bunx @biomejs/biome check ./src",
+    "format": "bunx @biomejs/biome format --write ./src"
+  },
+  "dependencies": {
+    "@etrog/core": "workspace:*",
+    "@etrog/rdf": "workspace:*"
+  }
+}
