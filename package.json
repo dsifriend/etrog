@@ -1,8 +1,10 @@
 {
   "name": "etrog",
   "private": true,
-  "packageManager": "bun@1.2.0",
-  "workspaces": ["packages/*"],
+  "packageManager": "bun@1.3.14",
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "build": "bun run --workspaces build",
     "test": "bun run --workspaces test",
@@ -12,6 +14,6 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
-    "typescript": "^5.8.0"
+    "typescript": "^6.0.0"
   }
 }
