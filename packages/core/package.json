@@ -6,7 +6,7 @@
   "types": "./dist/index.d.ts",
   "files": ["dist"],
   "scripts": {
-    "build": "bun build ./src/index.ts --outdir ./dist --target bun",
+    "build": "bun build ./src/index.ts --outdir ./dist --target bun && tsc --emitDeclarationOnly --noEmit false",
     "test": "bun test",
     "typecheck": "tsc --noEmit",
     "lint": "bunx @biomejs/biome check ./src",
