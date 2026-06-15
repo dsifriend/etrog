@@ -10,8 +10,8 @@ export type LanguageTag = string & { readonly __brand: "LanguageTag" };
 
 /** A JSON-LD language-tagged string. */
 export interface LangString {
-  "@value": string;
-  "@language": LanguageTag;
+	"@value": string;
+	"@language": LanguageTag;
 }
 
 /** A branded string for XSD date literals in YYYY-MM-DD format. */

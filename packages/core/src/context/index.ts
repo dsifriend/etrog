@@ -11,13 +11,13 @@ import type { JsonLdContext } from "../types/index.js";
  * const ctx = buildContext({ myPrefix: "https://example.org/" });
  */
 export function buildContext(extra?: JsonLdContext): JsonLdContext {
-  const base = DEFAULT_CONTEXT["@context"] as Record<string, unknown>;
-  return {
-    "@context": {
-      ...base,
-      ...(extra ?? {}),
-    },
-  };
+	const base = DEFAULT_CONTEXT["@context"] as Record<string, unknown>;
+	return {
+		"@context": {
+			...base,
+			...(extra ?? {}),
+		},
+	};
 }
 
 /**
@@ -30,7 +30,5 @@ export function buildContext(extra?: JsonLdContext): JsonLdContext {
  * @throws Always throws an error directing the caller to install `@etrog/rdf`.
  */
 export function compact(_doc: unknown, _context?: JsonLdContext): never {
-  throw new Error(
-    "compact() requires @etrog/rdf — install that package",
-  );
+	throw new Error("compact() requires @etrog/rdf — install that package");
 }

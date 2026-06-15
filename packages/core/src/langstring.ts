@@ -11,7 +11,7 @@ import type { LangString, LanguageTag } from "./types/index.js";
  * langString("house", "en" as LanguageTag) // => { "@value": "house", "@language": "en" }
  */
 export function langString(value: string, lang: LanguageTag): LangString {
-  return { "@value": value, "@language": lang };
+	return { "@value": value, "@language": lang };
 }
 
 /**
@@ -25,9 +25,9 @@ export function langString(value: string, lang: LanguageTag): LangString {
  * // => [{ "@value": "house", "@language": "en" }, { "@value": "maison", "@language": "fr" }]
  */
 export function langStringMap(record: Record<string, string>): LangString[] {
-  return Object.entries(record).map(([lang, value]) =>
-    langString(value, lang as LanguageTag),
-  );
+	return Object.entries(record).map(([lang, value]) =>
+		langString(value, lang as LanguageTag),
+	);
 }
 
 /**
@@ -44,14 +44,14 @@ export function langStringMap(record: Record<string, string>): LangString[] {
  * getValueForLang(ls, "fr" as LanguageTag) // => "house" (fallback to first)
  */
 export function getValueForLang(
-  strings: LangString[],
-  lang: LanguageTag,
+	strings: LangString[],
+	lang: LanguageTag,
 ): string | undefined {
-  const exact = strings.find((s) => s["@language"] === lang);
-  if (exact) return exact["@value"];
+	const exact = strings.find((s) => s["@language"] === lang);
+	if (exact) return exact["@value"];
 
-  const und = strings.find((s) => s["@language"] === ("und" as LanguageTag));
-  if (und) return und["@value"];
+	const und = strings.find((s) => s["@language"] === ("und" as LanguageTag));
+	if (und) return und["@value"];
 
-  return strings[0]?.["@value"];
+	return strings[0]?.["@value"];
 }

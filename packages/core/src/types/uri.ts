@@ -7,7 +7,7 @@ import type { URI } from "./index.js";
  * Value: urn:uuid:96f16397-6054-4c94-8ef6-c01603f158cc
  */
 export const ETROG_NS_UUID: URI =
-  "urn:uuid:96f16397-6054-4c94-8ef6-c01603f158cc" as URI;
+	"urn:uuid:96f16397-6054-4c94-8ef6-c01603f158cc" as URI;
 
 /**
  * Parses a UUID string (with hyphens) into a 16-byte Uint8Array.
@@ -15,12 +15,12 @@ export const ETROG_NS_UUID: URI =
  * @returns A 16-byte Uint8Array.
  */
 function uuidToBytes(uuid: string): Uint8Array {
-  const hex = uuid.replace(/-/g, "");
-  const bytes = new Uint8Array(16);
-  for (let i = 0; i < 16; i++) {
-    bytes[i] = parseInt(hex.slice(i * 2, i * 2 + 2), 16);
-  }
-  return bytes;
+	const hex = uuid.replace(/-/g, "");
+	const bytes = new Uint8Array(16);
+	for (let i = 0; i < 16; i++) {
+		bytes[i] = Number.parseInt(hex.slice(i * 2, i * 2 + 2), 16);
+	}
+	return bytes;
 }
 
 /**
@@ -29,16 +29,16 @@ function uuidToBytes(uuid: string): Uint8Array {
  * @returns A UUID string.
  */
 function bytesToUuid(bytes: Uint8Array): string {
-  const hex = Array.from(bytes)
-    .map((b) => b.toString(16).padStart(2, "0"))
-    .join("");
-  return [
-    hex.slice(0, 8),
-    hex.slice(8, 12),
-    hex.slice(12, 16),
-    hex.slice(16, 20),
-    hex.slice(20),
-  ].join("-");
+	const hex = Array.from(bytes)
+		.map((b) => b.toString(16).padStart(2, "0"))
+		.join("");
+	return [
+		hex.slice(0, 8),
+		hex.slice(8, 12),
+		hex.slice(12, 16),
+		hex.slice(16, 20),
+		hex.slice(20),
+	].join("-");
 }
 
 /**
@@ -54,22 +54,22 @@ function bytesToUuid(bytes: Uint8Array): string {
  * // => "urn:uuid:xxxxxxxx-xxxx-5xxx-yxxx-xxxxxxxxxxxx"
  */
 export async function mintURI(namespace: URI, localPart: string): Promise<URI> {
-  const nsBytes = uuidToBytes(namespace.replace(/^urn:uuid:/, ""));
-  const nameBytes = new TextEncoder().encode(localPart);
+	const nsBytes = uuidToBytes(namespace.replace(/^urn:uuid:/, ""));
+	const nameBytes = new TextEncoder().encode(localPart);
 
-  const combined = new Uint8Array(nsBytes.length + nameBytes.length);
-  combined.set(nsBytes, 0);
-  combined.set(nameBytes, nsBytes.length);
+	const combined = new Uint8Array(nsBytes.length + nameBytes.length);
+	combined.set(nsBytes, 0);
+	combined.set(nameBytes, nsBytes.length);
 
-  const hashBuffer = await crypto.subtle.digest("SHA-1", combined);
-  const hash = new Uint8Array(hashBuffer);
+	const hashBuffer = await crypto.subtle.digest("SHA-1", combined);
+	const hash = new Uint8Array(hashBuffer);
 
-  // Set version = 5 (bits 76-79 of octet 6 = 0101)
-  hash[6] = (hash[6] & 0x0f) | 0x50;
-  // Set variant = RFC 4122 (bits 6-7 of octet 8 = 10)
-  hash[8] = (hash[8] & 0x3f) | 0x80;
+	// Set version = 5 (bits 76-79 of octet 6 = 0101)
+	hash[6] = (hash[6] & 0x0f) | 0x50;
+	// Set variant = RFC 4122 (bits 6-7 of octet 8 = 10)
+	hash[8] = (hash[8] & 0x3f) | 0x80;
 
-  return `urn:uuid:${bytesToUuid(hash.slice(0, 16))}` as URI;
+	return `urn:uuid:${bytesToUuid(hash.slice(0, 16))}` as URI;
 }
 
 /**
@@ -84,5 +84,5 @@ export async function mintURI(namespace: URI, localPart: string): Promise<URI> {
  * // => "https://example.org/lexicon/caf%C3%A9"
  */
 export function mintIRI(baseIri: string, localPart: string): URI {
-  return (baseIri + encodeURIComponent(localPart)) as URI;
+	return (baseIri + encodeURIComponent(localPart)) as URI;
 }
