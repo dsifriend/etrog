@@ -99,6 +99,7 @@ Builders must be:
 - **Fluent** — every setter returns `this`
 - **Incremental** — `build()` is valid at any point; `@id` and `@type` are set by the constructor
 - **Idempotent** — duplicate senses, forms, or relations are deduplicated by `@id`
+- **Non-null-safe internals** — when lazily initializing builder arrays, prefer nullish coalescing assignment in statement form (for example, `this.data["ontolex:sense"] ??= []; const items = this.data["ontolex:sense"];`) instead of non-null assertions (`!`) or assignment-in-expression patterns.
 
 `build()` returns the plain interface type, not a `Builder` wrapper.
 
