@@ -33,7 +33,8 @@ export class TranslationSetBuilder {
 	 * builder.addTranslation(tr)
 	 */
 	addTranslation(tr: Translation): this {
-		const existing = this.data["vartrans:trans"]!;
+		this.data["vartrans:trans"] ??= [];
+		const existing = this.data["vartrans:trans"];
 		if (!existing.some((t) => t["@id"] === tr["@id"])) {
 			existing.push(tr);
 		}

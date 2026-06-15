@@ -54,10 +54,9 @@ export class LexiconBuilder {
 	 * builder.setTitle("English Lexicon", "en" as LanguageTag)
 	 */
 	setTitle(value: string, lang: LanguageTag): this {
-		if (!this.data["dcterms:title"]) {
-			this.data["dcterms:title"] = [];
-		}
-		this.data["dcterms:title"]!.push(langString(value, lang));
+		this.data["dcterms:title"] ??= [];
+		const titles = this.data["dcterms:title"];
+		titles.push(langString(value, lang));
 		return this;
 	}
 
@@ -83,10 +82,9 @@ export class LexiconBuilder {
 	 * builder.addCreator("Jane Smith")
 	 */
 	addCreator(name: string): this {
-		if (!this.data["dcterms:creator"]) {
-			this.data["dcterms:creator"] = [];
-		}
-		this.data["dcterms:creator"]!.push(name);
+		this.data["dcterms:creator"] ??= [];
+		const creators = this.data["dcterms:creator"];
+		creators.push(name);
 		return this;
 	}
 

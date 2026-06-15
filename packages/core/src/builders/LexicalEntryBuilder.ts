@@ -51,10 +51,8 @@ export class LexicalEntryBuilder {
 	 * builder.addOtherForm(pluralForm)
 	 */
 	addOtherForm(form: Form): this {
-		if (!this.data["ontolex:otherForm"]) {
-			this.data["ontolex:otherForm"] = [];
-		}
-		const existing = this.data["ontolex:otherForm"]!;
+		this.data["ontolex:otherForm"] ??= [];
+		const existing = this.data["ontolex:otherForm"];
 		if (!existing.some((f) => f["@id"] === form["@id"])) {
 			existing.push(form);
 		}
@@ -70,10 +68,8 @@ export class LexicalEntryBuilder {
 	 * builder.addSense(sense)
 	 */
 	addSense(sense: LexicalSense): this {
-		if (!this.data["ontolex:sense"]) {
-			this.data["ontolex:sense"] = [];
-		}
-		const existing = this.data["ontolex:sense"]!;
+		this.data["ontolex:sense"] ??= [];
+		const existing = this.data["ontolex:sense"];
 		if (!existing.some((s) => s["@id"] === sense["@id"])) {
 			existing.push(sense);
 		}
@@ -102,11 +98,10 @@ export class LexicalEntryBuilder {
 	 * builder.addPoS(LexInfoPoS.adjective)
 	 */
 	addPoS(pos: LexInfoPoS): this {
-		if (!this.data["lexinfo:partOfSpeech"]) {
-			this.data["lexinfo:partOfSpeech"] = [];
-		}
-		if (!this.data["lexinfo:partOfSpeech"]!.includes(pos)) {
-			this.data["lexinfo:partOfSpeech"]!.push(pos);
+		this.data["lexinfo:partOfSpeech"] ??= [];
+		const partOfSpeech = this.data["lexinfo:partOfSpeech"];
+		if (!partOfSpeech.includes(pos)) {
+			partOfSpeech.push(pos);
 		}
 		return this;
 	}
@@ -121,10 +116,9 @@ export class LexicalEntryBuilder {
 	 * builder.setLabel("house", "en" as LanguageTag)
 	 */
 	setLabel(value: string, lang: LanguageTag): this {
-		if (!this.data["rdfs:label"]) {
-			this.data["rdfs:label"] = [];
-		}
-		this.data["rdfs:label"]!.push(langString(value, lang));
+		this.data["rdfs:label"] ??= [];
+		const labels = this.data["rdfs:label"];
+		labels.push(langString(value, lang));
 		return this;
 	}
 

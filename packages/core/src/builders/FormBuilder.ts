@@ -60,10 +60,9 @@ export class FormBuilder {
 	 * builder.addPhoneticRep("/haʊs/", "en" as LanguageTag)
 	 */
 	addPhoneticRep(value: string, lang: LanguageTag): this {
-		if (!this.data["ontolex:phoneticRep"]) {
-			this.data["ontolex:phoneticRep"] = [];
-		}
-		this.data["ontolex:phoneticRep"]!.push(langString(value, lang));
+		this.data["ontolex:phoneticRep"] ??= [];
+		const phoneticReps = this.data["ontolex:phoneticRep"];
+		phoneticReps.push(langString(value, lang));
 		return this;
 	}
 

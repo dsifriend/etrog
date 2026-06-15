@@ -63,10 +63,9 @@ export class LexicalSenseBuilder {
 	 * builder.addDefinition("A building for human habitation", "en" as LanguageTag)
 	 */
 	addDefinition(value: string, lang: LanguageTag): this {
-		if (!this.data["skos:definition"]) {
-			this.data["skos:definition"] = [];
-		}
-		this.data["skos:definition"]!.push(langString(value, lang));
+		this.data["skos:definition"] ??= [];
+		const definitions = this.data["skos:definition"];
+		definitions.push(langString(value, lang));
 		return this;
 	}
 
@@ -79,10 +78,8 @@ export class LexicalSenseBuilder {
 	 * builder.addUsageExample(ex)
 	 */
 	addUsageExample(ex: UsageExample): this {
-		if (!this.data["lexicog:usageExample"]) {
-			this.data["lexicog:usageExample"] = [];
-		}
-		const existing = this.data["lexicog:usageExample"]!;
+		this.data["lexicog:usageExample"] ??= [];
+		const existing = this.data["lexicog:usageExample"];
 		if (!existing.some((e) => e["@id"] === ex["@id"])) {
 			existing.push(ex);
 		}
@@ -98,10 +95,8 @@ export class LexicalSenseBuilder {
 	 * builder.addSenseRelation(rel)
 	 */
 	addSenseRelation(rel: SenseRelation): this {
-		if (!this.data["vartrans:senseRel"]) {
-			this.data["vartrans:senseRel"] = [];
-		}
-		const existing = this.data["vartrans:senseRel"]!;
+		this.data["vartrans:senseRel"] ??= [];
+		const existing = this.data["vartrans:senseRel"];
 		if (!existing.some((r) => r["@id"] === rel["@id"])) {
 			existing.push(rel);
 		}
@@ -117,10 +112,8 @@ export class LexicalSenseBuilder {
 	 * builder.addTranslation(tr)
 	 */
 	addTranslation(tr: Translation): this {
-		if (!this.data["vartrans:translation"]) {
-			this.data["vartrans:translation"] = [];
-		}
-		const existing = this.data["vartrans:translation"]!;
+		this.data["vartrans:translation"] ??= [];
+		const existing = this.data["vartrans:translation"];
 		if (!existing.some((t) => t["@id"] === tr["@id"])) {
 			existing.push(tr);
 		}
