@@ -1,0 +1,27 @@
+@prefix lime: <http://www.w3.org/ns/lemon/lime#> .
+@prefix ontolex: <http://www.w3.org/ns/lemon/ontolex#> .
+@prefix vartrans: <http://www.w3.org/ns/lemon/vartrans#> .
+@prefix wn: <https://globalwordnet.github.io/schemas/wn#> .
+@prefix lexinfo: <http://www.lexinfo.net/ontology/3.0/lexinfo#> .
+
+<https://en-word.net/lexicon> a lime:Lexicon ;
+  lime:language "en" ;
+  lime:entry <https://en-word.net/entry/dog> .
+
+<https://en-word.net/entry/dog> a ontolex:LexicalEntry ;
+  ontolex:canonicalForm <https://en-word.net/form/dog> ;
+  ontolex:sense <https://en-word.net/sense/dog-n-1> ;
+  lexinfo:partOfSpeech lexinfo:noun .
+
+<https://en-word.net/form/dog> a ontolex:Form ;
+  ontolex:writtenRep "dog"@en .
+
+<https://en-word.net/sense/dog-n-1> a ontolex:LexicalSense ;
+  vartrans:senseRel <https://en-word.net/relation/dog-hypernym-canine> .
+
+<https://en-word.net/relation/dog-hypernym-canine> a vartrans:SenseRelation ;
+  vartrans:source <https://en-word.net/sense/dog-n-1> ;
+  vartrans:target <https://en-word.net/sense/canine-n-1> ;
+  vartrans:category wn:hypernym .
+
+<https://en-word.net/sense/canine-n-1> a ontolex:LexicalSense .
