@@ -90,7 +90,7 @@ describe("LexicalEntryBuilder", () => {
   const form = new FormBuilder(formId).addWrittenRep("house", en).build();
 
   test("builds a minimal LexicalEntry", () => {
-    const entry = new LexicalEntryBuilder(entryId, en)
+    const entry = new LexicalEntryBuilder(entryId, form, en)
       .setCanonicalForm(form)
       .build();
     expect(entry["@id"]).toBe(entryId);
@@ -100,16 +100,14 @@ describe("LexicalEntryBuilder", () => {
   });
 
   test("setPoS sets partOfSpeech", () => {
-    const entry = new LexicalEntryBuilder(entryId, en)
-      .setCanonicalForm(form)
+    const entry = new LexicalEntryBuilder(entryId, form, en)
       .setPoS(LexInfoPoS.noun)
       .build();
     expect(entry["lexinfo:partOfSpeech"]).toEqual([LexInfoPoS.noun]);
   });
 
   test("addPoS is idempotent", () => {
-    const entry = new LexicalEntryBuilder(entryId, en)
-      .setCanonicalForm(form)
+    const entry = new LexicalEntryBuilder(entryId, form, en)
       .addPoS(LexInfoPoS.noun)
       .addPoS(LexInfoPoS.noun)
       .build();
@@ -120,7 +118,7 @@ describe("LexicalEntryBuilder", () => {
     const plural = new FormBuilder("urn:uuid:form-2" as URI)
       .addWrittenRep("houses", en)
       .build();
-    const entry = new LexicalEntryBuilder(entryId, en)
+    const entry = new LexicalEntryBuilder(entryId, form, en)
       .setCanonicalForm(form)
       .addOtherForm(plural)
       .addOtherForm(plural)
@@ -131,7 +129,7 @@ describe("LexicalEntryBuilder", () => {
 
 describe("LexiconBuilder", () => {
   const form = new FormBuilder(formId).addWrittenRep("house", en).build();
-  const entry = new LexicalEntryBuilder(entryId, en)
+  const entry = new LexicalEntryBuilder(entryId, form, en)
     .setCanonicalForm(form)
     .build();
 
