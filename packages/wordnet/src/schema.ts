@@ -4,6 +4,12 @@ import { Namespaces } from "@etrog/core";
 /** The canonical `wn:` namespace URI. */
 export const WnNamespace = Namespaces.wn;
 
+/** Alternative `wn:` namespace URI seen in some historical datasets/examples. */
+export const WnNamespaceHttp = "http://globalwordnet.github.io/schemas/wn#";
+
+/** Known WordNet namespace URI variants accepted by helper predicates. */
+export const WnNamespaces = [WnNamespace, WnNamespaceHttp] as const;
+
 /**
  * Common `wn:` relation category URIs used with `vartrans:category`.
  *
@@ -86,7 +92,7 @@ export interface WnConceptualRelation
  * isWnUri("https://globalwordnet.github.io/schemas/wn#hypernym" as URI);
  */
 export function isWnUri(uri: URI): boolean {
-	return uri.startsWith(WnNamespace);
+	return WnNamespaces.some((ns) => uri.startsWith(ns));
 }
 
 /**
@@ -102,5 +108,8 @@ export function isWnCategoryRelation(
 	relation: Pick<SenseRelation | ConceptualRelation, "vartrans:category">,
 ): boolean {
 	const category = relation["vartrans:category"];
-	return typeof category === "string" && category.startsWith(WnNamespace);
+	return (
+		typeof category === "string" &&
+		WnNamespaces.some((ns) => category.startsWith(ns))
+	);
 }

@@ -1,85 +1,85 @@
 {
-  "@context": {
-    "ontolex": "http://www.w3.org/ns/lemon/ontolex#",
-    "lime": "http://www.w3.org/ns/lemon/lime#",
-    "vartrans": "http://www.w3.org/ns/lemon/vartrans#",
-    "decomp": "http://www.w3.org/ns/lemon/decomp#",
-    "synsem": "http://www.w3.org/ns/lemon/synsem#",
-    "lexicog": "http://www.w3.org/ns/lemon/lexicog#",
-    "lexinfo": "http://www.lexinfo.net/ontology/3.0/lexinfo#",
-    "skos": "http://www.w3.org/2004/02/skos/core#",
-    "wn": "https://globalwordnet.github.io/schemas/wn#",
-    "dbnary": "http://kaiko.getalp.org/dbnary#",
-    "dcterms": "http://purl.org/dc/terms/",
-    "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
-    "language": "lime:language",
-    "canonicalForm": {
-      "@id": "ontolex:canonicalForm",
-      "@type": "@id"
-    },
-    "otherForm": {
-      "@id": "ontolex:otherForm",
-      "@type": "@id"
-    },
-    "sense": {
-      "@id": "ontolex:sense",
-      "@type": "@id"
-    },
-    "writtenRep": "ontolex:writtenRep",
-    "entry": {
-      "@id": "lime:entry",
-      "@type": "@id"
-    }
-  },
-  "@graph": [
-    {
-      "@id": "https://en-word.net/entry/dog",
-      "@type": "ontolex:LexicalEntry",
-      "canonicalForm": "https://en-word.net/form/dog",
-      "sense": "https://en-word.net/sense/dog-n-1",
-      "lexinfo:partOfSpeech": {
-        "@id": "lexinfo:noun"
-      }
-    },
-    {
-      "@id": "https://en-word.net/form/dog",
-      "@type": "ontolex:Form",
-      "writtenRep": {
-        "@value": "dog",
-        "@language": "en"
-      }
-    },
-    {
-      "@id": "https://en-word.net/lexicon",
-      "@type": "lime:Lexicon",
-      "language": "en",
-      "entry": "https://en-word.net/entry/dog"
-    },
-    {
-      "@id": "https://en-word.net/relation/dog-hypernym-canine",
-      "@type": "vartrans:SenseRelation",
-      "vartrans:source": {
-        "@id": "https://en-word.net/sense/dog-n-1"
-      },
-      "vartrans:target": {
-        "@id": "https://en-word.net/sense/canine-n-1"
-      },
-      "vartrans:category": {
-        "@id": "wn:hypernym"
-      }
-    },
-    {
-      "@id": "https://en-word.net/sense/canine-n-1",
-      "@type": "ontolex:LexicalSense"
-    },
-    {
-      "@id": "https://en-word.net/sense/dog-n-1",
-      "@type": "ontolex:LexicalSense",
-      "vartrans:senseRel": {
-        "@id": "https://en-word.net/relation/dog-hypernym-canine"
-      }
-    }
-  ]
+	"@context": {
+		"ontolex": "http://www.w3.org/ns/lemon/ontolex#",
+		"lime": "http://www.w3.org/ns/lemon/lime#",
+		"vartrans": "http://www.w3.org/ns/lemon/vartrans#",
+		"decomp": "http://www.w3.org/ns/lemon/decomp#",
+		"synsem": "http://www.w3.org/ns/lemon/synsem#",
+		"lexicog": "http://www.w3.org/ns/lemon/lexicog#",
+		"lexinfo": "http://www.lexinfo.net/ontology/3.0/lexinfo#",
+		"skos": "http://www.w3.org/2004/02/skos/core#",
+		"wn": "https://globalwordnet.github.io/schemas/wn#",
+		"dbnary": "http://kaiko.getalp.org/dbnary#",
+		"dcterms": "http://purl.org/dc/terms/",
+		"owl": "http://www.w3.org/2002/07/owl#",
+		"rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+		"rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+		"language": "lime:language",
+		"canonicalForm": {
+			"@id": "ontolex:canonicalForm",
+			"@type": "@id"
+		},
+		"otherForm": {
+			"@id": "ontolex:otherForm",
+			"@type": "@id"
+		},
+		"sense": {
+			"@id": "ontolex:sense",
+			"@type": "@id"
+		},
+		"writtenRep": "ontolex:writtenRep",
+		"entry": {
+			"@id": "lime:entry",
+			"@type": "@id"
+		}
+	},
+	"@graph": [
+		{
+			"@id": "https://en-word.net/entry/dog",
+			"@type": "ontolex:LexicalEntry",
+			"canonicalForm": "https://en-word.net/form/dog",
+			"sense": "https://en-word.net/sense/dog-n-1",
+			"lexinfo:partOfSpeech": {
+				"@id": "lexinfo:noun"
+			}
+		},
+		{
+			"@id": "https://en-word.net/form/dog",
+			"@type": "ontolex:Form",
+			"writtenRep": {
+				"@value": "dog",
+				"@language": "en"
+			}
+		},
+		{
+			"@id": "https://en-word.net/lexicon",
+			"@type": "lime:Lexicon",
+			"language": "en",
+			"entry": "https://en-word.net/entry/dog"
+		},
+		{
+			"@id": "https://en-word.net/relation/dog-hypernym-canine",
+			"@type": "vartrans:SenseRelation",
+			"vartrans:source": {
+				"@id": "https://en-word.net/sense/dog-n-1"
+			},
+			"vartrans:target": {
+				"@id": "https://en-word.net/sense/canine-n-1"
+			},
+			"vartrans:category": {
+				"@id": "wn:hypernym"
+			}
+		},
+		{
+			"@id": "https://en-word.net/sense/canine-n-1",
+			"@type": "ontolex:LexicalSense"
+		},
+		{
+			"@id": "https://en-word.net/sense/dog-n-1",
+			"@type": "ontolex:LexicalSense",
+			"vartrans:senseRel": {
+				"@id": "https://en-word.net/relation/dog-hypernym-canine"
+			}
+		}
+	]
 }

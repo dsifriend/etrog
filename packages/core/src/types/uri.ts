@@ -23,6 +23,33 @@ function uuidToBytes(uuid: string): Uint8Array {
 	return bytes;
 }
 
+/** Matches a canonical UUID string with hyphens. */
+const UUID_PATTERN =
+	/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+/**
+ * Extracts and validates the UUID component from a `urn:uuid:` namespace URI.
+ * @param namespace - The namespace URI.
+ * @returns The lowercase UUID component.
+ */
+function extractNamespaceUuid(namespace: URI): string {
+	const prefix = "urn:uuid:";
+	if (!namespace.startsWith(prefix)) {
+		throw new TypeError(
+			`Invalid namespace URI: expected 'urn:uuid:' prefix, received '${namespace}'.`,
+		);
+	}
+
+	const uuid = namespace.slice(prefix.length).toLowerCase();
+	if (!UUID_PATTERN.test(uuid)) {
+		throw new TypeError(
+			`Invalid namespace URI: expected UUID after 'urn:uuid:', received '${namespace}'.`,
+		);
+	}
+
+	return uuid;
+}
+
 /**
  * Formats a 16-byte array as a UUID string (lowercase, with hyphens).
  * @param bytes - The 16-byte array.
@@ -48,13 +75,14 @@ function bytesToUuid(bytes: Uint8Array): string {
  *   Etrog's project-specific UUIDv4 namespace).
  * @param localPart - The local name to hash together with the namespace.
  * @returns A `urn:uuid:` URN derived from the SHA-1 of `namespace + localPart`.
+ * @throws `TypeError` when `namespace` is not a canonical `urn:uuid:<uuid>` URI.
  *
  * @example
  * const uri = await mintURI(ETROG_NS_UUID, "my-entry");
  * // => "urn:uuid:xxxxxxxx-xxxx-5xxx-yxxx-xxxxxxxxxxxx"
  */
 export async function mintURI(namespace: URI, localPart: string): Promise<URI> {
-	const nsBytes = uuidToBytes(namespace.replace(/^urn:uuid:/, ""));
+	const nsBytes = uuidToBytes(extractNamespaceUuid(namespace));
 	const nameBytes = new TextEncoder().encode(localPart);
 
 	const combined = new Uint8Array(nsBytes.length + nameBytes.length);
@@ -84,5 +112,6 @@ export async function mintURI(namespace: URI, localPart: string): Promise<URI> {
  * // => "https://example.org/lexicon/caf%C3%A9"
  */
 export function mintIRI(baseIri: string, localPart: string): URI {
-	return (baseIri + encodeURIComponent(localPart)) as URI;
+	const separator = baseIri.endsWith("/") || baseIri.endsWith("#") ? "" : "/";
+	return `${baseIri}${separator}${encodeURIComponent(localPart)}` as URI;
 }

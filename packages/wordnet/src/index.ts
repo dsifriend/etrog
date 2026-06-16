@@ -1,5 +1,7 @@
 export {
 	WnNamespace,
+	WnNamespaceHttp,
+	WnNamespaces,
 	WnRelationCategories,
 	isWnUri,
 	isWnCategoryRelation,
