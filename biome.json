@@ -1,5 +1,9 @@
 {
 	"$schema": "https://biomejs.dev/schemas/2.5.0/schema.json",
 	"formatter": { "enabled": true },
-	"linter": { "enabled": true }
+	"linter": { "enabled": true },
+	"files": {
+		"includes": ["**", "!**/dist", "!**/node_modules"]
+	},
+	"vcs": { "enabled": true, "clientKind": "git", "useIgnoreFile": true }
 }
