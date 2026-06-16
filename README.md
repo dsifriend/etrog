@@ -91,6 +91,23 @@ synsem + lime); https://www.w3.org/2019/09/lexicog/ (lexicog).
 | **Global WordNet schema** | `wn:` | `https://globalwordnet.github.io/schemas/wn#` | Interop layer for Open English WordNet / GWA resources |
 | **DBnary extension** | `dbnary:` | `http://kaiko.getalp.org/dbnary#` | Interop layer for DBnary / Wiktionary-based resources |
 
+**DBnary URI convention note**
+
+DBnary uses two related but distinct URI spaces:
+
+- **Vocabulary terms** use the hash namespace, e.g.
+  `http://kaiko.getalp.org/dbnary#isTranslationOf`
+- **Extracted resources** use a path-based IRI with a language/graph segment,
+  e.g. `http://kaiko.getalp.org/dbnary/eng/cat__Noun__1` or
+  `http://kaiko.getalp.org/dbnary/fra/chat`
+
+In Etrog, `@etrog/dbnary` mirrors this split:
+`isDbnaryUri` is for the `dbnary#` vocabulary namespace, while
+`isDbnaryResourceIri` validates path-based DBnary resource IRIs.
+
+Reference: DBnary online access examples and documentation:
+https://kaiko.getalp.org/about-dbnary/online-access/
+
 ### 2.3 Export Targets
 
 | Target | Format | Audience |
