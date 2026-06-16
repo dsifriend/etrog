@@ -1,0 +1,160 @@
+{
+	"@context": {
+		"ontolex": "http://www.w3.org/ns/lemon/ontolex#",
+		"lime": "http://www.w3.org/ns/lemon/lime#",
+		"vartrans": "http://www.w3.org/ns/lemon/vartrans#",
+		"decomp": "http://www.w3.org/ns/lemon/decomp#",
+		"synsem": "http://www.w3.org/ns/lemon/synsem#",
+		"lexicog": "http://www.w3.org/ns/lemon/lexicog#",
+		"lexinfo": "http://www.lexinfo.net/ontology/3.0/lexinfo#",
+		"skos": "http://www.w3.org/2004/02/skos/core#",
+		"wn": "https://globalwordnet.github.io/schemas/wn#",
+		"dbnary": "http://kaiko.getalp.org/dbnary#",
+		"dcterms": "http://purl.org/dc/terms/",
+		"owl": "http://www.w3.org/2002/07/owl#",
+		"rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+		"rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+		"language": "lime:language",
+		"canonicalForm": {
+			"@id": "ontolex:canonicalForm",
+			"@type": "@id"
+		},
+		"otherForm": {
+			"@id": "ontolex:otherForm",
+			"@type": "@id"
+		},
+		"sense": {
+			"@id": "ontolex:sense",
+			"@type": "@id"
+		},
+		"writtenRep": "ontolex:writtenRep",
+		"entry": {
+			"@id": "lime:entry",
+			"@type": "@id"
+		}
+	},
+	"@graph": [
+		{
+			"@id": "http://kaiko.getalp.org/dbnary/eng/___en_dbnary_dataset",
+			"@type": "lime:Lexicon",
+			"entry": [
+				"http://kaiko.getalp.org/dbnary/eng/cat__Noun__1",
+				"http://kaiko.getalp.org/dbnary/eng/dog__Noun__1",
+				"http://kaiko.getalp.org/dbnary/eng/house__Noun__1",
+				"http://kaiko.getalp.org/dbnary/eng/tree__Noun__1",
+				"http://kaiko.getalp.org/dbnary/eng/water__Noun__1"
+			],
+			"language": "en"
+		},
+		{
+			"@id": "http://kaiko.getalp.org/dbnary/eng/__cf__cat__Noun__1",
+			"@type": "ontolex:Form",
+			"writtenRep": {
+				"@language": "en",
+				"@value": "cat"
+			}
+		},
+		{
+			"@id": "http://kaiko.getalp.org/dbnary/eng/__cf__dog__Noun__1",
+			"@type": "ontolex:Form",
+			"writtenRep": {
+				"@language": "en",
+				"@value": "dog"
+			}
+		},
+		{
+			"@id": "http://kaiko.getalp.org/dbnary/eng/__cf__house__Noun__1",
+			"@type": "ontolex:Form",
+			"writtenRep": {
+				"@language": "en",
+				"@value": "house"
+			}
+		},
+		{
+			"@id": "http://kaiko.getalp.org/dbnary/eng/__cf__tree__Noun__1",
+			"@type": "ontolex:Form",
+			"writtenRep": {
+				"@language": "en",
+				"@value": "tree"
+			}
+		},
+		{
+			"@id": "http://kaiko.getalp.org/dbnary/eng/__cf__water__Noun__1",
+			"@type": "ontolex:Form",
+			"writtenRep": {
+				"@language": "en",
+				"@value": "water"
+			}
+		},
+		{
+			"@id": "http://kaiko.getalp.org/dbnary/eng/__tr_dog__fra__chien__1",
+			"@type": "vartrans:Translation",
+			"vartrans:category": {
+				"@id": "dbnary:isTranslationOf"
+			},
+			"vartrans:source": {
+				"@id": "http://kaiko.getalp.org/dbnary/eng/__ws_1__dog__Noun__1"
+			},
+			"vartrans:target": {
+				"@id": "http://kaiko.getalp.org/dbnary/fra/__ws_1__chien__Nom__1"
+			}
+		},
+		{
+			"@id": "http://kaiko.getalp.org/dbnary/eng/__ws_1__cat__Noun__1",
+			"@type": "ontolex:LexicalSense"
+		},
+		{
+			"@id": "http://kaiko.getalp.org/dbnary/eng/__ws_1__dog__Noun__1",
+			"@type": "ontolex:LexicalSense",
+			"vartrans:trans": {
+				"@id": "http://kaiko.getalp.org/dbnary/eng/__tr_dog__fra__chien__1"
+			}
+		},
+		{
+			"@id": "http://kaiko.getalp.org/dbnary/eng/__ws_1__house__Noun__1",
+			"@type": "ontolex:LexicalSense"
+		},
+		{
+			"@id": "http://kaiko.getalp.org/dbnary/eng/__ws_1__tree__Noun__1",
+			"@type": "ontolex:LexicalSense"
+		},
+		{
+			"@id": "http://kaiko.getalp.org/dbnary/eng/__ws_1__water__Noun__1",
+			"@type": "ontolex:LexicalSense"
+		},
+		{
+			"@id": "http://kaiko.getalp.org/dbnary/eng/cat__Noun__1",
+			"@type": "ontolex:LexicalEntry",
+			"canonicalForm": "http://kaiko.getalp.org/dbnary/eng/__cf__cat__Noun__1",
+			"sense": "http://kaiko.getalp.org/dbnary/eng/__ws_1__cat__Noun__1"
+		},
+		{
+			"@id": "http://kaiko.getalp.org/dbnary/eng/dog__Noun__1",
+			"@type": "ontolex:LexicalEntry",
+			"canonicalForm": "http://kaiko.getalp.org/dbnary/eng/__cf__dog__Noun__1",
+			"sense": "http://kaiko.getalp.org/dbnary/eng/__ws_1__dog__Noun__1"
+		},
+		{
+			"@id": "http://kaiko.getalp.org/dbnary/eng/house__Noun__1",
+			"@type": "ontolex:LexicalEntry",
+			"canonicalForm": "http://kaiko.getalp.org/dbnary/eng/__cf__house__Noun__1",
+			"sense": "http://kaiko.getalp.org/dbnary/eng/__ws_1__house__Noun__1"
+		},
+		{
+			"@id": "http://kaiko.getalp.org/dbnary/eng/tree__Noun__1",
+			"@type": "ontolex:LexicalEntry",
+			"canonicalForm": "http://kaiko.getalp.org/dbnary/eng/__cf__tree__Noun__1",
+			"sense": "http://kaiko.getalp.org/dbnary/eng/__ws_1__tree__Noun__1"
+		},
+		{
+			"@id": "http://kaiko.getalp.org/dbnary/eng/water__Noun__1",
+			"@type": "ontolex:LexicalEntry",
+			"canonicalForm": "http://kaiko.getalp.org/dbnary/eng/__cf__water__Noun__1",
+			"sense": "http://kaiko.getalp.org/dbnary/eng/__ws_1__water__Noun__1"
+		},
+		{
+			"@id": "http://kaiko.getalp.org/dbnary/fra/__ws_1__chien__Nom__1",
+			"@type": "ontolex:LexicalSense"
+		}
+	]
+}

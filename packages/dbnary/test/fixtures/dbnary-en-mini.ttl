@@ -1,0 +1,66 @@
+@prefix lime: <http://www.w3.org/ns/lemon/lime#> .
+@prefix ontolex: <http://www.w3.org/ns/lemon/ontolex#> .
+@prefix vartrans: <http://www.w3.org/ns/lemon/vartrans#> .
+@prefix dbnary: <http://kaiko.getalp.org/dbnary#> .
+
+<http://kaiko.getalp.org/dbnary/eng/___en_dbnary_dataset> a lime:Lexicon ;
+  lime:language "en" ;
+  lime:entry
+    <http://kaiko.getalp.org/dbnary/eng/cat__Noun__1>,
+    <http://kaiko.getalp.org/dbnary/eng/dog__Noun__1>,
+    <http://kaiko.getalp.org/dbnary/eng/house__Noun__1>,
+    <http://kaiko.getalp.org/dbnary/eng/tree__Noun__1>,
+    <http://kaiko.getalp.org/dbnary/eng/water__Noun__1> .
+
+<http://kaiko.getalp.org/dbnary/eng/cat__Noun__1> a ontolex:LexicalEntry ;
+  ontolex:canonicalForm <http://kaiko.getalp.org/dbnary/eng/__cf__cat__Noun__1> ;
+  ontolex:sense <http://kaiko.getalp.org/dbnary/eng/__ws_1__cat__Noun__1> .
+
+<http://kaiko.getalp.org/dbnary/eng/dog__Noun__1> a ontolex:LexicalEntry ;
+  ontolex:canonicalForm <http://kaiko.getalp.org/dbnary/eng/__cf__dog__Noun__1> ;
+  ontolex:sense <http://kaiko.getalp.org/dbnary/eng/__ws_1__dog__Noun__1> .
+
+<http://kaiko.getalp.org/dbnary/eng/house__Noun__1> a ontolex:LexicalEntry ;
+  ontolex:canonicalForm <http://kaiko.getalp.org/dbnary/eng/__cf__house__Noun__1> ;
+  ontolex:sense <http://kaiko.getalp.org/dbnary/eng/__ws_1__house__Noun__1> .
+
+<http://kaiko.getalp.org/dbnary/eng/tree__Noun__1> a ontolex:LexicalEntry ;
+  ontolex:canonicalForm <http://kaiko.getalp.org/dbnary/eng/__cf__tree__Noun__1> ;
+  ontolex:sense <http://kaiko.getalp.org/dbnary/eng/__ws_1__tree__Noun__1> .
+
+<http://kaiko.getalp.org/dbnary/eng/water__Noun__1> a ontolex:LexicalEntry ;
+  ontolex:canonicalForm <http://kaiko.getalp.org/dbnary/eng/__cf__water__Noun__1> ;
+  ontolex:sense <http://kaiko.getalp.org/dbnary/eng/__ws_1__water__Noun__1> .
+
+<http://kaiko.getalp.org/dbnary/eng/__cf__cat__Noun__1> a ontolex:Form ;
+  ontolex:writtenRep "cat"@en .
+
+<http://kaiko.getalp.org/dbnary/eng/__cf__dog__Noun__1> a ontolex:Form ;
+  ontolex:writtenRep "dog"@en .
+
+<http://kaiko.getalp.org/dbnary/eng/__cf__house__Noun__1> a ontolex:Form ;
+  ontolex:writtenRep "house"@en .
+
+<http://kaiko.getalp.org/dbnary/eng/__cf__tree__Noun__1> a ontolex:Form ;
+  ontolex:writtenRep "tree"@en .
+
+<http://kaiko.getalp.org/dbnary/eng/__cf__water__Noun__1> a ontolex:Form ;
+  ontolex:writtenRep "water"@en .
+
+<http://kaiko.getalp.org/dbnary/eng/__ws_1__cat__Noun__1> a ontolex:LexicalSense .
+
+<http://kaiko.getalp.org/dbnary/eng/__ws_1__dog__Noun__1> a ontolex:LexicalSense ;
+  vartrans:trans <http://kaiko.getalp.org/dbnary/eng/__tr_dog__fra__chien__1> .
+
+<http://kaiko.getalp.org/dbnary/eng/__ws_1__house__Noun__1> a ontolex:LexicalSense .
+
+<http://kaiko.getalp.org/dbnary/eng/__ws_1__tree__Noun__1> a ontolex:LexicalSense .
+
+<http://kaiko.getalp.org/dbnary/eng/__ws_1__water__Noun__1> a ontolex:LexicalSense .
+
+<http://kaiko.getalp.org/dbnary/fra/__ws_1__chien__Nom__1> a ontolex:LexicalSense .
+
+<http://kaiko.getalp.org/dbnary/eng/__tr_dog__fra__chien__1> a vartrans:Translation ;
+  vartrans:source <http://kaiko.getalp.org/dbnary/eng/__ws_1__dog__Noun__1> ;
+  vartrans:target <http://kaiko.getalp.org/dbnary/fra/__ws_1__chien__Nom__1> ;
+  vartrans:category dbnary:isTranslationOf .
