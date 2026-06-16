@@ -1,5 +1,5 @@
-import type { Lexicon } from "@etrog/core";
-import { DEFAULT_CONTEXT } from "@etrog/core";
+import type { Lexicon, NamespacePrefix } from "@etrog/core";
+import { DEFAULT_CONTEXT, Namespaces } from "@etrog/core";
 import jsonld from "jsonld";
 import * as N3 from "n3";
 import type { EtrogDataset } from "../types.js";
@@ -73,15 +73,15 @@ export async function datasetToLexicon(
 	// We'll compact it afterward to get the prefixed property names that match
 	// what the builders produce.
 	const frame = {
-		"@type": "http://www.w3.org/ns/lemon/lime#Lexicon",
-		"http://www.w3.org/ns/lemon/lime#entry": {
+		"@type": `${Namespaces.lime}Lexicon`,
+		[`${Namespaces.lime}entry`]: {
 			"@embed": "@always",
-			"http://www.w3.org/ns/lemon/ontolex#canonicalForm": {
+			[`${Namespaces.ontolex}canonicalForm`]: {
 				"@embed": "@always",
 			},
-			"http://www.w3.org/ns/lemon/ontolex#otherForm": { "@embed": "@always" },
-			"http://www.w3.org/ns/lemon/ontolex#sense": { "@embed": "@always" },
-			"http://www.w3.org/ns/lemon/decomp#constituent": { "@embed": "@always" },
+			[`${Namespaces.ontolex}otherForm`]: { "@embed": "@always" },
+			[`${Namespaces.ontolex}sense`]: { "@embed": "@always" },
+			[`${Namespaces.decomp}constituent`]: { "@embed": "@always" },
 		},
 	};
 
@@ -91,22 +91,7 @@ export async function datasetToLexicon(
 	// Use a context that ONLY defines the prefixes, not the shorthand aliases,
 	// to ensure we get "lime:language" instead of "language", etc.
 	const prefixOnlyContext = {
-		"@context": {
-			ontolex: "http://www.w3.org/ns/lemon/ontolex#",
-			lime: "http://www.w3.org/ns/lemon/lime#",
-			vartrans: "http://www.w3.org/ns/lemon/vartrans#",
-			decomp: "http://www.w3.org/ns/lemon/decomp#",
-			synsem: "http://www.w3.org/ns/lemon/synsem#",
-			lexicog: "http://www.w3.org/ns/lemon/lexicog#",
-			lexinfo: "http://www.lexinfo.net/ontology/3.0/lexinfo#",
-			skos: "http://www.w3.org/2004/02/skos/core#",
-			wn: "https://globalwordnet.github.io/schemas/wn#",
-			dbnary: "http://kaiko.getalp.org/dbnary#",
-			dcterms: "http://purl.org/dc/terms/",
-			owl: "http://www.w3.org/2002/07/owl#",
-			rdf: "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-			rdfs: "http://www.w3.org/2000/01/rdf-schema#",
-		},
+		"@context": Namespaces as Record<NamespacePrefix, string>,
 	};
 
 	const compacted = (await lib.compact(framed, prefixOnlyContext)) as Record<

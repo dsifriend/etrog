@@ -1,3 +1,4 @@
+import { Namespaces } from "@etrog/core";
 import * as N3 from "n3";
 import { RdfXmlParser } from "rdfxml-streaming-parser";
 import type { EtrogDataset, NamespaceMap } from "../types.js";
@@ -58,17 +59,17 @@ export async function serializeRdfXml(
 ): Promise<string> {
 	// Include all standard OntoLex namespace prefixes by default
 	const allPrefixes: NamespaceMap = {
-		rdf: "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-		rdfs: "http://www.w3.org/2000/01/rdf-schema#",
-		ontolex: "http://www.w3.org/ns/lemon/ontolex#",
-		lime: "http://www.w3.org/ns/lemon/lime#",
-		vartrans: "http://www.w3.org/ns/lemon/vartrans#",
-		decomp: "http://www.w3.org/ns/lemon/decomp#",
-		synsem: "http://www.w3.org/ns/lemon/synsem#",
-		lexicog: "http://www.w3.org/ns/lemon/lexicog#",
-		lexinfo: "http://www.lexinfo.net/ontology/3.0/lexinfo#",
-		skos: "http://www.w3.org/2004/02/skos/core#",
-		dcterms: "http://purl.org/dc/terms/",
+		rdf: Namespaces.rdf,
+		rdfs: Namespaces.rdfs,
+		ontolex: Namespaces.ontolex,
+		lime: Namespaces.lime,
+		vartrans: Namespaces.vartrans,
+		decomp: Namespaces.decomp,
+		synsem: Namespaces.synsem,
+		lexicog: Namespaces.lexicog,
+		lexinfo: Namespaces.lexinfo,
+		skos: Namespaces.skos,
+		dcterms: Namespaces.dcterms,
 		...(prefixes ?? {}),
 	};
 
