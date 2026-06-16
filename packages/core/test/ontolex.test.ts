@@ -1,11 +1,11 @@
-import { test, expect, describe } from "bun:test";
+import { describe, expect, test } from "bun:test";
 import type {
 	Form,
+	LexicalConcept,
 	LexicalEntry,
 	LexicalSense,
-	LexicalConcept,
 } from "../src/ontolex/index.js";
-import type { URI, LanguageTag } from "../src/types/index.js";
+import type { LanguageTag, URI } from "../src/types/index.js";
 
 const id = "urn:uuid:test-form-1" as URI;
 const en = "en" as LanguageTag;

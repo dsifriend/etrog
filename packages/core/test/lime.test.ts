@@ -1,10 +1,10 @@
-import { test, expect, describe } from "bun:test";
+import { describe, expect, test } from "bun:test";
 import type {
-	Lexicon,
 	LexicalizationSet,
 	LexicalLinkset,
+	Lexicon,
 } from "../src/lime/index.js";
-import type { URI, LanguageTag } from "../src/types/index.js";
+import type { LanguageTag, URI } from "../src/types/index.js";
 
 const en = "en" as LanguageTag;
 

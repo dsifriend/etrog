@@ -1,5 +1,5 @@
-import { test, expect, describe } from "bun:test";
-import { Namespaces, qname, DEFAULT_CONTEXT } from "../src/namespaces.js";
+import { describe, expect, test } from "bun:test";
+import { DEFAULT_CONTEXT, Namespaces, qname } from "../src/namespaces.js";
 
 describe("Namespaces", () => {
 	test("ontolex URI is correct", () => {
@@ -43,18 +43,18 @@ describe("DEFAULT_CONTEXT", () => {
 
 	test("@context contains ontolex prefix", () => {
 		const ctx = DEFAULT_CONTEXT["@context"] as Record<string, unknown>;
-		expect(ctx["ontolex"]).toBe(Namespaces.ontolex);
+		expect(ctx.ontolex).toBe(Namespaces.ontolex);
 	});
 
 	test("@context contains shorthand aliases", () => {
 		const ctx = DEFAULT_CONTEXT["@context"] as Record<string, unknown>;
-		expect(ctx["language"]).toBe("lime:language");
-		expect(ctx["writtenRep"]).toBe("ontolex:writtenRep");
+		expect(ctx.language).toBe("lime:language");
+		expect(ctx.writtenRep).toBe("ontolex:writtenRep");
 	});
 
 	test("canonicalForm alias has @type @id", () => {
 		const ctx = DEFAULT_CONTEXT["@context"] as Record<string, unknown>;
-		const cf = ctx["canonicalForm"] as Record<string, string>;
+		const cf = ctx.canonicalForm as Record<string, string>;
 		expect(cf["@id"]).toBe("ontolex:canonicalForm");
 		expect(cf["@type"]).toBe("@id");
 	});

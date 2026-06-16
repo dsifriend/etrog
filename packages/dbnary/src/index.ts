@@ -1,10 +1,10 @@
+export { readDbnaryTurtle } from "./reader";
+export type { DbnaryTranslation, DbnaryTranslationCategory } from "./schema";
 export {
 	DbnaryNamespace,
-	DbnaryTranslationCategories,
 	DbnaryResourceBase,
-	isDbnaryUri,
-	isDbnaryResourceIri,
+	DbnaryTranslationCategories,
 	isDbnaryCategoryTranslation,
+	isDbnaryResourceIri,
+	isDbnaryUri,
 } from "./schema";
-export type { DbnaryTranslationCategory, DbnaryTranslation } from "./schema";
-export { readDbnaryTurtle } from "./reader";

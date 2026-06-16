@@ -1,12 +1,12 @@
 import { describe, expect, test } from "bun:test";
+import type { LanguageTag, URI } from "@etrog/core";
 import {
+	DEFAULT_CONTEXT,
 	FormBuilder,
 	LexInfoPoS,
 	LexicalEntryBuilder,
 	LexiconBuilder,
 } from "@etrog/core";
-import type { LanguageTag, URI } from "@etrog/core";
-import { DEFAULT_CONTEXT } from "@etrog/core";
 import {
 	datasetToLexicon,
 	lexiconToDataset,

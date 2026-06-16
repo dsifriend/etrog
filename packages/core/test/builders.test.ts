@@ -1,17 +1,17 @@
-import { test, expect, describe } from "bun:test";
+import { describe, expect, test } from "bun:test";
 import { FormBuilder } from "../src/builders/FormBuilder.js";
-import { LexicalSenseBuilder } from "../src/builders/LexicalSenseBuilder.js";
 import { LexicalEntryBuilder } from "../src/builders/LexicalEntryBuilder.js";
+import { LexicalSenseBuilder } from "../src/builders/LexicalSenseBuilder.js";
 import { LexiconBuilder } from "../src/builders/LexiconBuilder.js";
 import { SenseRelationBuilder } from "../src/builders/vartrans/SenseRelationBuilder.js";
 import { TranslationBuilder } from "../src/builders/vartrans/TranslationBuilder.js";
 import { TranslationSetBuilder } from "../src/builders/vartrans/TranslationSetBuilder.js";
 import {
-	LexInfoPoS,
-	LexInfoNumber,
 	LexInfoGender,
+	LexInfoNumber,
+	LexInfoPoS,
 } from "../src/lexinfo/index.js";
-import type { URI, LanguageTag } from "../src/types/index.js";
+import type { LanguageTag, URI } from "../src/types/index.js";
 
 const en = "en" as LanguageTag;
 const formId = "urn:uuid:form-1" as URI;

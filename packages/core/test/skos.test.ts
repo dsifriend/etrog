@@ -1,6 +1,6 @@
-import { test, expect, describe } from "bun:test";
-import type { ConceptScheme, Concept } from "../src/skos/index.js";
-import type { URI, LanguageTag } from "../src/types/index.js";
+import { describe, expect, test } from "bun:test";
+import type { Concept, ConceptScheme } from "../src/skos/index.js";
+import type { LanguageTag, URI } from "../src/types/index.js";
 
 const en = "en" as LanguageTag;
 
@@ -30,6 +30,6 @@ describe("Concept interface", () => {
 			"skos:prefLabel": [{ "@value": "house", "@language": en }],
 			"skos:altLabel": [{ "@value": "home", "@language": en }],
 		};
-		expect(concept["skos:prefLabel"]![0]["@value"]).toBe("house");
+		expect(concept["skos:prefLabel"]?.[0]["@value"]).toBe("house");
 	});
 });

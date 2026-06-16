@@ -1,14 +1,14 @@
+export { readOewnTurtle } from "./reader.js";
+export type {
+	WnConceptualRelation,
+	WnRelationCategory,
+	WnSenseRelation,
+} from "./schema.js";
 export {
+	isWnCategoryRelation,
+	isWnUri,
 	WnNamespace,
 	WnNamespaceHttp,
 	WnNamespaces,
 	WnRelationCategories,
-	isWnUri,
-	isWnCategoryRelation,
 } from "./schema.js";
-export type {
-	WnRelationCategory,
-	WnSenseRelation,
-	WnConceptualRelation,
-} from "./schema.js";
-export { readOewnTurtle } from "./reader.js";

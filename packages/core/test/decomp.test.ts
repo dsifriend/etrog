@@ -1,4 +1,4 @@
-import { test, expect, describe } from "bun:test";
+import { describe, expect, test } from "bun:test";
 import type { Component } from "../src/decomp/index.js";
 import type { URI } from "../src/types/index.js";
 

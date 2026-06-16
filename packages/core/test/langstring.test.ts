@@ -1,8 +1,8 @@
-import { test, expect, describe } from "bun:test";
+import { describe, expect, test } from "bun:test";
 import {
+	getValueForLang,
 	langString,
 	langStringMap,
-	getValueForLang,
 } from "../src/langstring.js";
 import type { LanguageTag } from "../src/types/index.js";
 

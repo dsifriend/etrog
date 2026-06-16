@@ -1,12 +1,11 @@
-import { test, expect, describe } from "bun:test";
+import { describe, expect, test } from "bun:test";
+import type { URI } from "../src/types/index.js";
 import type {
-	LexicoSemanticRelation,
+	ConceptualRelation,
 	SenseRelation,
 	Translation,
 	TranslationSet,
-	ConceptualRelation,
 } from "../src/vartrans/index.js";
-import type { URI } from "../src/types/index.js";
 
 describe("SenseRelation interface", () => {
 	test("minimal valid SenseRelation", () => {

@@ -3,10 +3,10 @@ import type { URI } from "@etrog/core";
 import { DEFAULT_CONTEXT } from "@etrog/core";
 import { lexiconToDataset, serializeJsonLd } from "@etrog/rdf";
 import {
-	WnRelationCategories,
 	isWnCategoryRelation,
 	isWnUri,
 	readOewnTurtle,
+	WnRelationCategories,
 } from "../src/index.js";
 
 /** Reads a UTF-8 fixture file relative to this test module. */
