@@ -115,11 +115,8 @@ export async function datasetToLexicon(
 	>;
 
 	// Remove the @context from the result since it's redundant
-	if ("@context" in compacted) {
-		compacted["@context"] = undefined;
-	}
-
-	return compacted as unknown as Lexicon;
+	const { "@context": _context, ...withoutContext } = compacted;
+	return withoutContext as unknown as Lexicon;
 }
 
 /** Serializes an N3 Store to an N-Quads string. */
