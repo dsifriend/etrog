@@ -13,7 +13,7 @@
     "format": "bun run --workspaces format"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.9.4",
+    "@biomejs/biome": "^2.5.0",
     "typescript": "^6.0.0"
   },
   "dependencies": {
