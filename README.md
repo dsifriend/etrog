@@ -36,6 +36,11 @@ tooling. The guiding principles are:
   standard. Developer ergonomics are layered *on top of* — never *instead of* —
   the standard model.
 
+  - **Standards coverage:** This library aims for full coverage of its standards,
+    however, priority was given those parts for which the library authors had
+    immediate need. If the standards have drifted or you identify a need for a
+    some unsupported feature, please open an issue or submit a pull request.
+
 - **JSON-LD is the native representation.** RDF triples are a first-class citizen
   internally, but the primary serialization surface is JSON-LD. Every object the
   library produces is valid JSON-LD and can be consumed by any JSON-LD 1.1
