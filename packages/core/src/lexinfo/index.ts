@@ -438,3 +438,30 @@ export const LexInfoDefiniteness = {
 } as const;
 export type LexInfoDefiniteness =
 	(typeof LexInfoDefiniteness)[keyof typeof LexInfoDefiniteness];
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Register
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Usage register values from the LexInfo ontology.
+ *
+ * `lexinfo:register` classifies the sociolinguistic or stylistic level of a
+ * lexical item (e.g. formal, slang, vulgar).
+ */
+export const LexInfoRegister = {
+	register: `${NS}register`,
+	neutralRegister: `${NS}neutralRegister`,
+	formalRegister: `${NS}formalRegister`,
+	slangRegister: `${NS}slangRegister`,
+	vulgarRegister: `${NS}vulgarRegister`,
+	tabooRegister: `${NS}tabooRegister`,
+	technicalRegister: `${NS}technicalRegister`,
+	dialectRegister: `${NS}dialectRegister`,
+	facetiousRegister: `${NS}facetiousRegister`,
+	inHouseRegister: `${NS}inHouseRegister`,
+	benchLevelRegister: `${NS}benchLevelRegister`,
+	ironicRegister: `${NS}ironicRegister`,
+} as const;
+export type LexInfoRegister =
+	(typeof LexInfoRegister)[keyof typeof LexInfoRegister];

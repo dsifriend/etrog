@@ -8,6 +8,7 @@ import type {
 	LexInfoNumber,
 	LexInfoPerson,
 	LexInfoPoS,
+	LexInfoRegister,
 	LexInfoTense,
 	LexInfoVoice,
 } from "../lexinfo/index.js";
@@ -46,6 +47,7 @@ export interface LexicalSense {
 	"ontolex:reference"?: URI;
 	"ontolex:isLexicalizedSenseOf"?: URI;
 	"skos:definition"?: LangString[];
+	"lexinfo:register"?: LexInfoRegister[];
 	"lexicog:usageExample"?: UsageExample[];
 	"vartrans:senseRel"?: SenseRelation[];
 	"vartrans:translation"?: Translation[];

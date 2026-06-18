@@ -1,5 +1,6 @@
 import { langString } from "../langstring.js";
 import type { UsageExample } from "../lexicog/index.js";
+import type { LexInfoRegister } from "../lexinfo/index.js";
 import type { LexicalSense } from "../ontolex/index.js";
 import type { LanguageTag, URI } from "../types/index.js";
 import type { SenseRelation, Translation } from "../vartrans/index.js";
@@ -66,6 +67,23 @@ export class LexicalSenseBuilder {
 		this.data["skos:definition"] ??= [];
 		const definitions = this.data["skos:definition"];
 		definitions.push(langString(value, lang));
+		return this;
+	}
+
+	/**
+	 * Adds a LexInfo usage register value (idempotent).
+	 * @param register - A `LexInfoRegister` URI.
+	 * @returns `this` for chaining.
+	 *
+	 * @example
+	 * builder.addRegister(LexInfoRegister.vulgarRegister)
+	 */
+	addRegister(register: LexInfoRegister): this {
+		this.data["lexinfo:register"] ??= [];
+		const registers = this.data["lexinfo:register"];
+		if (!registers.includes(register)) {
+			registers.push(register);
+		}
 		return this;
 	}
 

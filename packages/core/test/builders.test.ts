@@ -10,6 +10,7 @@ import {
 	LexInfoGender,
 	LexInfoNumber,
 	LexInfoPoS,
+	LexInfoRegister,
 } from "../src/lexinfo/index.js";
 import type { LanguageTag, URI } from "../src/types/index.js";
 
@@ -89,6 +90,14 @@ describe("LexicalSenseBuilder", () => {
 			.addSenseRelation(rel)
 			.build();
 		expect(sense["vartrans:senseRel"]).toHaveLength(1);
+	});
+
+	test("addRegister is idempotent", () => {
+		const sense = new LexicalSenseBuilder(senseId)
+			.addRegister(LexInfoRegister.vulgarRegister)
+			.addRegister(LexInfoRegister.vulgarRegister)
+			.build();
+		expect(sense["lexinfo:register"]).toEqual([LexInfoRegister.vulgarRegister]);
 	});
 });
 

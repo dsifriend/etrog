@@ -9,6 +9,7 @@ import {
 	LexInfoNumber,
 	LexInfoPerson,
 	LexInfoPoS,
+	LexInfoRegister,
 	LexInfoTense,
 	LexInfoVoice,
 } from "../src/lexinfo/index.js";
@@ -135,5 +136,17 @@ describe("LexInfoDefiniteness", () => {
 		expect(LexInfoDefiniteness.indefinite).toBe(
 			`${BASE}definiteness-indefinite`,
 		);
+	});
+});
+
+describe("LexInfoRegister", () => {
+	test("register resolves correctly", () => {
+		expect(LexInfoRegister.register).toBe(`${BASE}register`);
+	});
+	test("vulgar register resolves correctly", () => {
+		expect(LexInfoRegister.vulgarRegister).toBe(`${BASE}vulgarRegister`);
+	});
+	test("formal register resolves correctly", () => {
+		expect(LexInfoRegister.formalRegister).toBe(`${BASE}formalRegister`);
 	});
 });
