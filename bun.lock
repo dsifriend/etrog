@@ -42,6 +42,7 @@
         "@etrog/core": "workspace:*",
       },
       "devDependencies": {
+        "@rubensworks/saxes": "^6.0.1",
         "bun-types": "^1.3.14",
       },
     },
