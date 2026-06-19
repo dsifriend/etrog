@@ -1,7 +1,9 @@
 // Foundational types
 
 // Builders
+export { ConceptSetBuilder } from "./builders/ConceptSetBuilder.js";
 export { FormBuilder } from "./builders/FormBuilder.js";
+export { LexicalConceptBuilder } from "./builders/LexicalConceptBuilder.js";
 export { LexicalEntryBuilder } from "./builders/LexicalEntryBuilder.js";
 export { LexicalSenseBuilder } from "./builders/LexicalSenseBuilder.js";
 export { LexiconBuilder } from "./builders/LexiconBuilder.js";

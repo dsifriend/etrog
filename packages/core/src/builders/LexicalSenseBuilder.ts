@@ -1,7 +1,7 @@
 import { langString } from "../langstring.js";
 import type { UsageExample } from "../lexicog/index.js";
 import type { LexInfoRegister } from "../lexinfo/index.js";
-import type { LexicalSense } from "../ontolex/index.js";
+import type { LexicalEntry, LexicalSense, Usage } from "../ontolex/index.js";
 import type { LanguageTag, URI } from "../types/index.js";
 import type { SenseRelation, Translation } from "../vartrans/index.js";
 
@@ -67,6 +67,58 @@ export class LexicalSenseBuilder {
 		this.data["skos:definition"] ??= [];
 		const definitions = this.data["skos:definition"];
 		definitions.push(langString(value, lang));
+		return this;
+	}
+
+	/**
+	 * Adds a usage note (idempotent by `@id`).
+	 * @param usage - The `Usage` object to add.
+	 * @returns `this` for chaining.
+	 *
+	 * @example
+	 * builder.addUsage(usage)
+	 */
+	addUsage(usage: Usage): this {
+		this.data["ontolex:usage"] ??= [];
+		const existing = this.data["ontolex:usage"];
+		if (!existing.some((u) => u["@id"] === usage["@id"])) {
+			existing.push(usage);
+		}
+		return this;
+	}
+
+	/**
+	 * Adds a usage note with a literal value.
+	 * @param id - URI of the usage node.
+	 * @param value - The usage note text.
+	 * @param lang - The BCP 47 language tag.
+	 * @returns `this` for chaining.
+	 *
+	 * @example
+	 * builder.addUsageValue("urn:uuid:usage-1" as URI, "archaic", "en" as LanguageTag)
+	 */
+	addUsageValue(id: URI, value: string, lang: LanguageTag): this {
+		return this.addUsage({
+			"@id": id,
+			"@type": "ontolex:Usage",
+			"rdf:value": [langString(value, lang)],
+		});
+	}
+
+	/**
+	 * Adds an inverse sense link (idempotent by `@id`).
+	 * @param entry - The `LexicalEntry` this sense belongs to.
+	 * @returns `this` for chaining.
+	 *
+	 * @example
+	 * builder.addIsSenseOf(entry)
+	 */
+	addIsSenseOf(entry: LexicalEntry): this {
+		this.data["ontolex:isSenseOf"] ??= [];
+		const existing = this.data["ontolex:isSenseOf"];
+		if (!existing.some((e) => e["@id"] === entry["@id"])) {
+			existing.push(entry);
+		}
 		return this;
 	}
 

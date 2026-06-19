@@ -67,6 +67,22 @@ export class FormBuilder {
 	}
 
 	/**
+	 * Adds a generic representation in the given language.
+	 * @param value - The representation text.
+	 * @param lang - The BCP 47 language tag.
+	 * @returns `this` for chaining.
+	 *
+	 * @example
+	 * builder.addRepresentation("⠓⠕⠥⠎⠑", "en" as LanguageTag)
+	 */
+	addRepresentation(value: string, lang: LanguageTag): this {
+		this.data["ontolex:representation"] ??= [];
+		const representations = this.data["ontolex:representation"];
+		representations.push(langString(value, lang));
+		return this;
+	}
+
+	/**
 	 * Sets the grammatical gender.
 	 * @param g - A `LexInfoGender` value.
 	 * @returns `this` for chaining.

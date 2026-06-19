@@ -77,6 +77,40 @@ export class LexicalEntryBuilder {
 	}
 
 	/**
+	 * Adds a direct denotation link to an ontology entity (idempotent).
+	 * @param uri - URI of the ontology entity.
+	 * @returns `this` for chaining.
+	 *
+	 * @example
+	 * builder.addDenotes("https://dbpedia.org/resource/House" as URI)
+	 */
+	addDenotes(uri: URI): this {
+		this.data["ontolex:denotes"] ??= [];
+		const denotes = this.data["ontolex:denotes"];
+		if (!denotes.includes(uri)) {
+			denotes.push(uri);
+		}
+		return this;
+	}
+
+	/**
+	 * Adds a morphological pattern reference (idempotent).
+	 * @param uri - URI of the morphological pattern.
+	 * @returns `this` for chaining.
+	 *
+	 * @example
+	 * builder.addMorphologicalPattern("https://example.org/morphology/declension" as URI)
+	 */
+	addMorphologicalPattern(uri: URI): this {
+		this.data["ontolex:morphologicalPattern"] ??= [];
+		const patterns = this.data["ontolex:morphologicalPattern"];
+		if (!patterns.includes(uri)) {
+			patterns.push(uri);
+		}
+		return this;
+	}
+
+	/**
 	 * Sets the part-of-speech to a single value (replaces any existing PoS).
 	 * @param pos - A `LexInfoPoS` value.
 	 * @returns `this` for chaining.

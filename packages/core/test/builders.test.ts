@@ -1,5 +1,7 @@
 import { describe, expect, test } from "bun:test";
+import { ConceptSetBuilder } from "../src/builders/ConceptSetBuilder.js";
 import { FormBuilder } from "../src/builders/FormBuilder.js";
+import { LexicalConceptBuilder } from "../src/builders/LexicalConceptBuilder.js";
 import { LexicalEntryBuilder } from "../src/builders/LexicalEntryBuilder.js";
 import { LexicalSenseBuilder } from "../src/builders/LexicalSenseBuilder.js";
 import { LexiconBuilder } from "../src/builders/LexiconBuilder.js";
@@ -18,6 +20,9 @@ const en = "en" as LanguageTag;
 const formId = "urn:uuid:form-1" as URI;
 const entryId = "urn:uuid:entry-1" as URI;
 const senseId = "urn:uuid:sense-1" as URI;
+const conceptId = "urn:uuid:concept-1" as URI;
+const conceptSetId = "urn:uuid:concept-set-1" as URI;
+const usageId = "urn:uuid:usage-1" as URI;
 const lexId = "urn:uuid:lex-1" as URI;
 const relId = "urn:uuid:rel-1" as URI;
 const trId = "urn:uuid:tr-1" as URI;
@@ -51,6 +56,16 @@ describe("FormBuilder", () => {
 		expect(form["lexinfo:gender"]).toEqual([LexInfoGender.masculine]);
 	});
 
+	test("addRepresentation appends ontolex:representation", () => {
+		const form = new FormBuilder(formId)
+			.addWrittenRep("house", en)
+			.addRepresentation("⠓⠕⠥⠎⠑", en)
+			.build();
+		expect(form["ontolex:representation"]).toEqual([
+			{ "@value": "⠓⠕⠥⠎⠑", "@language": "en" as LanguageTag },
+		]);
+	});
+
 	test("idempotency: calling build twice returns equivalent objects", () => {
 		const builder = new FormBuilder(formId).addWrittenRep("house", en);
 		const a = builder.build();
@@ -80,6 +95,21 @@ describe("LexicalSenseBuilder", () => {
 			.build();
 		expect(sense["skos:definition"]).toEqual([
 			{ "@value": "A place to live", "@language": "en" as LanguageTag },
+		]);
+	});
+
+	test("addUsageValue appends ontolex:usage", () => {
+		const sense = new LexicalSenseBuilder(senseId)
+			.addUsageValue(usageId, "archaic", en)
+			.build();
+		expect(sense["ontolex:usage"]).toEqual([
+			{
+				"@id": usageId,
+				"@type": "ontolex:Usage",
+				"rdf:value": [
+					{ "@value": "archaic", "@language": "en" as LanguageTag },
+				],
+			},
 		]);
 	});
 
@@ -129,6 +159,24 @@ describe("LexicalEntryBuilder", () => {
 		expect(entry["lexinfo:partOfSpeech"]).toHaveLength(1);
 	});
 
+	test("addDenotes is idempotent", () => {
+		const denotes = "https://dbpedia.org/resource/House" as URI;
+		const entry = new LexicalEntryBuilder(entryId, form, en)
+			.addDenotes(denotes)
+			.addDenotes(denotes)
+			.build();
+		expect(entry["ontolex:denotes"]).toEqual([denotes]);
+	});
+
+	test("addMorphologicalPattern is idempotent", () => {
+		const pattern = "https://example.org/morphology/declension" as URI;
+		const entry = new LexicalEntryBuilder(entryId, form, en)
+			.addMorphologicalPattern(pattern)
+			.addMorphologicalPattern(pattern)
+			.build();
+		expect(entry["ontolex:morphologicalPattern"]).toEqual([pattern]);
+	});
+
 	test("addOtherForm is idempotent by @id", () => {
 		const plural = new FormBuilder("urn:uuid:form-2" as URI)
 			.addWrittenRep("houses", en)
@@ -139,6 +187,31 @@ describe("LexicalEntryBuilder", () => {
 			.addOtherForm(plural)
 			.build();
 		expect(entry["ontolex:otherForm"]).toHaveLength(1);
+	});
+});
+
+describe("LexicalConceptBuilder", () => {
+	test("builds a minimal LexicalConcept", () => {
+		const concept = new LexicalConceptBuilder(conceptId).build();
+		expect(concept["@id"]).toBe(conceptId);
+		expect(concept["@type"]).toBe("ontolex:LexicalConcept");
+	});
+
+	test("addIsConceptOf is idempotent", () => {
+		const target = "https://dbpedia.org/resource/House" as URI;
+		const concept = new LexicalConceptBuilder(conceptId)
+			.addIsConceptOf(target)
+			.addIsConceptOf(target)
+			.build();
+		expect(concept["ontolex:isConceptOf"]).toEqual([target]);
+	});
+});
+
+describe("ConceptSetBuilder", () => {
+	test("builds a minimal ConceptSet", () => {
+		const set = new ConceptSetBuilder(conceptSetId).build();
+		expect(set["@id"]).toBe(conceptSetId);
+		expect(set["@type"]).toBe("ontolex:ConceptSet");
 	});
 });
 
