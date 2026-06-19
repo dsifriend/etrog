@@ -1,4 +1,4 @@
-import type { LexicalEntry } from "../ontolex/index.js";
+import type { ConceptSet, LexicalEntry } from "../ontolex/index.js";
 import type {
 	JsonLdContext,
 	LangString,
@@ -17,6 +17,7 @@ export interface Lexicon {
 	"lime:language": LanguageTag;
 	"lime:entry": LexicalEntry[];
 	"lime:lexicalEntries"?: number;
+	"lime:linguisticCatalog"?: URI;
 	"ontolex:conceptSet"?: URI;
 	"dcterms:title"?: LangString[];
 	"dcterms:description"?: LangString[];
@@ -39,6 +40,12 @@ export interface LexicalizationSet {
 	"lime:lexicalEntries"?: number;
 	"lime:percentage"?: number;
 	"lime:referenceDataset"?: URI;
+	"lime:lexicalizationModel"?: URI;
+	"lime:references"?: number;
+	"lime:lexicalizations"?: number;
+	"lime:avgNumOfLexicalizations"?: number;
+	"lime:resourceType"?: URI;
+	"lime:partition"?: Array<LexicalizationSet | URI>;
 }
 
 /**
@@ -49,5 +56,26 @@ export interface LexicalLinkset {
 	"@type": "lime:LexicalLinkset" | URI;
 	"lime:lexiconDataset"?: URI;
 	"lime:targetDataset"?: URI;
+	"lime:referenceDataset"?: URI;
+	"lime:conceptualDataset"?: ConceptSet | URI;
+	"lime:concepts"?: number;
 	"lime:links"?: number;
+	"lime:avgNumOfLinks"?: number;
+	"lime:resourceType"?: URI;
+	"lime:partition"?: Array<LexicalLinkset | URI>;
+}
+
+/**
+ * A set of conceptualizations linking a lexicon to a concept set.
+ */
+export interface ConceptualizationSet {
+	"@id": URI;
+	"@type": "lime:ConceptualizationSet" | URI;
+	"lime:lexiconDataset"?: URI;
+	"lime:conceptualDataset"?: ConceptSet | URI;
+	"lime:lexicalEntries"?: number;
+	"lime:concepts"?: number;
+	"lime:conceptualizations"?: number;
+	"lime:avgAmbiguity"?: number;
+	"lime:avgSynonymy"?: number;
 }

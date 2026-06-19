@@ -1,5 +1,6 @@
 import { describe, expect, test } from "bun:test";
 import type {
+	ConceptualizationSet,
 	LexicalizationSet,
 	LexicalLinkset,
 	Lexicon,
@@ -40,5 +41,15 @@ describe("LexicalLinkset interface", () => {
 			"@type": "lime:LexicalLinkset",
 		};
 		expect(ll["@type"]).toBe("lime:LexicalLinkset");
+	});
+});
+
+describe("ConceptualizationSet interface", () => {
+	test("minimal valid ConceptualizationSet object", () => {
+		const cs: ConceptualizationSet = {
+			"@id": "urn:uuid:cs-1" as URI,
+			"@type": "lime:ConceptualizationSet",
+		};
+		expect(cs["@type"]).toBe("lime:ConceptualizationSet");
 	});
 });

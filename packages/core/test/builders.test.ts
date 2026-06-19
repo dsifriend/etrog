@@ -1,8 +1,11 @@
 import { describe, expect, test } from "bun:test";
 import { ConceptSetBuilder } from "../src/builders/ConceptSetBuilder.js";
+import { ConceptualizationSetBuilder } from "../src/builders/ConceptualizationSetBuilder.js";
 import { FormBuilder } from "../src/builders/FormBuilder.js";
 import { LexicalConceptBuilder } from "../src/builders/LexicalConceptBuilder.js";
 import { LexicalEntryBuilder } from "../src/builders/LexicalEntryBuilder.js";
+import { LexicalizationSetBuilder } from "../src/builders/LexicalizationSetBuilder.js";
+import { LexicalLinksetBuilder } from "../src/builders/LexicalLinksetBuilder.js";
 import { LexicalSenseBuilder } from "../src/builders/LexicalSenseBuilder.js";
 import { LexiconBuilder } from "../src/builders/LexiconBuilder.js";
 import { SenseRelationBuilder } from "../src/builders/vartrans/SenseRelationBuilder.js";
@@ -27,6 +30,10 @@ const lexId = "urn:uuid:lex-1" as URI;
 const relId = "urn:uuid:rel-1" as URI;
 const trId = "urn:uuid:tr-1" as URI;
 const tsId = "urn:uuid:ts-1" as URI;
+const lexSetId = "urn:uuid:lexset-1" as URI;
+const linkSetId = "urn:uuid:linkset-1" as URI;
+const conSetId = "urn:uuid:conceptualization-set-1" as URI;
+const partitionId = "urn:uuid:partition-1" as URI;
 
 describe("FormBuilder", () => {
 	test("builds a minimal Form", () => {
@@ -300,5 +307,146 @@ describe("TranslationSetBuilder", () => {
 			.addTranslation(tr)
 			.build();
 		expect(ts["vartrans:trans"]).toHaveLength(1);
+	});
+});
+
+describe("LexicalizationSetBuilder", () => {
+	test("builds a minimal LexicalizationSet", () => {
+		const set = new LexicalizationSetBuilder(lexSetId, en).build();
+		expect(set["@id"]).toBe(lexSetId);
+		expect(set["@type"]).toBe("lime:LexicalizationSet");
+		expect(set["lime:language"] as string).toBe("en");
+	});
+
+	test("sets LIME lexicalization metadata fields", () => {
+		const set = new LexicalizationSetBuilder(lexSetId, en)
+			.setLexiconDataset("urn:uuid:lexicon-ds" as URI)
+			.setReferenceDataset("urn:uuid:ref-ds" as URI)
+			.setLexicalizationModel("http://www.w3.org/ns/lemon/ontolex#" as URI)
+			.setReferences(20)
+			.setLexicalizations(50)
+			.setAvgNumOfLexicalizations(0.66)
+			.setLexicalEntries(15)
+			.setPercentage(0.4)
+			.setResourceType("http://www.w3.org/2002/07/owl#Class" as URI)
+			.build();
+		expect(set["lime:lexiconDataset"]).toBe("urn:uuid:lexicon-ds" as URI);
+		expect(set["lime:referenceDataset"]).toBe("urn:uuid:ref-ds" as URI);
+		expect(set["lime:lexicalizationModel"]).toBe(
+			"http://www.w3.org/ns/lemon/ontolex#" as URI,
+		);
+		expect(set["lime:references"]).toBe(20);
+		expect(set["lime:lexicalizations"]).toBe(50);
+		expect(set["lime:avgNumOfLexicalizations"]).toBe(0.66);
+		expect(set["lime:lexicalEntries"]).toBe(15);
+		expect(set["lime:percentage"]).toBe(0.4);
+		expect(set["lime:resourceType"]).toBe(
+			"http://www.w3.org/2002/07/owl#Class" as URI,
+		);
+	});
+
+	test("addPartition is idempotent by @id for URI and object partitions", () => {
+		const partitionObj = new LexicalizationSetBuilder(partitionId, en).build();
+		const set = new LexicalizationSetBuilder(lexSetId, en)
+			.addPartition(partitionId)
+			.addPartition(partitionObj)
+			.build();
+		expect(set["lime:partition"]).toHaveLength(1);
+	});
+
+	test("build returns a defensive copy for lime:partition", () => {
+		const builder = new LexicalizationSetBuilder(lexSetId, en).addPartition(
+			partitionId,
+		);
+		const a = builder.build();
+		const b = builder.build();
+		(a["lime:partition"] as unknown[]).push("urn:uuid:partition-2" as URI);
+		expect((b["lime:partition"] as unknown[]).length).toBe(1);
+	});
+});
+
+describe("LexicalLinksetBuilder", () => {
+	test("builds a minimal LexicalLinkset", () => {
+		const set = new LexicalLinksetBuilder(linkSetId).build();
+		expect(set["@id"]).toBe(linkSetId);
+		expect(set["@type"]).toBe("lime:LexicalLinkset");
+	});
+
+	test("sets LIME lexical linkset metadata fields", () => {
+		const conceptSet = new ConceptSetBuilder(conceptSetId).build();
+		const set = new LexicalLinksetBuilder(linkSetId)
+			.setLexiconDataset("urn:uuid:lexicon-ds" as URI)
+			.setTargetDataset("urn:uuid:target-ds" as URI)
+			.setReferenceDataset("urn:uuid:ref-ds" as URI)
+			.setConceptualDataset(conceptSet)
+			.setConcepts(117659)
+			.setLinks(206941)
+			.setAvgNumOfLinks(1.76)
+			.setResourceType("http://www.w3.org/2002/07/owl#Class" as URI)
+			.build();
+		expect(set["lime:lexiconDataset"]).toBe("urn:uuid:lexicon-ds" as URI);
+		expect(set["lime:targetDataset"]).toBe("urn:uuid:target-ds" as URI);
+		expect(set["lime:referenceDataset"]).toBe("urn:uuid:ref-ds" as URI);
+		expect(set["lime:conceptualDataset"]).toEqual(conceptSet);
+		expect(set["lime:concepts"]).toBe(117659);
+		expect(set["lime:links"]).toBe(206941);
+		expect(set["lime:avgNumOfLinks"]).toBe(1.76);
+		expect(set["lime:resourceType"]).toBe(
+			"http://www.w3.org/2002/07/owl#Class" as URI,
+		);
+	});
+
+	test("addPartition is idempotent by @id for URI and object partitions", () => {
+		const partitionObj = new LexicalLinksetBuilder(partitionId).build();
+		const set = new LexicalLinksetBuilder(linkSetId)
+			.addPartition(partitionId)
+			.addPartition(partitionObj)
+			.build();
+		expect(set["lime:partition"]).toHaveLength(1);
+	});
+
+	test("build returns a defensive copy for lime:partition", () => {
+		const builder = new LexicalLinksetBuilder(linkSetId).addPartition(
+			partitionId,
+		);
+		const a = builder.build();
+		const b = builder.build();
+		(a["lime:partition"] as unknown[]).push("urn:uuid:partition-2" as URI);
+		expect((b["lime:partition"] as unknown[]).length).toBe(1);
+	});
+});
+
+describe("ConceptualizationSetBuilder", () => {
+	test("builds a minimal ConceptualizationSet", () => {
+		const set = new ConceptualizationSetBuilder(conSetId).build();
+		expect(set["@id"]).toBe(conSetId);
+		expect(set["@type"]).toBe("lime:ConceptualizationSet");
+	});
+
+	test("sets conceptualization statistics unique to LIME", () => {
+		const conceptSet = new ConceptSetBuilder(conceptSetId).build();
+		const set = new ConceptualizationSetBuilder(conSetId)
+			.setLexiconDataset("urn:uuid:lexicon-ds" as URI)
+			.setConceptualDataset(conceptSet)
+			.setLexicalEntries(155287)
+			.setConcepts(117659)
+			.setConceptualizations(206941)
+			.setAvgAmbiguity(1.33)
+			.setAvgSynonymy(1.76)
+			.build();
+		expect(set["lime:lexiconDataset"]).toBe("urn:uuid:lexicon-ds" as URI);
+		expect(set["lime:conceptualDataset"]).toEqual(conceptSet);
+		expect(set["lime:lexicalEntries"]).toBe(155287);
+		expect(set["lime:concepts"]).toBe(117659);
+		expect(set["lime:conceptualizations"]).toBe(206941);
+		expect(set["lime:avgAmbiguity"]).toBe(1.33);
+		expect(set["lime:avgSynonymy"]).toBe(1.76);
+	});
+
+	test("accepts conceptual dataset as URI", () => {
+		const set = new ConceptualizationSetBuilder(conSetId)
+			.setConceptualDataset("urn:uuid:concept-set" as URI)
+			.build();
+		expect(set["lime:conceptualDataset"]).toBe("urn:uuid:concept-set" as URI);
 	});
 });

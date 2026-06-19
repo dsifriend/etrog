@@ -2,9 +2,12 @@
 
 // Builders
 export { ConceptSetBuilder } from "./builders/ConceptSetBuilder.js";
+export { ConceptualizationSetBuilder } from "./builders/ConceptualizationSetBuilder.js";
 export { FormBuilder } from "./builders/FormBuilder.js";
 export { LexicalConceptBuilder } from "./builders/LexicalConceptBuilder.js";
 export { LexicalEntryBuilder } from "./builders/LexicalEntryBuilder.js";
+export { LexicalizationSetBuilder } from "./builders/LexicalizationSetBuilder.js";
+export { LexicalLinksetBuilder } from "./builders/LexicalLinksetBuilder.js";
 export { LexicalSenseBuilder } from "./builders/LexicalSenseBuilder.js";
 export { LexiconBuilder } from "./builders/LexiconBuilder.js";
 export { SenseRelationBuilder } from "./builders/vartrans/SenseRelationBuilder.js";
