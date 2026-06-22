@@ -191,6 +191,40 @@ export class LexicalSenseBuilder {
 	}
 
 	/**
+	 * Adds a direct sense relation shortcut URI (idempotent).
+	 * @param targetUri - URI of the related sense.
+	 * @returns `this` for chaining.
+	 *
+	 * @example
+	 * builder.addRelates("urn:uuid:sense-b" as URI)
+	 */
+	addRelates(targetUri: URI): this {
+		this.data["vartrans:relates"] ??= [];
+		const relates = this.data["vartrans:relates"];
+		if (!relates.includes(targetUri)) {
+			relates.push(targetUri);
+		}
+		return this;
+	}
+
+	/**
+	 * Adds a direct translatable-as shortcut URI (idempotent).
+	 * @param targetUri - URI of the translatable sense.
+	 * @returns `this` for chaining.
+	 *
+	 * @example
+	 * builder.addTranslatableAs("urn:uuid:sense-maison" as URI)
+	 */
+	addTranslatableAs(targetUri: URI): this {
+		this.data["vartrans:translatableAs"] ??= [];
+		const translatableAs = this.data["vartrans:translatableAs"];
+		if (!translatableAs.includes(targetUri)) {
+			translatableAs.push(targetUri);
+		}
+		return this;
+	}
+
+	/**
 	 * Returns the built `LexicalSense` plain object.
 	 * @returns The constructed `LexicalSense`.
 	 *

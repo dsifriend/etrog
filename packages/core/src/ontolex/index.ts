@@ -64,8 +64,14 @@ export interface LexicalSense {
 	"skos:definition"?: LangString[];
 	"lexinfo:register"?: LexInfoRegister[];
 	"lexicog:usageExample"?: UsageExample[];
+	/** Reified sense relations. */
 	"vartrans:senseRel"?: SenseRelation[];
+	/** Shortcut property for direct sense-to-sense relations (alternative to reification). */
+	"vartrans:relates"?: URI[];
+	/** Reified translation relations. */
 	"vartrans:translation"?: Translation[];
+	/** Shortcut property for direct translatable-as relations (alternative to reification). */
+	"vartrans:translatableAs"?: URI[];
 }
 
 /**
@@ -83,6 +89,7 @@ export interface LexicalConcept {
 	"skos:definition"?: LangString[];
 	"skos:prefLabel"?: LangString[];
 	"skos:altLabel"?: LangString[];
+	/** Reified conceptual relations. */
 	"vartrans:conceptRel"?: ConceptualRelation[];
 }
 
@@ -104,7 +111,10 @@ export interface LexicalEntry {
 	"ontolex:morphologicalPattern"?: URI[];
 	"lexinfo:partOfSpeech"?: LexInfoPoS[];
 	"lime:language": LanguageTag;
-	"decomp:subterm"?: Component[];
+	/** Simple subterm links (without ordering). */
+	"decomp:subterm"?: URI[];
+	/** Ordered constituent components (using Component reification). */
+	"decomp:constituent"?: Component[];
 	"dcterms:source"?: URI;
 	"dcterms:created"?: XSDDate;
 	"dcterms:modified"?: XSDDate;
@@ -113,6 +123,10 @@ export interface LexicalEntry {
 	"rdfs:comment"?: LangString[];
 	"rdfs:seeAlso"?: URI[];
 	"synsem:synBehavior"?: SyntacticFrame[];
+	/** Shortcut property for direct entry-to-entry lexical relations (alternative to reification). */
+	"vartrans:lexicalRel"?: URI[];
+	/** Shortcut property for direct translation relations (alternative to reification). */
+	"vartrans:translation"?: URI[];
 }
 
 /**

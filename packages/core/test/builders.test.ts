@@ -1,4 +1,5 @@
 import { describe, expect, test } from "bun:test";
+import { ComponentBuilder } from "../src/builders/ComponentBuilder.js";
 import { ConceptSetBuilder } from "../src/builders/ConceptSetBuilder.js";
 import { ConceptualizationSetBuilder } from "../src/builders/ConceptualizationSetBuilder.js";
 import { FormBuilder } from "../src/builders/FormBuilder.js";
@@ -8,7 +9,10 @@ import { LexicalizationSetBuilder } from "../src/builders/LexicalizationSetBuild
 import { LexicalLinksetBuilder } from "../src/builders/LexicalLinksetBuilder.js";
 import { LexicalSenseBuilder } from "../src/builders/LexicalSenseBuilder.js";
 import { LexiconBuilder } from "../src/builders/LexiconBuilder.js";
+import { ConceptualRelationBuilder } from "../src/builders/vartrans/ConceptualRelationBuilder.js";
+import { LexicalRelationBuilder } from "../src/builders/vartrans/LexicalRelationBuilder.js";
 import { SenseRelationBuilder } from "../src/builders/vartrans/SenseRelationBuilder.js";
+import { TerminologicalRelationBuilder } from "../src/builders/vartrans/TerminologicalRelationBuilder.js";
 import { TranslationBuilder } from "../src/builders/vartrans/TranslationBuilder.js";
 import { TranslationSetBuilder } from "../src/builders/vartrans/TranslationSetBuilder.js";
 import {
@@ -34,6 +38,10 @@ const lexSetId = "urn:uuid:lexset-1" as URI;
 const linkSetId = "urn:uuid:linkset-1" as URI;
 const conSetId = "urn:uuid:conceptualization-set-1" as URI;
 const partitionId = "urn:uuid:partition-1" as URI;
+const componentId = "urn:uuid:component-1" as URI;
+const lexRelId = "urn:uuid:lexrel-1" as URI;
+const termRelId = "urn:uuid:termrel-1" as URI;
+const conceptRelId = "urn:uuid:conceptrel-1" as URI;
 
 describe("FormBuilder", () => {
 	test("builds a minimal Form", () => {
@@ -136,6 +144,24 @@ describe("LexicalSenseBuilder", () => {
 			.build();
 		expect(sense["lexinfo:register"]).toEqual([LexInfoRegister.vulgarRegister]);
 	});
+
+	test("addRelates is idempotent", () => {
+		const target = "urn:uuid:sense-b" as URI;
+		const sense = new LexicalSenseBuilder(senseId)
+			.addRelates(target)
+			.addRelates(target)
+			.build();
+		expect(sense["vartrans:relates"]).toEqual([target]);
+	});
+
+	test("addTranslatableAs is idempotent", () => {
+		const target = "urn:uuid:sense-maison" as URI;
+		const sense = new LexicalSenseBuilder(senseId)
+			.addTranslatableAs(target)
+			.addTranslatableAs(target)
+			.build();
+		expect(sense["vartrans:translatableAs"]).toEqual([target]);
+	});
 });
 
 describe("LexicalEntryBuilder", () => {
@@ -194,6 +220,42 @@ describe("LexicalEntryBuilder", () => {
 			.addOtherForm(plural)
 			.build();
 		expect(entry["ontolex:otherForm"]).toHaveLength(1);
+	});
+
+	test("addSubterm is idempotent", () => {
+		const subterm = "urn:uuid:entry-fever" as URI;
+		const entry = new LexicalEntryBuilder(entryId, form, en)
+			.addSubterm(subterm)
+			.addSubterm(subterm)
+			.build();
+		expect(entry["decomp:subterm"]).toEqual([subterm]);
+	});
+
+	test("addConstituent is idempotent by @id", () => {
+		const component = new ComponentBuilder(componentId).build();
+		const entry = new LexicalEntryBuilder(entryId, form, en)
+			.addConstituent(component)
+			.addConstituent(component)
+			.build();
+		expect(entry["decomp:constituent"]).toHaveLength(1);
+	});
+
+	test("addLexicalRel is idempotent", () => {
+		const target = "urn:uuid:entry-b" as URI;
+		const entry = new LexicalEntryBuilder(entryId, form, en)
+			.addLexicalRel(target)
+			.addLexicalRel(target)
+			.build();
+		expect(entry["vartrans:lexicalRel"]).toEqual([target]);
+	});
+
+	test("addTranslation is idempotent", () => {
+		const translation = "urn:uuid:entry-maison" as URI;
+		const entry = new LexicalEntryBuilder(entryId, form, en)
+			.addTranslation(translation)
+			.addTranslation(translation)
+			.build();
+		expect(entry["vartrans:translation"]).toEqual([translation]);
 	});
 });
 
@@ -279,6 +341,12 @@ describe("SenseRelationBuilder", () => {
 			.build();
 		expect(rel["vartrans:source"]).toBe(src);
 		expect(rel["vartrans:target"]).toBe(tgt);
+	});
+
+	test("addRelates appends to vartrans:relates", () => {
+		const resource = "urn:uuid:res-1" as URI;
+		const rel = new SenseRelationBuilder(relId).addRelates(resource).build();
+		expect(rel["vartrans:relates"]).toEqual([resource]);
 	});
 });
 
@@ -448,5 +516,129 @@ describe("ConceptualizationSetBuilder", () => {
 			.setConceptualDataset("urn:uuid:concept-set" as URI)
 			.build();
 		expect(set["lime:conceptualDataset"]).toBe("urn:uuid:concept-set" as URI);
+	});
+});
+
+describe("ComponentBuilder", () => {
+	test("builds a minimal Component", () => {
+		const component = new ComponentBuilder(componentId).build();
+		expect(component).toEqual({
+			"@id": componentId,
+			"@type": "decomp:Component",
+		});
+	});
+
+	test("setCorrespondsTo sets correspondsTo property", () => {
+		const correspondsTo = "urn:uuid:entry-lunge" as URI;
+		const component = new ComponentBuilder(componentId)
+			.setCorrespondsTo(correspondsTo)
+			.build();
+		expect(component["decomp:correspondsTo"]).toBe(correspondsTo);
+	});
+});
+
+describe("LexicalRelationBuilder", () => {
+	test("builds a minimal LexicalRelation", () => {
+		const rel = new LexicalRelationBuilder(lexRelId).build();
+		expect(rel).toEqual({
+			"@id": lexRelId,
+			"@type": "vartrans:LexicalRelation",
+		});
+	});
+
+	test("setSource and setTarget are fluent", () => {
+		const src = "urn:uuid:entry-a" as URI;
+		const tgt = "urn:uuid:entry-b" as URI;
+		const rel = new LexicalRelationBuilder(lexRelId)
+			.setSource(src)
+			.setTarget(tgt)
+			.build();
+		expect(rel["vartrans:source"]).toBe(src);
+		expect(rel["vartrans:target"]).toBe(tgt);
+	});
+
+	test("setCategory sets relation category", () => {
+		const category =
+			"http://www.lexinfo.net/ontology/3.0/lexinfo#derivation" as URI;
+		const rel = new LexicalRelationBuilder(lexRelId)
+			.setCategory(category)
+			.build();
+		expect(rel["vartrans:category"]).toBe(category);
+	});
+
+	test("addRelates appends to vartrans:relates", () => {
+		const resource1 = "urn:uuid:res-1" as URI;
+		const resource2 = "urn:uuid:res-2" as URI;
+		const rel = new LexicalRelationBuilder(lexRelId)
+			.addRelates(resource1)
+			.addRelates(resource2)
+			.build();
+		expect(rel["vartrans:relates"]).toEqual([resource1, resource2]);
+	});
+});
+
+describe("TerminologicalRelationBuilder", () => {
+	test("builds a minimal TerminologicalRelation", () => {
+		const rel = new TerminologicalRelationBuilder(termRelId).build();
+		expect(rel).toEqual({
+			"@id": termRelId,
+			"@type": "vartrans:TerminologicalRelation",
+		});
+	});
+
+	test("setSource and setTarget are fluent", () => {
+		const src = "urn:uuid:term-a" as URI;
+		const tgt = "urn:uuid:term-b" as URI;
+		const rel = new TerminologicalRelationBuilder(termRelId)
+			.setSource(src)
+			.setTarget(tgt)
+			.build();
+		expect(rel["vartrans:source"]).toBe(src);
+		expect(rel["vartrans:target"]).toBe(tgt);
+	});
+
+	test("addRelates appends to vartrans:relates", () => {
+		const resource = "urn:uuid:res-1" as URI;
+		const rel = new TerminologicalRelationBuilder(termRelId)
+			.addRelates(resource)
+			.build();
+		expect(rel["vartrans:relates"]).toEqual([resource]);
+	});
+});
+
+describe("ConceptualRelationBuilder", () => {
+	test("builds a minimal ConceptualRelation", () => {
+		const rel = new ConceptualRelationBuilder(conceptRelId).build();
+		expect(rel).toEqual({
+			"@id": conceptRelId,
+			"@type": "vartrans:ConceptualRelation",
+		});
+	});
+
+	test("setSource and setTarget are fluent", () => {
+		const src = "urn:uuid:concept-a" as URI;
+		const tgt = "urn:uuid:concept-b" as URI;
+		const rel = new ConceptualRelationBuilder(conceptRelId)
+			.setSource(src)
+			.setTarget(tgt)
+			.build();
+		expect(rel["vartrans:source"]).toBe(src);
+		expect(rel["vartrans:target"]).toBe(tgt);
+	});
+
+	test("setCategory sets relation category", () => {
+		const category = "http://www.w3.org/2004/02/skos/core#broader" as URI;
+		const rel = new ConceptualRelationBuilder(conceptRelId)
+			.setCategory(category)
+			.build();
+		expect(rel["vartrans:category"]).toBe(category);
+	});
+
+	test("addRelates appends to vartrans:relates", () => {
+		const resource = "urn:uuid:res-1" as URI;
+		const rel = new ConceptualRelationBuilder(conceptRelId)
+			.addRelates(resource)
+			.build();
+		expect(rel["vartrans:relates"]).toEqual([resource]);
 	});
 });

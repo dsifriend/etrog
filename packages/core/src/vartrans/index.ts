@@ -9,6 +9,8 @@ export interface LexicoSemanticRelation {
 	"vartrans:source"?: URI;
 	"vartrans:target"?: URI;
 	"vartrans:category"?: URI;
+	/** Generic property for linking the relation to resources (reification support). */
+	"vartrans:relates"?: URI[];
 }
 
 /** A relation between two lexical entries. */

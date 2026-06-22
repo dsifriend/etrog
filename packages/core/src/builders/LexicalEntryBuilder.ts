@@ -1,3 +1,4 @@
+import type { Component } from "../decomp/index.js";
 import { langString } from "../langstring.js";
 import type { LexInfoPoS } from "../lexinfo/index.js";
 import type { Form, LexicalEntry, LexicalSense } from "../ontolex/index.js";
@@ -136,6 +137,74 @@ export class LexicalEntryBuilder {
 		const partOfSpeech = this.data["lexinfo:partOfSpeech"];
 		if (!partOfSpeech.includes(pos)) {
 			partOfSpeech.push(pos);
+		}
+		return this;
+	}
+
+	/**
+	 * Adds a subterm link (simple, without ordering).
+	 * @param subtermUri - URI of a constituent entry.
+	 * @returns `this` for chaining.
+	 *
+	 * @example
+	 * builder.addSubterm("urn:uuid:entry-fever" as URI)
+	 */
+	addSubterm(subtermUri: URI): this {
+		this.data["decomp:subterm"] ??= [];
+		const subterms = this.data["decomp:subterm"];
+		if (!subterms.includes(subtermUri)) {
+			subterms.push(subtermUri);
+		}
+		return this;
+	}
+
+	/**
+	 * Adds an ordered constituent component (idempotent by `@id`).
+	 * @param component - A `decomp:Component` with structural information.
+	 * @returns `this` for chaining.
+	 *
+	 * @example
+	 * builder.addConstituent(component)
+	 */
+	addConstituent(component: Component): this {
+		this.data["decomp:constituent"] ??= [];
+		const constituents = this.data["decomp:constituent"];
+		if (!constituents.some((c) => c["@id"] === component["@id"])) {
+			constituents.push(component);
+		}
+		return this;
+	}
+
+	/**
+	 * Adds a lexical relation shortcut URI (idempotent).
+	 * @param targetUri - URI of the related lexical entry.
+	 * @returns `this` for chaining.
+	 *
+	 * @example
+	 * builder.addLexicalRel("urn:uuid:entry-b" as URI)
+	 */
+	addLexicalRel(targetUri: URI): this {
+		this.data["vartrans:lexicalRel"] ??= [];
+		const lexicalRel = this.data["vartrans:lexicalRel"];
+		if (!lexicalRel.includes(targetUri)) {
+			lexicalRel.push(targetUri);
+		}
+		return this;
+	}
+
+	/**
+	 * Adds a translation shortcut URI (idempotent).
+	 * @param targetUri - URI of the translated entry.
+	 * @returns `this` for chaining.
+	 *
+	 * @example
+	 * builder.addTranslation("urn:uuid:entry-maison" as URI)
+	 */
+	addTranslation(targetUri: URI): this {
+		this.data["vartrans:translation"] ??= [];
+		const translation = this.data["vartrans:translation"];
+		if (!translation.includes(targetUri)) {
+			translation.push(targetUri);
 		}
 		return this;
 	}

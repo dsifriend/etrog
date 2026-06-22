@@ -1,6 +1,7 @@
 // Foundational types
 
 // Builders
+export { ComponentBuilder } from "./builders/ComponentBuilder.js";
 export { ConceptSetBuilder } from "./builders/ConceptSetBuilder.js";
 export { ConceptualizationSetBuilder } from "./builders/ConceptualizationSetBuilder.js";
 export { FormBuilder } from "./builders/FormBuilder.js";
@@ -10,7 +11,10 @@ export { LexicalizationSetBuilder } from "./builders/LexicalizationSetBuilder.js
 export { LexicalLinksetBuilder } from "./builders/LexicalLinksetBuilder.js";
 export { LexicalSenseBuilder } from "./builders/LexicalSenseBuilder.js";
 export { LexiconBuilder } from "./builders/LexiconBuilder.js";
+export { ConceptualRelationBuilder } from "./builders/vartrans/ConceptualRelationBuilder.js";
+export { LexicalRelationBuilder } from "./builders/vartrans/LexicalRelationBuilder.js";
 export { SenseRelationBuilder } from "./builders/vartrans/SenseRelationBuilder.js";
+export { TerminologicalRelationBuilder } from "./builders/vartrans/TerminologicalRelationBuilder.js";
 export { TranslationBuilder } from "./builders/vartrans/TranslationBuilder.js";
 export { TranslationSetBuilder } from "./builders/vartrans/TranslationSetBuilder.js";
 export * from "./context/index.js";

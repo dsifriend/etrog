@@ -1,31 +1,31 @@
 import type { URI } from "../../types/index.js";
-import type { SenseRelation } from "../../vartrans/index.js";
+import type { ConceptualRelation } from "../../vartrans/index.js";
 
 /**
- * Fluent builder for `vartrans:SenseRelation` objects.
+ * Fluent builder for `vartrans:ConceptualRelation` objects.
  *
  * @example
- * const rel = new SenseRelationBuilder("urn:uuid:..." as URI)
- *   .setSource("urn:uuid:sense-a" as URI)
- *   .setTarget("urn:uuid:sense-b" as URI)
+ * const rel = new ConceptualRelationBuilder("urn:uuid:..." as URI)
+ *   .setSource("urn:uuid:concept-a" as URI)
+ *   .setTarget("urn:uuid:concept-b" as URI)
  *   .build();
  */
-export class SenseRelationBuilder {
-	private readonly data: SenseRelation;
+export class ConceptualRelationBuilder {
+	private readonly data: ConceptualRelation;
 
 	/**
 	 * Initialises the builder with the given URI as `@id`.
-	 * @param id - The URI for this sense relation.
+	 * @param id - The URI for this conceptual relation.
 	 */
 	constructor(id: URI) {
 		this.data = {
 			"@id": id,
-			"@type": "vartrans:SenseRelation",
+			"@type": "vartrans:ConceptualRelation",
 		};
 	}
 
 	/**
-	 * Sets the source sense URI.
+	 * Sets the source lexical concept URI.
 	 * @param s - The source `URI`.
 	 * @returns `this` for chaining.
 	 *
@@ -38,7 +38,7 @@ export class SenseRelationBuilder {
 	}
 
 	/**
-	 * Sets the target sense URI.
+	 * Sets the target lexical concept URI.
 	 * @param t - The target `URI`.
 	 * @returns `this` for chaining.
 	 *
@@ -79,13 +79,13 @@ export class SenseRelationBuilder {
 	}
 
 	/**
-	 * Returns the built `SenseRelation` plain object.
-	 * @returns The constructed `SenseRelation`.
+	 * Returns the built `ConceptualRelation` plain object.
+	 * @returns The constructed `ConceptualRelation`.
 	 *
 	 * @example
 	 * const rel = builder.build();
 	 */
-	build(): SenseRelation {
+	build(): ConceptualRelation {
 		return { ...this.data };
 	}
 }
