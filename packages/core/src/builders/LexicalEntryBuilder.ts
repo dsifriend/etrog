@@ -2,6 +2,7 @@ import type { Component } from "../decomp/index.js";
 import { langString } from "../langstring.js";
 import type { LexInfoPoS } from "../lexinfo/index.js";
 import type { Form, LexicalEntry, LexicalSense } from "../ontolex/index.js";
+import type { SyntacticFrame } from "../synsem/index.js";
 import type { LanguageTag, URI } from "../types/index.js";
 
 /**
@@ -222,6 +223,23 @@ export class LexicalEntryBuilder {
 		this.data["rdfs:label"] ??= [];
 		const labels = this.data["rdfs:label"];
 		labels.push(langString(value, lang));
+		return this;
+	}
+
+	/**
+	 * Adds a syntactic frame (idempotent by `@id`).
+	 * @param frame - The `SyntacticFrame` to add.
+	 * @returns `this` for chaining.
+	 *
+	 * @example
+	 * builder.addSynBehavior(frame)
+	 */
+	addSynBehavior(frame: SyntacticFrame): this {
+		this.data["synsem:synBehavior"] ??= [];
+		const synBehaviors = this.data["synsem:synBehavior"];
+		if (!synBehaviors.some((f) => f["@id"] === frame["@id"])) {
+			synBehaviors.push(frame);
+		}
 		return this;
 	}
 

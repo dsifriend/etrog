@@ -64,6 +64,12 @@ export interface LexicalSense {
 	"skos:definition"?: LangString[];
 	"lexinfo:register"?: LexInfoRegister[];
 	"lexicog:usageExample"?: UsageExample[];
+	/** Evaluable constraint on sense usage. */
+	"synsem:condition"?: LangString[];
+	/** Constraint on property's first argument type. */
+	"synsem:propertyDomain"?: URI;
+	/** Constraint on property's second argument type. */
+	"synsem:propertyRange"?: URI;
 	/** Reified sense relations. */
 	"vartrans:senseRel"?: SenseRelation[];
 	/** Shortcut property for direct sense-to-sense relations (alternative to reification). */

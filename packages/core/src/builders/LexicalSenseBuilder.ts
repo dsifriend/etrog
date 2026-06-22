@@ -225,6 +225,48 @@ export class LexicalSenseBuilder {
 	}
 
 	/**
+	 * Adds a condition (constraint on sense usage).
+	 * @param value - The condition text.
+	 * @param lang - The BCP 47 language tag.
+	 * @returns `this` for chaining.
+	 *
+	 * @example
+	 * builder.addCondition("only when subject is animate", "en" as LanguageTag)
+	 */
+	addCondition(value: string, lang: LanguageTag): this {
+		this.data["synsem:condition"] ??= [];
+		const conditions = this.data["synsem:condition"];
+		conditions.push(langString(value, lang));
+		return this;
+	}
+
+	/**
+	 * Sets the constraint on the property's first argument type.
+	 * @param uri - URI of the domain class.
+	 * @returns `this` for chaining.
+	 *
+	 * @example
+	 * builder.setPropertyDomain("http://example.org/ontology#Agent" as URI)
+	 */
+	setPropertyDomain(uri: URI): this {
+		this.data["synsem:propertyDomain"] = uri;
+		return this;
+	}
+
+	/**
+	 * Sets the constraint on the property's second argument type.
+	 * @param uri - URI of the range class.
+	 * @returns `this` for chaining.
+	 *
+	 * @example
+	 * builder.setPropertyRange("http://example.org/ontology#Location" as URI)
+	 */
+	setPropertyRange(uri: URI): this {
+		this.data["synsem:propertyRange"] = uri;
+		return this;
+	}
+
+	/**
 	 * Returns the built `LexicalSense` plain object.
 	 * @returns The constructed `LexicalSense`.
 	 *

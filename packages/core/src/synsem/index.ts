@@ -1,4 +1,4 @@
-import type { URI } from "../types/index.js";
+import type { LangString, URI } from "../types/index.js";
 
 /**
  * A syntactic argument slot within a `SyntacticFrame`.
@@ -8,6 +8,10 @@ export interface SyntacticArgument {
 	"@type": "synsem:SyntacticArgument" | URI;
 	/** The class or property this argument must satisfy. */
 	"synsem:isA"?: URI;
+	/** Case marker, preposition, or particle associated with this argument. */
+	"synsem:marker"?: LangString[];
+	/** Boolean indicating if this argument is optional. */
+	"synsem:optional"?: boolean;
 }
 
 /**
@@ -20,6 +24,10 @@ export interface OntoMap {
 	"synsem:subjOfProp"?: URI;
 	/** The object of the mapped property. */
 	"synsem:objOfProp"?: URI;
+	/** Links OntoMap to corresponding lexical sense. */
+	"synsem:ontoMapping"?: URI;
+	/** For complex multi-predicate mappings. */
+	"synsem:submap"?: OntoMap[];
 }
 
 /**

@@ -11,6 +11,14 @@ export { LexicalizationSetBuilder } from "./builders/LexicalizationSetBuilder.js
 export { LexicalLinksetBuilder } from "./builders/LexicalLinksetBuilder.js";
 export { LexicalSenseBuilder } from "./builders/LexicalSenseBuilder.js";
 export { LexiconBuilder } from "./builders/LexiconBuilder.js";
+export { EntryBuilder } from "./builders/lexicog/EntryBuilder.js";
+export { FormRestrictionBuilder } from "./builders/lexicog/FormRestrictionBuilder.js";
+export { LexicographicComponentBuilder } from "./builders/lexicog/LexicographicComponentBuilder.js";
+export { LexicographicResourceBuilder } from "./builders/lexicog/LexicographicResourceBuilder.js";
+export { UsageExampleBuilder } from "./builders/lexicog/UsageExampleBuilder.js";
+export { OntoMapBuilder } from "./builders/synsem/OntoMapBuilder.js";
+export { SyntacticArgumentBuilder } from "./builders/synsem/SyntacticArgumentBuilder.js";
+export { SyntacticFrameBuilder } from "./builders/synsem/SyntacticFrameBuilder.js";
 export { ConceptualRelationBuilder } from "./builders/vartrans/ConceptualRelationBuilder.js";
 export { LexicalRelationBuilder } from "./builders/vartrans/LexicalRelationBuilder.js";
 export { SenseRelationBuilder } from "./builders/vartrans/SenseRelationBuilder.js";

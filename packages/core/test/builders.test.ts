@@ -9,6 +9,14 @@ import { LexicalizationSetBuilder } from "../src/builders/LexicalizationSetBuild
 import { LexicalLinksetBuilder } from "../src/builders/LexicalLinksetBuilder.js";
 import { LexicalSenseBuilder } from "../src/builders/LexicalSenseBuilder.js";
 import { LexiconBuilder } from "../src/builders/LexiconBuilder.js";
+import { EntryBuilder } from "../src/builders/lexicog/EntryBuilder.js";
+import { FormRestrictionBuilder } from "../src/builders/lexicog/FormRestrictionBuilder.js";
+import { LexicographicComponentBuilder } from "../src/builders/lexicog/LexicographicComponentBuilder.js";
+import { LexicographicResourceBuilder } from "../src/builders/lexicog/LexicographicResourceBuilder.js";
+import { UsageExampleBuilder } from "../src/builders/lexicog/UsageExampleBuilder.js";
+import { OntoMapBuilder } from "../src/builders/synsem/OntoMapBuilder.js";
+import { SyntacticArgumentBuilder } from "../src/builders/synsem/SyntacticArgumentBuilder.js";
+import { SyntacticFrameBuilder } from "../src/builders/synsem/SyntacticFrameBuilder.js";
 import { ConceptualRelationBuilder } from "../src/builders/vartrans/ConceptualRelationBuilder.js";
 import { LexicalRelationBuilder } from "../src/builders/vartrans/LexicalRelationBuilder.js";
 import { SenseRelationBuilder } from "../src/builders/vartrans/SenseRelationBuilder.js";
@@ -42,6 +50,14 @@ const componentId = "urn:uuid:component-1" as URI;
 const lexRelId = "urn:uuid:lexrel-1" as URI;
 const termRelId = "urn:uuid:termrel-1" as URI;
 const conceptRelId = "urn:uuid:conceptrel-1" as URI;
+const argId = "urn:uuid:arg-1" as URI;
+const frameId = "urn:uuid:frame-1" as URI;
+const mapId = "urn:uuid:map-1" as URI;
+const exampleId = "urn:uuid:example-1" as URI;
+const restrictionId = "urn:uuid:restriction-1" as URI;
+const lexEntryId = "urn:uuid:lexentry-1" as URI;
+const lexCompId = "urn:uuid:lexcomp-1" as URI;
+const lexResId = "urn:uuid:lexres-1" as URI;
 
 describe("FormBuilder", () => {
 	test("builds a minimal Form", () => {
@@ -640,5 +656,233 @@ describe("ConceptualRelationBuilder", () => {
 			.addRelates(resource)
 			.build();
 		expect(rel["vartrans:relates"]).toEqual([resource]);
+	});
+});
+
+describe("SyntacticArgumentBuilder", () => {
+	test("builds a minimal SyntacticArgument", () => {
+		const arg = new SyntacticArgumentBuilder(argId).build();
+		expect(arg).toEqual({
+			"@id": argId,
+			"@type": "synsem:SyntacticArgument",
+		});
+	});
+
+	test("setIsA sets the class or property", () => {
+		const isA = "http://example.org/ontology#Agent" as URI;
+		const arg = new SyntacticArgumentBuilder(argId).setIsA(isA).build();
+		expect(arg["synsem:isA"]).toBe(isA);
+	});
+
+	test("addMarker appends to synsem:marker", () => {
+		const arg = new SyntacticArgumentBuilder(argId)
+			.addMarker("by", en)
+			.addMarker("avec", "fr" as LanguageTag)
+			.build();
+		expect(arg["synsem:marker"]).toEqual([
+			{ "@value": "by", "@language": "en" as LanguageTag },
+			{ "@value": "avec", "@language": "fr" as LanguageTag },
+		]);
+	});
+
+	test("setOptional sets the optional flag", () => {
+		const arg = new SyntacticArgumentBuilder(argId).setOptional(true).build();
+		expect(arg["synsem:optional"]).toBe(true);
+	});
+});
+
+describe("OntoMapBuilder", () => {
+	test("builds a minimal OntoMap", () => {
+		const map = new OntoMapBuilder(mapId).build();
+		expect(map).toEqual({
+			"@id": mapId,
+			"@type": "synsem:OntoMap",
+		});
+	});
+
+	test("setSubjOfProp and setObjOfProp are fluent", () => {
+		const subj = "http://example.org/ontology#hasOwner" as URI;
+		const obj = "http://example.org/ontology#Owner" as URI;
+		const map = new OntoMapBuilder(mapId)
+			.setSubjOfProp(subj)
+			.setObjOfProp(obj)
+			.build();
+		expect(map["synsem:subjOfProp"]).toBe(subj);
+		expect(map["synsem:objOfProp"]).toBe(obj);
+	});
+
+	test("setOntoMapping sets the ontoMapping link", () => {
+		const sense = "urn:uuid:sense-a" as URI;
+		const map = new OntoMapBuilder(mapId).setOntoMapping(sense).build();
+		expect(map["synsem:ontoMapping"]).toBe(sense);
+	});
+
+	test("addSubmap is idempotent by @id", () => {
+		const submap = new OntoMapBuilder("urn:uuid:submap-1" as URI).build();
+		const map = new OntoMapBuilder(mapId)
+			.addSubmap(submap)
+			.addSubmap(submap)
+			.build();
+		expect(map["synsem:submap"]).toHaveLength(1);
+	});
+});
+
+describe("SyntacticFrameBuilder", () => {
+	test("builds a minimal SyntacticFrame", () => {
+		const frame = new SyntacticFrameBuilder(frameId).build();
+		expect(frame).toEqual({
+			"@id": frameId,
+			"@type": "synsem:SyntacticFrame",
+		});
+	});
+
+	test("addSynArg is idempotent by @id", () => {
+		const arg = new SyntacticArgumentBuilder(argId).build();
+		const frame = new SyntacticFrameBuilder(frameId)
+			.addSynArg(arg)
+			.addSynArg(arg)
+			.build();
+		expect(frame["synsem:synArg"]).toHaveLength(1);
+	});
+
+	test("addOntoCorrespondence is idempotent by @id", () => {
+		const map = new OntoMapBuilder(mapId).build();
+		const frame = new SyntacticFrameBuilder(frameId)
+			.addOntoCorrespondence(map)
+			.addOntoCorrespondence(map)
+			.build();
+		expect(frame["synsem:ontoCorrespondence"]).toHaveLength(1);
+	});
+});
+
+describe("FormRestrictionBuilder", () => {
+	test("builds a minimal FormRestriction", () => {
+		const restriction = new FormRestrictionBuilder(restrictionId).build();
+		expect(restriction).toEqual({
+			"@id": restrictionId,
+			"@type": "lexicog:FormRestriction",
+		});
+	});
+
+	test("addWrittenRep appends to ontolex:writtenRep", () => {
+		const restriction = new FormRestrictionBuilder(restrictionId)
+			.addWrittenRep("houses", en)
+			.build();
+		expect(restriction["ontolex:writtenRep"]).toEqual([
+			{ "@value": "houses", "@language": "en" as LanguageTag },
+		]);
+	});
+});
+
+describe("UsageExampleBuilder", () => {
+	test("builds a minimal UsageExample with value", () => {
+		const example = new UsageExampleBuilder(exampleId)
+			.addValue("The house is on fire.", en)
+			.build();
+		expect(example).toEqual({
+			"@id": exampleId,
+			"@type": "lexicog:UsageExample",
+			"rdf:value": [{ "@value": "The house is on fire.", "@language": en }],
+		});
+	});
+
+	test("setSource sets dcterms:source", () => {
+		const source = "https://example.org/corpus/1" as URI;
+		const example = new UsageExampleBuilder(exampleId)
+			.addValue("Example text", en)
+			.setSource(source)
+			.build();
+		expect(example["dcterms:source"]).toBe(source);
+	});
+
+	test("addRestriction is idempotent by @id", () => {
+		const restriction = new FormRestrictionBuilder(restrictionId).build();
+		const example = new UsageExampleBuilder(exampleId)
+			.addValue("Example", en)
+			.addRestriction(restriction)
+			.addRestriction(restriction)
+			.build();
+		expect(example["lexicog:restrictedTo"]).toHaveLength(1);
+	});
+});
+
+describe("LexicographicComponentBuilder", () => {
+	test("builds a minimal LexicographicComponent", () => {
+		const component = new LexicographicComponentBuilder(lexCompId).build();
+		expect(component).toEqual({
+			"@id": lexCompId,
+			"@type": "lexicog:LexicographicComponent",
+		});
+	});
+
+	test("addSubComponent is idempotent by @id", () => {
+		const subcomp = new LexicographicComponentBuilder(
+			"urn:uuid:subcomp-1" as URI,
+		).build();
+		const component = new LexicographicComponentBuilder(lexCompId)
+			.addSubComponent(subcomp)
+			.addSubComponent(subcomp)
+			.build();
+		expect(component["lexicog:subComponent"]).toHaveLength(1);
+	});
+});
+
+describe("EntryBuilder", () => {
+	test("builds a minimal Entry", () => {
+		const entry = new EntryBuilder(lexEntryId).build();
+		expect(entry).toEqual({
+			"@id": lexEntryId,
+			"@type": "lexicog:Entry",
+		});
+	});
+
+	test("setDescribes sets the lexicog:describes link", () => {
+		const describes = "urn:uuid:lexical-entry-a" as URI;
+		const entry = new EntryBuilder(lexEntryId).setDescribes(describes).build();
+		expect(entry["lexicog:describes"]).toBe(describes);
+	});
+
+	test("addSubComponent is idempotent by @id", () => {
+		const component = new LexicographicComponentBuilder(lexCompId).build();
+		const entry = new EntryBuilder(lexEntryId)
+			.addSubComponent(component)
+			.addSubComponent(component)
+			.build();
+		expect(entry["lexicog:subComponent"]).toHaveLength(1);
+	});
+});
+
+describe("LexicographicResourceBuilder", () => {
+	test("builds a minimal LexicographicResource", () => {
+		const resource = new LexicographicResourceBuilder(lexResId).build();
+		expect(resource).toEqual({
+			"@id": lexResId,
+			"@type": "lexicog:LexicographicResource",
+		});
+	});
+
+	test("addTitle appends to dcterms:title", () => {
+		const resource = new LexicographicResourceBuilder(lexResId)
+			.addTitle("Oxford English Dictionary", en)
+			.build();
+		expect(resource["dcterms:title"]).toEqual([
+			{ "@value": "Oxford English Dictionary", "@language": en },
+		]);
+	});
+
+	test("setLanguage sets dcterms:language", () => {
+		const resource = new LexicographicResourceBuilder(lexResId)
+			.setLanguage(en)
+			.build();
+		expect(resource["dcterms:language"]).toBe(en);
+	});
+
+	test("addEntry is idempotent by @id", () => {
+		const entry = new EntryBuilder(lexEntryId).build();
+		const resource = new LexicographicResourceBuilder(lexResId)
+			.addEntry(entry)
+			.addEntry(entry)
+			.build();
+		expect(resource["lexicog:entry"]).toHaveLength(1);
 	});
 });
