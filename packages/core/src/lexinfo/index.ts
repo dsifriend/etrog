@@ -321,6 +321,8 @@ export const LexInfoGender = {
 	feminine: `${NS}feminine`,
 	neuter: `${NS}neuter`,
 	common: `${NS}commonGender`,
+	/** Catch-all for gender values not covered by the enumerated individuals. */
+	otherGender: `${NS}otherGender`,
 } as const;
 export type LexInfoGender = (typeof LexInfoGender)[keyof typeof LexInfoGender];
 
@@ -333,6 +335,18 @@ export const LexInfoNumber = {
 	singular: `${NS}singular`,
 	plural: `${NS}plural`,
 	dual: `${NS}dual`,
+	/** Number for a group treated as a single entity. */
+	collective: `${NS}collective`,
+	/** Uncountable / mass noun number. */
+	massNoun: `${NS}massNoun`,
+	/** Small-number plural (three to a handful, used in some languages). */
+	paucal: `${NS}paucal`,
+	/** Number for exactly four referents (rare, e.g. Sursurunga). */
+	quadrial: `${NS}quadrial`,
+	/** Number for exactly three referents. */
+	trial: `${NS}trial`,
+	/** Catch-all for number values not covered by the enumerated individuals. */
+	otherNumber: `${NS}otherNumber`,
 } as const;
 export type LexInfoNumber = (typeof LexInfoNumber)[keyof typeof LexInfoNumber];
 
@@ -345,6 +359,10 @@ export const LexInfoTense = {
 	present: `${NS}presentTense`,
 	past: `${NS}pastTense`,
 	future: `${NS}futureTense`,
+	/** Past tense indicating an ongoing or incomplete action (Latin, Spanish, etc.). */
+	imperfect: `${NS}imperfect`,
+	/** Simple past / preterite (completed action in the past). */
+	preterite: `${NS}preterite`,
 } as const;
 export type LexInfoTense = (typeof LexInfoTense)[keyof typeof LexInfoTense];
 
@@ -390,8 +408,9 @@ export type LexInfoPerson = (typeof LexInfoPerson)[keyof typeof LexInfoPerson];
 // Grammatical case
 // ─────────────────────────────────────────────────────────────────────────────
 
-/** Grammatical case values from the LexInfo ontology. */
+/** Grammatical case values from the LexInfo ontology (all 30 case individuals). */
 export const LexInfoCase = {
+	// ── Core cases ─────────────────────────────────────────────────────────
 	nominative: `${NS}nominativeCase`,
 	accusative: `${NS}accusativeCase`,
 	genitive: `${NS}genitiveCase`,
@@ -400,6 +419,57 @@ export const LexInfoCase = {
 	instrumental: `${NS}instrumentalCase`,
 	locative: `${NS}locativeCase`,
 	vocative: `${NS}vocativeCase`,
+	// ── Extended cases ─────────────────────────────────────────────────────
+	/** "Without X" — Finnish, Estonian. */
+	abessive: `${NS}abessiveCase`,
+	/** Ergative-absolutive languages (Basque, etc.) — marks intransitive subject / transitive object. */
+	absolutive: `${NS}absolutiveCase`,
+	/** "At/on X" — Finnish superlocal static case. */
+	adessive: `${NS}adessiveCase`,
+	/** "Towards X" — directional case. */
+	aditive: `${NS}aditiveCase`,
+	/** "To X" — Finnish illative-like directional case. */
+	allative: `${NS}allativeCase`,
+	/** "For the benefit of X" — benefactive semantic role. */
+	benefactive: `${NS}benefactiveCase`,
+	/** Causal relation — "because of X". */
+	causative: `${NS}causativeCase`,
+	/** "Together with X" — comitative/associative case. */
+	comitative: `${NS}comitativeCase`,
+	/** "From off X" — Hungarian delative (surface separation). */
+	delative: `${NS}delativeCase`,
+	/** Unmarked or default case in some nominative-accusative languages. */
+	direct: `${NS}directCase`,
+	/** "Out of X" — Finnish elative (interior separation). */
+	elative: `${NS}elativeCase`,
+	/** "Like X, as X" — equative/comparative case. */
+	equative: `${NS}equativeCase`,
+	/** Marks transitive subject in ergative-absolutive languages. */
+	ergative: `${NS}ergativeCase`,
+	/** "As X" (temporary state) — Finnish essive. */
+	essive: `${NS}essiveCase`,
+	/** "Into X" — Finnish illative (interior approach). */
+	illative: `${NS}illativeCase`,
+	/** "In/inside X" — Finnish inessive (interior static). */
+	inessive: `${NS}inessiveCase`,
+	/** Motion towards — general lative. */
+	lative: `${NS}lativeCase`,
+	/** Non-nominative oblique case (Hindi-Urdu, etc.). */
+	oblique: `${NS}obliqueCase`,
+	/** Partial quantity — Finnish partitive. */
+	partitive: `${NS}partitiveCase`,
+	/** "Via/through X" — prolative/vialis case. */
+	prolative: `${NS}prolativeCase`,
+	/** "In company with X" — sociative case. */
+	sociative: `${NS}sociativeCase`,
+	/** "Onto X" — Hungarian sublative (surface approach). */
+	sublative: `${NS}sublativeCase`,
+	/** "On top of X" — Hungarian superessive (surface static). */
+	superessive: `${NS}superessiveCase`,
+	/** "Up to X" — Estonian terminative. */
+	terminative: `${NS}terminativeCase`,
+	/** "Becoming X" — Finnish translative (change of state). */
+	translative: `${NS}translativeCase`,
 } as const;
 export type LexInfoCase = (typeof LexInfoCase)[keyof typeof LexInfoCase];
 
@@ -424,6 +494,12 @@ export const LexInfoAspect = {
 	perfective: `${NS}perfectiveAspect`,
 	imperfective: `${NS}imperfectiveAspect`,
 	progressive: `${NS}progressiveAspect`,
+	/** Aspect indicating the cessation of an action. */
+	cessative: `${NS}cessativeAspect`,
+	/** Aspect indicating the beginning of a state or action. */
+	inchoative: `${NS}inchoativeAspect`,
+	/** Aspect indicating an action that is begun but not completed. */
+	unaccomplished: `${NS}unaccomplishedAspect`,
 } as const;
 export type LexInfoAspect = (typeof LexInfoAspect)[keyof typeof LexInfoAspect];
 
@@ -435,6 +511,10 @@ export type LexInfoAspect = (typeof LexInfoAspect)[keyof typeof LexInfoAspect];
 export const LexInfoDefiniteness = {
 	definite: `${NS}definiteness-definite`,
 	indefinite: `${NS}definiteness-indefinite`,
+	/** Definite article realized in full form. */
+	fullArticle: `${NS}fullArticle`,
+	/** Definite article realized in reduced/short form (e.g. enclitic). */
+	shortArticle: `${NS}shortArticle`,
 } as const;
 export type LexInfoDefiniteness =
 	(typeof LexInfoDefiniteness)[keyof typeof LexInfoDefiniteness];
@@ -465,3 +545,489 @@ export const LexInfoRegister = {
 } as const;
 export type LexInfoRegister =
 	(typeof LexInfoRegister)[keyof typeof LexInfoRegister];
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Verb form mood
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Verb-form mood values from the LexInfo ontology (`lexinfo:VerbFormMood`).
+ *
+ * Distinct from `LexInfoMood` (which covers inflected mood features);
+ * `VerbFormMood` classifies the non-finite or quasi-finite form of a verb.
+ *
+ * @example
+ * ```ts
+ * import { LexInfoVerbFormMood } from "@etrog/core";
+ * builder.set("lexinfo:verbFormMood", LexInfoVerbFormMood.infinitive);
+ * ```
+ */
+export const LexInfoVerbFormMood = {
+	conditional: `${NS}conditional`,
+	/** A non-finite verb form functioning as a verbal adjective (e.g. 'written', 'running'). */
+	gerundive: `${NS}gerundive`,
+	imperative: `${NS}imperative`,
+	indicative: `${NS}indicative`,
+	/** The base, non-finite verb form (e.g. 'to run'). */
+	infinitive: `${NS}infinitive`,
+	/** A non-finite verb form used as a verbal adjective or noun. */
+	participle: `${NS}participle`,
+	subjunctive: `${NS}subjunctive`,
+} as const;
+export type LexInfoVerbFormMood =
+	(typeof LexInfoVerbFormMood)[keyof typeof LexInfoVerbFormMood];
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Animacy
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Animacy values from the LexInfo ontology (`lexinfo:Animacy`).
+ *
+ * @example
+ * ```ts
+ * import { LexInfoAnimacy } from "@etrog/core";
+ * builder.set("lexinfo:animacy", LexInfoAnimacy.animate);
+ * ```
+ */
+export const LexInfoAnimacy = {
+	/** Refers to living entities. */
+	animate: `${NS}animate`,
+	/** Refers to non-living entities. */
+	inanimate: `${NS}inanimate`,
+	/** Catch-all for animacy values not covered by the enumerated individuals. */
+	otherAnimacy: `${NS}otherAnimacy`,
+} as const;
+export type LexInfoAnimacy =
+	(typeof LexInfoAnimacy)[keyof typeof LexInfoAnimacy];
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Cliticness
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Cliticness values from the LexInfo ontology (`lexinfo:Cliticness`).
+ *
+ * @example
+ * ```ts
+ * import { LexInfoCliticness } from "@etrog/core";
+ * builder.set("lexinfo:cliticness", LexInfoCliticness.bound);
+ * ```
+ */
+export const LexInfoCliticness = {
+	/** The form is a bound clitic (must attach to a host). */
+	bound: `${NS}bound`,
+	/** The form is not a clitic. */
+	no: `${NS}cliticness-no`,
+	/** The form is a clitic. */
+	yes: `${NS}cliticness-yes`,
+} as const;
+export type LexInfoCliticness =
+	(typeof LexInfoCliticness)[keyof typeof LexInfoCliticness];
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Finiteness
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Finiteness values from the LexInfo ontology (`lexinfo:Finiteness`).
+ *
+ * @example
+ * ```ts
+ * import { LexInfoFiniteness } from "@etrog/core";
+ * builder.set("lexinfo:finiteness", LexInfoFiniteness.finite);
+ * ```
+ */
+export const LexInfoFiniteness = {
+	/** The verb form is finite (marked for tense, agreement, mood). */
+	finite: `${NS}finite`,
+	/** The verb form is non-finite (infinitive, participle, gerund, etc.). */
+	nonFinite: `${NS}nonFinite`,
+} as const;
+export type LexInfoFiniteness =
+	(typeof LexInfoFiniteness)[keyof typeof LexInfoFiniteness];
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Negative
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Negative values from the LexInfo ontology (`lexinfo:Negative`).
+ *
+ * @example
+ * ```ts
+ * import { LexInfoNegative } from "@etrog/core";
+ * builder.set("lexinfo:negative", LexInfoNegative.yes);
+ * ```
+ */
+export const LexInfoNegative = {
+	/** The form carries negative polarity. */
+	yes: `${NS}negative-yes`,
+	/** The form does not carry negative polarity. */
+	no: `${NS}negative-no`,
+} as const;
+export type LexInfoNegative =
+	(typeof LexInfoNegative)[keyof typeof LexInfoNegative];
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Normative authorization
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Normative authorization values from the LexInfo ontology
+ * (`lexinfo:normativeAuthorization`).
+ *
+ * Classifies the normative standing of a term according to terminological
+ * standards (ISO 704, ISO 1087, etc.).
+ *
+ * @example
+ * ```ts
+ * import { LexInfoNormativeAuthorization } from "@etrog/core";
+ * builder.set("lexinfo:normativeAuthorization", LexInfoNormativeAuthorization.preferredTerm);
+ * ```
+ */
+export const LexInfoNormativeAuthorization = {
+	/** Synonym acceptable for a preferred term. */
+	admittedTerm: `${NS}admittedTerm`,
+	/** Term rated as undesired; use should be discouraged. */
+	deprecatedTerm: `${NS}deprecatedTerm`,
+	/** Legally defined term. */
+	legalTerm: `${NS}legalTerm`,
+	/** Primary term chosen to represent a concept. */
+	preferredTerm: `${NS}preferredTerm`,
+	/** Term defined or constrained by law or regulation. */
+	regulatedTerm: `${NS}regulatedTerm`,
+	/** Term standardized by a recognized standards body. */
+	standardizedTerm: `${NS}standardizedTerm`,
+	/** Term that is no longer preferred or admitted. */
+	supersededTerm: `${NS}supersededTerm`,
+} as const;
+export type LexInfoNormativeAuthorization =
+	(typeof LexInfoNormativeAuthorization)[keyof typeof LexInfoNormativeAuthorization];
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Dating / temporal qualifiers
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Temporal usage qualifier values from the LexInfo ontology
+ * (`lexinfo:dating`).
+ *
+ * Marks whether a lexical form is considered archaic, obsolete, or merely
+ * outdated in contemporary use.
+ *
+ * @example
+ * ```ts
+ * import { LexInfoDating } from "@etrog/core";
+ * builder.set("lexinfo:dating", LexInfoDating.archaicForm);
+ * ```
+ */
+export const LexInfoDating = {
+	/** No longer in ordinary use but retained for historical or stylistic effect. */
+	archaicForm: `${NS}archaicForm`,
+	/** No longer in common use. */
+	obsoleteForm: `${NS}obsoleteForm`,
+	/** Fallen from fashion but still recognizable to speakers. */
+	outdatedForm: `${NS}outdatedForm`,
+} as const;
+export type LexInfoDating = (typeof LexInfoDating)[keyof typeof LexInfoDating];
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Frequency
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Frequency values from the LexInfo ontology (`lexinfo:frequency`).
+ *
+ * @example
+ * ```ts
+ * import { LexInfoFrequency } from "@etrog/core";
+ * builder.set("lexinfo:frequency", LexInfoFrequency.commonlyUsed);
+ * ```
+ */
+export const LexInfoFrequency = {
+	/** The term appears frequently in the relevant corpus or language. */
+	commonlyUsed: `${NS}commonlyUsed`,
+	/** The term does not appear frequently. */
+	infrequentlyUsed: `${NS}infrequentlyUsed`,
+	/** The term is almost never encountered. */
+	rarelyUsed: `${NS}rarelyUsed`,
+} as const;
+export type LexInfoFrequency =
+	(typeof LexInfoFrequency)[keyof typeof LexInfoFrequency];
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Sense-level lexical relations
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Sense-level lexical relation property URIs from the LexInfo ontology.
+ *
+ * These are object properties whose domain and range are
+ * `ontolex:LexicalSense`. Use the value as the JSON-LD property key when
+ * linking two sense nodes.
+ *
+ * @example
+ * ```ts
+ * import { LexInfoSenseRelation } from "@etrog/core";
+ * senseBuilder.set(LexInfoSenseRelation.antonym, otherSenseId);
+ * ```
+ */
+export const LexInfoSenseRelation = {
+	/** Opposite meaning. */
+	antonym: `${NS}antonym`,
+	/** Same (or near-same) meaning — symmetric. */
+	synonym: `${NS}synonym`,
+	/** Narrower meaning (hyponym ← hypernym). */
+	hyponym: `${NS}hyponym`,
+	/** Similar but not exactly the same — symmetric. */
+	approximate: `${NS}approximate`,
+	/** Synonym with minor semantic differences — symmetric. */
+	approximateSynonym: `${NS}approximateSynonym`,
+	/** Non-hierarchical thematic connection — symmetric. */
+	associativeRelation: `${NS}associativeRelation`,
+	/** Causative relationship between concepts. */
+	causallyRelatedConcept: `${NS}causallyRelatedConcept`,
+	/** Frequently co-occurring terms (collocate). */
+	collocation: `${NS}collocation`,
+	/** Share the same superordinate and subdivision criterion. */
+	coordinateConcept: `${NS}coordinateConcept`,
+	/** Completely equal in every detail — symmetric. */
+	exact: `${NS}exact`,
+	/** Element-of relationship (meronymy by membership). */
+	memberMeronym: `${NS}memberMeronym`,
+	/** Part-of relationship (meronymy by part). */
+	meronymTerm: `${NS}meronymTerm`,
+	/** Component-of relationship. */
+	partMeronym: `${NS}partMeronym`,
+	/** Whole-part relationship (holonymy). */
+	partitiveRelation: `${NS}partitiveRelation`,
+	/** Adjectival form meaning "of or pertaining to" the related concept. */
+	pertainsTo: `${NS}pertainsTo`,
+	/** Very similar with some differences (near-synonym). */
+	quasiEquivalent: `${NS}quasiEquivalent`,
+	/** "Composed of" relationship (substance holonymy). */
+	substanceHolonym: `${NS}substanceHolonym`,
+	/** Interlingual synonymy — translation equivalent. */
+	translation: `${NS}translation`,
+} as const;
+export type LexInfoSenseRelation =
+	(typeof LexInfoSenseRelation)[keyof typeof LexInfoSenseRelation];
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Entry-level lexical relations
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Entry-level lexical relation property URIs from the LexInfo ontology.
+ *
+ * These are object properties whose domain and range are
+ * `ontolex:LexicalEntry`. Use the value as the JSON-LD property key when
+ * linking two entry nodes.
+ *
+ * @example
+ * ```ts
+ * import { LexInfoEntryRelation } from "@etrog/core";
+ * entryBuilder.set(LexInfoEntryRelation.abbreviationFor, fullFormEntryId);
+ * ```
+ */
+export const LexInfoEntryRelation = {
+	/** Links an abbreviated form to its expanded lexical entry. */
+	abbreviationFor: `${NS}abbreviationFor`,
+	/** Links an acronym to its expanded lexical entry. */
+	acronymFor: `${NS}acronymFor`,
+	/** Links a clipped/truncated term to its full form entry. */
+	clippedTermFor: `${NS}clippedTermFor`,
+	/** The morpheme or root with etymological significance. */
+	etymologicalRoot: `${NS}etymologicalRoot`,
+	/** Inverse of abbreviation/acronym/initialism relations. */
+	fullFormFor: `${NS}fullFormFor`,
+	/** Regional or dialectal variant of a lexical entry. */
+	geographicalVariant: `${NS}geographicalVariant`,
+	/** Same spelling but different meaning or origin. */
+	homograph: `${NS}homograph`,
+	/** Same pronunciation — covers both homographs and homophones. */
+	homonym: `${NS}homonym`,
+	/** Same pronunciation but different spelling. */
+	homophone: `${NS}homophone`,
+	/** Links an initialism to its expanded lexical entry. */
+	initialismFor: `${NS}initialismFor`,
+	/** Links a participle form to the verb it is derived from. */
+	participlFormOf: `${NS}participleFormOf`,
+	/** The base or root of a word. */
+	root: `${NS}root`,
+	/** Links a short form to its full lexical entry. */
+	shortFormFor: `${NS}shortFormFor`,
+} as const;
+export type LexInfoEntryRelation =
+	(typeof LexInfoEntryRelation)[keyof typeof LexInfoEntryRelation];
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Syntactic frame classes
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Syntactic frame class URIs from the LexInfo ontology.
+ *
+ * Use as the value of `@type` on a `synsem:SyntacticFrame` node. LexInfo
+ * defines 80+ frame classes; this enum covers the high- and medium-priority
+ * ones identified for Etrog.
+ *
+ * @example
+ * ```ts
+ * import { LexInfoFrame } from "@etrog/core";
+ * frameBuilder.setType(LexInfoFrame.TransitiveFrame);
+ * ```
+ */
+export const LexInfoFrame = {
+	// ── High priority ──────────────────────────────────────────────────────
+	/** Basic intransitive verb frame (e.g. "he left"). */
+	IntransitiveFrame: `${NS}IntransitiveFrame`,
+	/** Transitive verb frame — takes a direct object (e.g. "the dog bit the man"). */
+	TransitiveFrame: `${NS}TransitiveFrame`,
+	/** Ditransitive verb frame — takes two objects (e.g. "I gave him it"). */
+	DitransitiveFrame: `${NS}DitransitiveFrame`,
+	/** Base noun frame. */
+	NounFrame: `${NS}NounFrame`,
+	/** Base adjective frame. */
+	AdjectiveFrame: `${NS}AdjectiveFrame`,
+	// ── Medium priority ────────────────────────────────────────────────────
+	/** Attributive adjective use (e.g. "the red ball"). */
+	AdjectiveAttributiveFrame: `${NS}AdjectiveAttributiveFrame`,
+	/** Predicative adjective use (e.g. "he is happy"). */
+	AdjectivePredicativeFrame: `${NS}AdjectivePredicativeFrame`,
+	/** Intransitive verb + prepositional phrase (e.g. "he took care of her"). */
+	IntransitivePPFrame: `${NS}IntransitivePPFrame`,
+	/** Transitive verb + prepositional phrase (e.g. "she added salt to the stew"). */
+	TransitivePPFrame: `${NS}TransitivePPFrame`,
+	/** Reflexive verb frame. */
+	ReflexiveFrame: `${NS}ReflexiveFrame`,
+	/** Impersonal construction frame (no canonical subject). */
+	ImpersonalFrame: `${NS}ImpersonalFrame`,
+} as const;
+export type LexInfoFrame = (typeof LexInfoFrame)[keyof typeof LexInfoFrame];
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Form-level property URIs
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Form-level property URIs from the LexInfo ontology.
+ *
+ * These object properties link an `ontolex:Form` node to inflectional
+ * feature values. Use the keys as JSON-LD property names on a form object.
+ *
+ * @example
+ * ```ts
+ * import { LexInfoFormProperty } from "@etrog/core";
+ * formBuilder.set(LexInfoFormProperty.nominativeCaseForm, formId);
+ * ```
+ */
+export const LexInfoFormProperty = {
+	// ── Case form variants (30 case-specific form properties) ──────────────
+	nominativeCaseForm: `${NS}nominativeCaseForm`,
+	accusativeCaseForm: `${NS}accusativeCaseForm`,
+	genitiveCaseForm: `${NS}genitiveCaseForm`,
+	dativeCaseForm: `${NS}dativeCaseForm`,
+	ablativeCaseForm: `${NS}ablativeCaseForm`,
+	instrumentalCaseForm: `${NS}instrumentalCaseForm`,
+	locativeCaseForm: `${NS}locativeCaseForm`,
+	vocativeCaseForm: `${NS}vocativeCaseForm`,
+	abessiveCaseForm: `${NS}abessiveCaseForm`,
+	absolutiveCaseForm: `${NS}absolutiveCaseForm`,
+	adessiveCaseForm: `${NS}adessiveCaseForm`,
+	aditiveCaseForm: `${NS}aditiveCaseForm`,
+	allativeCaseForm: `${NS}allativeCaseForm`,
+	benefactiveCaseForm: `${NS}benefactiveCaseForm`,
+	causativeCaseForm: `${NS}causativeCaseForm`,
+	comitativeCaseForm: `${NS}comitativeCaseForm`,
+	delativeCaseForm: `${NS}delativeCaseForm`,
+	directCaseForm: `${NS}directCaseForm`,
+	elativeCaseForm: `${NS}elativeCaseForm`,
+	equativeCaseForm: `${NS}equativeCaseForm`,
+	ergativeCaseForm: `${NS}ergativeCaseForm`,
+	essiveCaseForm: `${NS}essiveCaseForm`,
+	illativeCaseForm: `${NS}illativeCaseForm`,
+	inessiveCaseForm: `${NS}inessiveCaseForm`,
+	lativeCaseForm: `${NS}lativeCaseForm`,
+	obliqueCaseForm: `${NS}obliqueCaseForm`,
+	partitiveCaseForm: `${NS}partitiveCaseForm`,
+	prolativeCaseForm: `${NS}prolativeCaseForm`,
+	sociativeCaseForm: `${NS}sociativeCaseForm`,
+	sublativeCaseForm: `${NS}sublativeCaseForm`,
+	superessiveCaseForm: `${NS}superessiveCaseForm`,
+	terminativeCaseForm: `${NS}terminativeCaseForm`,
+	translativeCaseForm: `${NS}translativeCaseForm`,
+	// ── Number form variants ───────────────────────────────────────────────
+	singularNumberForm: `${NS}singularNumberForm`,
+	pluralNumberForm: `${NS}pluralNumberForm`,
+	dualNumberForm: `${NS}dualNumberForm`,
+	collectiveNumberForm: `${NS}collectiveNumberForm`,
+	paucalNumberForm: `${NS}paucalNumberForm`,
+	quadrialNumberForm: `${NS}quadrialNumberForm`,
+	trialNumberForm: `${NS}trialNumberForm`,
+	massNounNumberForm: `${NS}massNounNumberForm`,
+	// ── Tense form variants ────────────────────────────────────────────────
+	presentTenseForm: `${NS}presentTenseForm`,
+	pastTenseForm: `${NS}pastTenseForm`,
+	futureTenseForm: `${NS}futureTenseForm`,
+	imperfectTenseForm: `${NS}imperfectTenseForm`,
+	preteriteTenseForm: `${NS}preteriteTenseForm`,
+	// ── Mood form variants ─────────────────────────────────────────────────
+	indicativeMoodForm: `${NS}indicativeMoodForm`,
+	subjunctiveMoodForm: `${NS}subjunctiveMoodForm`,
+	imperativeMoodForm: `${NS}imperativeMoodForm`,
+	// ── Degree form variants ───────────────────────────────────────────────
+	positiveDegreeForm: `${NS}positiveDegreeForm`,
+	comparativeDegreeForm: `${NS}comparativeDegreeForm`,
+	superlativeDegreeForm: `${NS}superlativeDegreeForm`,
+	// ── Person form variants ───────────────────────────────────────────────
+	firstPersonForm: `${NS}firstPersonForm`,
+	secondPersonForm: `${NS}secondPersonForm`,
+	thirdPersonForm: `${NS}thirdPersonForm`,
+} as const;
+export type LexInfoFormProperty =
+	(typeof LexInfoFormProperty)[keyof typeof LexInfoFormProperty];
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Term element values
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Term element values from the LexInfo ontology (`lexinfo:termElement`).
+ *
+ * Classifies the morphological role of a sub-word element within a lexical
+ * entry (e.g. whether it is a prefix, suffix, or radical).
+ *
+ * @example
+ * ```ts
+ * import { LexInfoTermElement } from "@etrog/core";
+ * elementBuilder.set("lexinfo:termElement", LexInfoTermElement.prefix);
+ * ```
+ */
+export const LexInfoTermElement = {
+	/** Generic affix — superclass of prefix, infix, and suffix. */
+	affix: `${NS}affix`,
+	/** Root or dictionary form of the word. */
+	baseElement: `${NS}baseElement`,
+	/** Morpheme inserted within a word stem. */
+	infix: `${NS}infix`,
+	/** Morpheme encoding inflectional information (declension/conjugation). */
+	inflectionElement: `${NS}inflectionElement`,
+	/** Smallest meaningful morphological unit. */
+	morphologicalElement: `${NS}morphologicalElement`,
+	/** Optional part of a compound headword. */
+	optionalElement: `${NS}optionalElement`,
+	/** Word-initial morpheme. */
+	prefix: `${NS}prefix`,
+	/** CJKV character component (radical). */
+	radical: `${NS}radical`,
+	/** Word-final morpheme. */
+	suffix: `${NS}suffix`,
+	/** Phonological unit within a word. */
+	syllable: `${NS}syllable`,
+	/** Lexeme element that is itself a free morpheme / word. */
+	wordElement: `${NS}wordElement`,
+} as const;
+export type LexInfoTermElement =
+	(typeof LexInfoTermElement)[keyof typeof LexInfoTermElement];

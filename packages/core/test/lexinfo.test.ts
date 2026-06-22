@@ -108,8 +108,26 @@ describe("LexInfoCase", () => {
 	test("nominative resolves to nominativeCase", () => {
 		expect(LexInfoCase.nominative).toBe(`${BASE}nominativeCase`);
 	});
-	test("all 8 cases are defined", () => {
-		expect(Object.keys(LexInfoCase)).toHaveLength(8);
+	test("contains core grammatical cases", () => {
+		expect(LexInfoCase.nominative).toBe(`${BASE}nominativeCase`);
+		expect(LexInfoCase.accusative).toBe(`${BASE}accusativeCase`);
+		expect(LexInfoCase.genitive).toBe(`${BASE}genitiveCase`);
+		expect(LexInfoCase.dative).toBe(`${BASE}dativeCase`);
+		expect(LexInfoCase.ablative).toBe(`${BASE}ablativeCase`);
+		expect(LexInfoCase.instrumental).toBe(`${BASE}instrumentalCase`);
+		expect(LexInfoCase.locative).toBe(`${BASE}locativeCase`);
+		expect(LexInfoCase.vocative).toBe(`${BASE}vocativeCase`);
+	});
+	test("all exported case values are LexInfo URIs", () => {
+		for (const value of Object.values(LexInfoCase)) {
+			expect(typeof value).toBe("string");
+			expect(value.startsWith(BASE)).toBe(true);
+			expect(value.length).toBeGreaterThan(BASE.length);
+		}
+	});
+	test("all exported case values are unique", () => {
+		const values = Object.values(LexInfoCase);
+		expect(new Set(values).size).toBe(values.length);
 	});
 });
 
