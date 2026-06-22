@@ -93,10 +93,6 @@ export async function frame(doc: object, frameDoc: object): Promise<object> {
 	return (jsonld as unknown as JsonLdLib).frame(doc, frameDoc);
 }
 
-// ---------------------------------------------------------------------------
-// Internal helpers
-// ---------------------------------------------------------------------------
-
 /** Serializes an N3 Store to an N-Quads string. */
 async function storeToNQuads(store: N3.Store): Promise<string> {
 	return new Promise((resolve, reject) => {

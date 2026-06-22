@@ -1,6 +1,5 @@
-// Foundational types
+/** Public exports for @etrog/core — re-export builders, utilities, namespaces, and module interfaces. */
 
-// Builders
 export { ComponentBuilder } from "./builders/ComponentBuilder.js";
 export { ConceptSetBuilder } from "./builders/ConceptSetBuilder.js";
 export { ConceptualizationSetBuilder } from "./builders/ConceptualizationSetBuilder.js";
@@ -27,14 +26,14 @@ export { TranslationBuilder } from "./builders/vartrans/TranslationBuilder.js";
 export { TranslationSetBuilder } from "./builders/vartrans/TranslationSetBuilder.js";
 export * from "./context/index.js";
 export * from "./decomp/index.js";
-// LangString utilities
+
 export * from "./langstring.js";
 export * from "./lexicog/index.js";
 export * from "./lexinfo/index.js";
 export * from "./lime/index.js";
-// Namespaces and context
+
 export * from "./namespaces.js";
-// Module interfaces
+
 export * from "./ontolex/index.js";
 export * from "./skos/index.js";
 export * from "./synsem/index.js";

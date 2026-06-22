@@ -55,7 +55,7 @@ export const DEFAULT_CONTEXT: JsonLdContext = {
 		owl: Namespaces.owl,
 		rdf: Namespaces.rdf,
 		rdfs: Namespaces.rdfs,
-		// shorthand aliases
+
 		language: "lime:language",
 		canonicalForm: { "@id": "ontolex:canonicalForm", "@type": "@id" },
 		otherForm: { "@id": "ontolex:otherForm", "@type": "@id" },

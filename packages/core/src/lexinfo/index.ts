@@ -5,12 +5,6 @@
  * Reference: http://www.lexinfo.net/ontology/3.0/lexinfo
  */
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Part of speech — broken into named groups and merged into LexInfoPoS so
-// that the full union type remains a single flat const while each category
-// stays readable for maintainers.
-// ─────────────────────────────────────────────────────────────────────────────
-
 const NS = "http://www.lexinfo.net/ontology/3.0/lexinfo#" as const;
 
 /** Top-level part-of-speech categories. */
@@ -222,10 +216,6 @@ export const LexInfoPoS = {
 } as const;
 export type LexInfoPoS = (typeof LexInfoPoS)[keyof typeof LexInfoPoS];
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Term type
-// ─────────────────────────────────────────────────────────────────────────────
-
 /**
  * Term-type values from the LexInfo ontology v3.0.
  *
@@ -234,7 +224,7 @@ export type LexInfoPoS = (typeof LexInfoPoS)[keyof typeof LexInfoPoS];
  * is set via the `lexinfo:termType` property.
  */
 export const LexInfoTermType = {
-	// ── Abbreviated forms ──────────────────────────────────────────────────
+	/** Abbreviated forms */
 	/** Any abbreviated form (superclass of acronym, initialism, clippedTerm, contraction). */
 	abbreviatedForm: `${NS}abbreviatedForm`,
 	/** An abbreviation pronounced as a word (e.g. 'NATO', 'laser'). */
@@ -248,7 +238,7 @@ export const LexInfoTermType = {
 	/** A contraction formed by omitting sounds or letters (e.g. "don't"). */
 	contraction: `${NS}contraction`,
 
-	// ── Multiword / phrasal forms ──────────────────────────────────────────
+	/** Multiword / phrasal forms */
 	/** A lexical unit combining two or more words whose combined meaning is not compositional. */
 	compound: `${NS}compound`,
 	/** A fixed, lexicalised phrase whose meaning cannot be derived from its parts. */
@@ -260,13 +250,13 @@ export const LexInfoTermType = {
 	/** A brief popular saying or maxim. */
 	proverb: `${NS}proverb`,
 
-	// ── Length variants ────────────────────────────────────────────────────
+	/** Length variants */
 	/** The complete, expanded form of a term for which an abbreviated form exists. */
 	fullForm: `${NS}fullForm`,
 	/** A variant of a multiword term that uses fewer words than the full form. */
 	shortForm: `${NS}shortForm`,
 
-	// ── Scientific / technical forms ──────────────────────────────────────
+	/** Scientific / technical forms */
 	/** A term that is part of an international scientific nomenclature. */
 	internationalScientificTerm: `${NS}internationalScientificTerm`,
 	/** A term with the same or nearly identical form across many languages. */
@@ -276,7 +266,7 @@ export const LexInfoTermType = {
 	/** A lexical unit in a CJKV language represented by two or more CJKV characters. */
 	CJK_compound: `${NS}CJK_compound`,
 
-	// ── Formulaic expressions ──────────────────────────────────────────────
+	/** Formulaic expressions */
 	/** Figures or symbols used to express a concept briefly (e.g. a chemical or mathematical formula). */
 	formula: `${NS}formula`,
 	/** An expression representing a concept via a mathematical equality or assignment. */
@@ -284,7 +274,7 @@ export const LexInfoTermType = {
 	/** An expression using mathematical or logical relations (inequalities, sets, Boolean operations). */
 	logicalExpression: `${NS}logicalExpression`,
 
-	// ── Commercial identifiers ─────────────────────────────────────────────
+	/** Commercial identifiers */
 	/** The official designator for a product. */
 	productName: `${NS}productName`,
 	/** A unique alphanumeric manufacturing part number. */
@@ -292,7 +282,7 @@ export const LexInfoTermType = {
 	/** A unique alphanumeric inventory item identifier (Stock Keeping Unit). */
 	sku: `${NS}sku`,
 
-	// ── Miscellaneous ──────────────────────────────────────────────────────
+	/** Miscellaneous */
 	/** The term that heads a terminological entry. */
 	entryTerm: `${NS}entryTerm`,
 	/** A significant word or phrase. */
@@ -311,10 +301,6 @@ export const LexInfoTermType = {
 export type LexInfoTermType =
 	(typeof LexInfoTermType)[keyof typeof LexInfoTermType];
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Grammatical gender
-// ─────────────────────────────────────────────────────────────────────────────
-
 /** Grammatical gender values from the LexInfo ontology. */
 export const LexInfoGender = {
 	masculine: `${NS}masculine`,
@@ -325,10 +311,6 @@ export const LexInfoGender = {
 	otherGender: `${NS}otherGender`,
 } as const;
 export type LexInfoGender = (typeof LexInfoGender)[keyof typeof LexInfoGender];
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Grammatical number
-// ─────────────────────────────────────────────────────────────────────────────
 
 /** Grammatical number values from the LexInfo ontology. */
 export const LexInfoNumber = {
@@ -350,10 +332,6 @@ export const LexInfoNumber = {
 } as const;
 export type LexInfoNumber = (typeof LexInfoNumber)[keyof typeof LexInfoNumber];
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Grammatical tense
-// ─────────────────────────────────────────────────────────────────────────────
-
 /** Grammatical tense values from the LexInfo ontology. */
 export const LexInfoTense = {
 	present: `${NS}presentTense`,
@@ -366,10 +344,6 @@ export const LexInfoTense = {
 } as const;
 export type LexInfoTense = (typeof LexInfoTense)[keyof typeof LexInfoTense];
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Grammatical mood
-// ─────────────────────────────────────────────────────────────────────────────
-
 /** Grammatical mood values from the LexInfo ontology. */
 export const LexInfoMood = {
 	indicative: `${NS}indicativeMood`,
@@ -380,10 +354,6 @@ export const LexInfoMood = {
 } as const;
 export type LexInfoMood = (typeof LexInfoMood)[keyof typeof LexInfoMood];
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Grammatical voice
-// ─────────────────────────────────────────────────────────────────────────────
-
 /** Grammatical voice values from the LexInfo ontology. */
 export const LexInfoVoice = {
 	active: `${NS}activeVoice`,
@@ -391,10 +361,6 @@ export const LexInfoVoice = {
 	middle: `${NS}middleVoice`,
 } as const;
 export type LexInfoVoice = (typeof LexInfoVoice)[keyof typeof LexInfoVoice];
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Grammatical person
-// ─────────────────────────────────────────────────────────────────────────────
 
 /** Grammatical person values from the LexInfo ontology. */
 export const LexInfoPerson = {
@@ -404,13 +370,9 @@ export const LexInfoPerson = {
 } as const;
 export type LexInfoPerson = (typeof LexInfoPerson)[keyof typeof LexInfoPerson];
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Grammatical case
-// ─────────────────────────────────────────────────────────────────────────────
-
 /** Grammatical case values from the LexInfo ontology (all 30 case individuals). */
 export const LexInfoCase = {
-	// ── Core cases ─────────────────────────────────────────────────────────
+	/** Core cases */
 	nominative: `${NS}nominativeCase`,
 	accusative: `${NS}accusativeCase`,
 	genitive: `${NS}genitiveCase`,
@@ -419,7 +381,8 @@ export const LexInfoCase = {
 	instrumental: `${NS}instrumentalCase`,
 	locative: `${NS}locativeCase`,
 	vocative: `${NS}vocativeCase`,
-	// ── Extended cases ─────────────────────────────────────────────────────
+
+	/** Extended cases */
 	/** "Without X" — Finnish, Estonian. */
 	abessive: `${NS}abessiveCase`,
 	/** Ergative-absolutive languages (Basque, etc.) — marks intransitive subject / transitive object. */
@@ -473,10 +436,6 @@ export const LexInfoCase = {
 } as const;
 export type LexInfoCase = (typeof LexInfoCase)[keyof typeof LexInfoCase];
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Degree of comparison
-// ─────────────────────────────────────────────────────────────────────────────
-
 /** Grammatical degree of comparison values from the LexInfo ontology. */
 export const LexInfoDegree = {
 	positive: `${NS}positiveDegree`,
@@ -484,10 +443,6 @@ export const LexInfoDegree = {
 	superlative: `${NS}superlativeDegree`,
 } as const;
 export type LexInfoDegree = (typeof LexInfoDegree)[keyof typeof LexInfoDegree];
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Grammatical aspect
-// ─────────────────────────────────────────────────────────────────────────────
 
 /** Grammatical aspect values from the LexInfo ontology. */
 export const LexInfoAspect = {
@@ -503,10 +458,6 @@ export const LexInfoAspect = {
 } as const;
 export type LexInfoAspect = (typeof LexInfoAspect)[keyof typeof LexInfoAspect];
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Definiteness
-// ─────────────────────────────────────────────────────────────────────────────
-
 /** Definiteness values from the LexInfo ontology. */
 export const LexInfoDefiniteness = {
 	definite: `${NS}definiteness-definite`,
@@ -518,10 +469,6 @@ export const LexInfoDefiniteness = {
 } as const;
 export type LexInfoDefiniteness =
 	(typeof LexInfoDefiniteness)[keyof typeof LexInfoDefiniteness];
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Register
-// ─────────────────────────────────────────────────────────────────────────────
 
 /**
  * Usage register values from the LexInfo ontology.
@@ -545,10 +492,6 @@ export const LexInfoRegister = {
 } as const;
 export type LexInfoRegister =
 	(typeof LexInfoRegister)[keyof typeof LexInfoRegister];
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Verb form mood
-// ─────────────────────────────────────────────────────────────────────────────
 
 /**
  * Verb-form mood values from the LexInfo ontology (`lexinfo:VerbFormMood`).
@@ -577,10 +520,6 @@ export const LexInfoVerbFormMood = {
 export type LexInfoVerbFormMood =
 	(typeof LexInfoVerbFormMood)[keyof typeof LexInfoVerbFormMood];
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Animacy
-// ─────────────────────────────────────────────────────────────────────────────
-
 /**
  * Animacy values from the LexInfo ontology (`lexinfo:Animacy`).
  *
@@ -600,10 +539,6 @@ export const LexInfoAnimacy = {
 } as const;
 export type LexInfoAnimacy =
 	(typeof LexInfoAnimacy)[keyof typeof LexInfoAnimacy];
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Cliticness
-// ─────────────────────────────────────────────────────────────────────────────
 
 /**
  * Cliticness values from the LexInfo ontology (`lexinfo:Cliticness`).
@@ -625,10 +560,6 @@ export const LexInfoCliticness = {
 export type LexInfoCliticness =
 	(typeof LexInfoCliticness)[keyof typeof LexInfoCliticness];
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Finiteness
-// ─────────────────────────────────────────────────────────────────────────────
-
 /**
  * Finiteness values from the LexInfo ontology (`lexinfo:Finiteness`).
  *
@@ -647,10 +578,6 @@ export const LexInfoFiniteness = {
 export type LexInfoFiniteness =
 	(typeof LexInfoFiniteness)[keyof typeof LexInfoFiniteness];
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Negative
-// ─────────────────────────────────────────────────────────────────────────────
-
 /**
  * Negative values from the LexInfo ontology (`lexinfo:Negative`).
  *
@@ -668,10 +595,6 @@ export const LexInfoNegative = {
 } as const;
 export type LexInfoNegative =
 	(typeof LexInfoNegative)[keyof typeof LexInfoNegative];
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Normative authorization
-// ─────────────────────────────────────────────────────────────────────────────
 
 /**
  * Normative authorization values from the LexInfo ontology
@@ -705,10 +628,6 @@ export const LexInfoNormativeAuthorization = {
 export type LexInfoNormativeAuthorization =
 	(typeof LexInfoNormativeAuthorization)[keyof typeof LexInfoNormativeAuthorization];
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Dating / temporal qualifiers
-// ─────────────────────────────────────────────────────────────────────────────
-
 /**
  * Temporal usage qualifier values from the LexInfo ontology
  * (`lexinfo:dating`).
@@ -732,10 +651,6 @@ export const LexInfoDating = {
 } as const;
 export type LexInfoDating = (typeof LexInfoDating)[keyof typeof LexInfoDating];
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Frequency
-// ─────────────────────────────────────────────────────────────────────────────
-
 /**
  * Frequency values from the LexInfo ontology (`lexinfo:frequency`).
  *
@@ -755,10 +670,6 @@ export const LexInfoFrequency = {
 } as const;
 export type LexInfoFrequency =
 	(typeof LexInfoFrequency)[keyof typeof LexInfoFrequency];
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Sense-level lexical relations
-// ─────────────────────────────────────────────────────────────────────────────
 
 /**
  * Sense-level lexical relation property URIs from the LexInfo ontology.
@@ -814,10 +725,6 @@ export const LexInfoSenseRelation = {
 export type LexInfoSenseRelation =
 	(typeof LexInfoSenseRelation)[keyof typeof LexInfoSenseRelation];
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Entry-level lexical relations
-// ─────────────────────────────────────────────────────────────────────────────
-
 /**
  * Entry-level lexical relation property URIs from the LexInfo ontology.
  *
@@ -862,10 +769,6 @@ export const LexInfoEntryRelation = {
 export type LexInfoEntryRelation =
 	(typeof LexInfoEntryRelation)[keyof typeof LexInfoEntryRelation];
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Syntactic frame classes
-// ─────────────────────────────────────────────────────────────────────────────
-
 /**
  * Syntactic frame class URIs from the LexInfo ontology.
  *
@@ -880,7 +783,6 @@ export type LexInfoEntryRelation =
  * ```
  */
 export const LexInfoFrame = {
-	// ── High priority ──────────────────────────────────────────────────────
 	/** Basic intransitive verb frame (e.g. "he left"). */
 	IntransitiveFrame: `${NS}IntransitiveFrame`,
 	/** Transitive verb frame — takes a direct object (e.g. "the dog bit the man"). */
@@ -891,7 +793,7 @@ export const LexInfoFrame = {
 	NounFrame: `${NS}NounFrame`,
 	/** Base adjective frame. */
 	AdjectiveFrame: `${NS}AdjectiveFrame`,
-	// ── Medium priority ────────────────────────────────────────────────────
+
 	/** Attributive adjective use (e.g. "the red ball"). */
 	AdjectiveAttributiveFrame: `${NS}AdjectiveAttributiveFrame`,
 	/** Predicative adjective use (e.g. "he is happy"). */
@@ -907,10 +809,6 @@ export const LexInfoFrame = {
 } as const;
 export type LexInfoFrame = (typeof LexInfoFrame)[keyof typeof LexInfoFrame];
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Form-level property URIs
-// ─────────────────────────────────────────────────────────────────────────────
-
 /**
  * Form-level property URIs from the LexInfo ontology.
  *
@@ -924,7 +822,7 @@ export type LexInfoFrame = (typeof LexInfoFrame)[keyof typeof LexInfoFrame];
  * ```
  */
 export const LexInfoFormProperty = {
-	// ── Case form variants (30 case-specific form properties) ──────────────
+	/** Case form variants (30 case-specific form properties) */
 	nominativeCaseForm: `${NS}nominativeCaseForm`,
 	accusativeCaseForm: `${NS}accusativeCaseForm`,
 	genitiveCaseForm: `${NS}genitiveCaseForm`,
@@ -958,7 +856,7 @@ export const LexInfoFormProperty = {
 	superessiveCaseForm: `${NS}superessiveCaseForm`,
 	terminativeCaseForm: `${NS}terminativeCaseForm`,
 	translativeCaseForm: `${NS}translativeCaseForm`,
-	// ── Number form variants ───────────────────────────────────────────────
+	/** Number form variants */
 	singularNumberForm: `${NS}singularNumberForm`,
 	pluralNumberForm: `${NS}pluralNumberForm`,
 	dualNumberForm: `${NS}dualNumberForm`,
@@ -967,31 +865,27 @@ export const LexInfoFormProperty = {
 	quadrialNumberForm: `${NS}quadrialNumberForm`,
 	trialNumberForm: `${NS}trialNumberForm`,
 	massNounNumberForm: `${NS}massNounNumberForm`,
-	// ── Tense form variants ────────────────────────────────────────────────
+	/** Tense form variants */
 	presentTenseForm: `${NS}presentTenseForm`,
 	pastTenseForm: `${NS}pastTenseForm`,
 	futureTenseForm: `${NS}futureTenseForm`,
 	imperfectTenseForm: `${NS}imperfectTenseForm`,
 	preteriteTenseForm: `${NS}preteriteTenseForm`,
-	// ── Mood form variants ─────────────────────────────────────────────────
+	/** Mood form variants */
 	indicativeMoodForm: `${NS}indicativeMoodForm`,
 	subjunctiveMoodForm: `${NS}subjunctiveMoodForm`,
 	imperativeMoodForm: `${NS}imperativeMoodForm`,
-	// ── Degree form variants ───────────────────────────────────────────────
+	/** Degree form variants */
 	positiveDegreeForm: `${NS}positiveDegreeForm`,
 	comparativeDegreeForm: `${NS}comparativeDegreeForm`,
 	superlativeDegreeForm: `${NS}superlativeDegreeForm`,
-	// ── Person form variants ───────────────────────────────────────────────
+	/** Person form variants */
 	firstPersonForm: `${NS}firstPersonForm`,
 	secondPersonForm: `${NS}secondPersonForm`,
 	thirdPersonForm: `${NS}thirdPersonForm`,
 } as const;
 export type LexInfoFormProperty =
 	(typeof LexInfoFormProperty)[keyof typeof LexInfoFormProperty];
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Term element values
-// ─────────────────────────────────────────────────────────────────────────────
 
 /**
  * Term element values from the LexInfo ontology (`lexinfo:termElement`).
