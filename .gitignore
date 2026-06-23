@@ -1,3 +1,6 @@
+### Documentation ###
+docs/*
+
 ### Linux ###
 *~
 
@@ -203,4 +206,3 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
-
