@@ -30,8 +30,7 @@ const LANG = "en" as LanguageTag;
 function buildTestLexicon() {
 	const form = new FormBuilder(FORM_ID).addWrittenRep("house", LANG).build();
 
-	const entry = new LexicalEntryBuilder(ENTRY_ID, LANG)
-		.setCanonicalForm(form)
+	const entry = new LexicalEntryBuilder(ENTRY_ID, form, LANG)
 		.setPoS(LexInfoPoS.noun)
 		.build();
 
