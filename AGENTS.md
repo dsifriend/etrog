@@ -2,7 +2,6 @@
 
 Conventions for coding agents and contributors working on Etrog. For project
 description, architecture, and module specifications see [`README.md`](./README.md).
-For planned work not yet started see [`PLAN.md`](./PLAN.md).
 
 ---
 
@@ -11,13 +10,13 @@ For planned work not yet started see [`PLAN.md`](./PLAN.md).
 Run from within a `packages/<name>/` directory, or from the repo root to target
 all packages via Bun workspaces.
 
-| Task | Command |
-|------|---------|
-| Build | `bun build ./src/index.ts --outdir ./dist --target bun` |
-| Test | `bun test` |
-| Type-check | `tsc --noEmit` |
-| Lint | `bunx @biomejs/biome check ./src` |
-| Format | `bunx @biomejs/biome format --write ./src` |
+| Task       | Command                                                 |
+| ---------- | ------------------------------------------------------- |
+| Build      | `bun build ./src/index.ts --outdir ./dist --target bun` |
+| Test       | `bun test`                                              |
+| Type-check | `tsc --noEmit`                                          |
+| Lint       | `bunx @biomejs/biome check ./src`                       |
+| Format     | `bunx @biomejs/biome format --write ./src`              |
 
 Run lint and type-check after every non-trivial change.
 
@@ -27,12 +26,12 @@ Run lint and type-check after every non-trivial change.
 
 Use `bun` everywhere Node.js tooling would otherwise appear:
 
-| Instead of | Use |
-|---|---|
-| `node <file>` / `ts-node <file>` | `bun <file>` |
-| `npm install` / `yarn` / `pnpm install` | `bun install` |
+| Instead of                                   | Use                |
+| -------------------------------------------- | ------------------ |
+| `node <file>` / `ts-node <file>`             | `bun <file>`       |
+| `npm install` / `yarn` / `pnpm install`      | `bun install`      |
 | `npm run <script>` / `yarn run` / `pnpm run` | `bun run <script>` |
-| `npx <package>` | `bunx <package>` |
+| `npx <package>`                              | `bunx <package>`   |
 
 Bun loads `.env` automatically — do not use `dotenv`.
 
@@ -54,11 +53,11 @@ Every `package.json` under `packages/` must include:
 ```json
 {
   "scripts": {
-    "build":     "bun build ./src/index.ts --outdir ./dist --target bun",
-    "test":      "bun test",
+    "build": "bun build ./src/index.ts --outdir ./dist --target bun",
+    "test": "bun test",
     "typecheck": "tsc --noEmit",
-    "lint":      "bunx @biomejs/biome check ./src",
-    "format":    "bunx @biomejs/biome format --write ./src"
+    "lint": "bunx @biomejs/biome check ./src",
+    "format": "bunx @biomejs/biome format --write ./src"
   }
 }
 ```
