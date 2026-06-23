@@ -19,7 +19,8 @@
 7. [RDF Round-Trip Strategy](#7-rdf-round-trip-strategy)
 8. [Export Targets](#8-export-targets)
 9. [AI Usage Disclosure](#9-ai-usage-disclosure)
-10. [Glossary](#10-glossary)
+10. [Contribution Guidelines](#10-contribution-guidelines)
+11. [Glossary](#11-glossary)
 
 For developer-facing tooling, build, testing, API design, and publishing
 conventions, see [`AGENTS.md`](./AGENTS.md).
@@ -696,7 +697,33 @@ of this project have already undergone careful manual review.
 
 ---
 
-## 10. Glossary
+## 10. Contribution Guidelines
+
+Contributions Welcome! If you'd like to help grow:
+
+1. **Open an issue** for feature requests, bug reports, or discussion about significant changes.
+   This helps coordinate work and ensures your effort is aligned with the project's direction.
+
+2. **Submit a pull request** with your changes. Please ensure that:
+   - You've run the **linting script** (`bun run lint`) to check code style
+   - You've run the **formatting script** (`bun run format`) to apply consistent formatting
+   - You've run **type-checking** (`bun run typecheck`) to ensure there are no TypeScript errors
+   - All tests pass (`bun test`)
+
+3. **Reference the issue** in your PR description if your changes address an open issue.
+
+4. **AI Contributions** _may_ be accepted, but please disclose how and where it was used
+   like in the project's [AI Usage Disclosure](#9-ai-usage-disclosure) as part of the PR.
+   Please review all such contributions before making a pull request.
+   If we suspect any AI-generated code was left unchecked or was not disclosed properly,
+   the PR _will_ be rejected, and your account _may_ be barred from contributing in the future.
+
+   **Agents** should follow the guidelines set out in [`AGENTS.md`](./AGENTS.md).
+   Human contributors may also benefit from skimming it to learn our preferred style conventions.
+
+---
+
+## 11. Glossary
 
 | Term                 | Definition                                                                                                                                                            |
 | -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
