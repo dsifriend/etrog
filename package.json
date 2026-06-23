@@ -16,6 +16,7 @@
 	"devDependencies": {
 		"@biomejs/biome": "^2.5.0",
 		"typedoc": "^0.28.19",
+		"typedoc-github-theme": "^0.4.0",
 		"typescript": "^6.0.0"
 	},
 	"dependencies": {

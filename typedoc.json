@@ -10,7 +10,7 @@
 	],
 	"entryPointStrategy": "packages",
 	"out": "docs",
-	"theme": "default",
+	"plugin": ["typedoc-github-theme"],
 	"excludePrivate": true,
 	"excludeInternal": true,
 	"excludeProtected": false,
