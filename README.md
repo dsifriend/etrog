@@ -18,7 +18,8 @@
 6. [JSON-LD Strategy](#6-json-ld-strategy)
 7. [RDF Round-Trip Strategy](#7-rdf-round-trip-strategy)
 8. [Export Targets](#8-export-targets)
-9. [Glossary](#9-glossary)
+9. [AI Usage Disclosure](#9-ai-usage-disclosure)
+10. [Glossary](#10-glossary)
 
 For developer-facing tooling, build, testing, API design, and publishing
 conventions, see [`AGENTS.md`](./AGENTS.md).
@@ -677,7 +678,25 @@ script.
 
 ---
 
-## 9. Glossary
+## 9. AI Usage Disclosure
+
+Generative AI was used in the development of this project to accelerate
+the implementation of the OntoLex and related ontologies as TypeScript
+types and related functions, fulfilling much the same role a traditional
+codegen framework would have.
+
+Why not use a traditional codegen tool then? While there's certainly a lot of
+interesting work happening to better integrate Semantic Web technologies with
+the modern JavaScript/TypeScript ecosystem, much of which has been documented
+at [RDF + JS = ❤️](https://rdfjs.dev), I [@dsifriend](https://github.com/dsifriend)
+wanted to offer something more ergonomic and domain-specific.
+
+All AI contributions to the [main branch](https://github.com/dsifriend/etrog/tree/main)
+of this project have already undergone careful manual review.
+
+---
+
+## 10. Glossary
 
 | Term                 | Definition                                                                                                                                                            |
 | -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
