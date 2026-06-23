@@ -33,7 +33,7 @@ tooling. The guiding principles are:
 
 - **Standards-first, not standards-only.** Every type, property, and relation in
   the public API maps directly to a named class or property in an official
-  standard. Developer ergonomics are layered *on top of* — never *instead of* —
+  standard. Developer ergonomics are layered _on top of_ — never _instead of_ —
   the standard model.
 
   - **Standards coverage:** This library aims for full coverage of its standards,
@@ -70,31 +70,31 @@ tooling. The guiding principles are:
 All six published modules of the OntoLex-Lemon vocabulary family must be
 covered. Each maps to a dedicated sub-module in the library (see §3).
 
-| Status | Module | Prefix | Namespace |
-|--------|--------|--------|-----------|
-| ✅ Required | **ontolex** (Core) | `ontolex:` | `http://www.w3.org/ns/lemon/ontolex#` |
-| ✅ Required | **lime** (Linguistic Metadata) | `lime:` | `http://www.w3.org/ns/lemon/lime#` |
-| ✅ Required | **vartrans** (Variation & Translation) | `vartrans:` | `http://www.w3.org/ns/lemon/vartrans#` |
-| ✅ Required | **decomp** (Decomposition) | `decomp:` | `http://www.w3.org/ns/lemon/decomp#` |
-| ✅ Required | **synsem** (Syntax & Semantics) | `synsem:` | `http://www.w3.org/ns/lemon/synsem#` |
-| ✅ Required | **lexicog** (Lexicography) | `lexicog:` | `http://www.w3.org/ns/lemon/lexicog#` |
-| 🔜 Planned | **morph** (Morphology — CG Draft) | `morph:` | `http://www.w3.org/ns/lemon/morph` |
-| 🔜 Planned | **frac** (Frequency & Attestation — CG Draft) | `frac:` | *(TBD per spec)* |
+| Status      | Module                                        | Prefix      | Namespace                              |
+| ----------- | --------------------------------------------- | ----------- | -------------------------------------- |
+| ✅ Required | **ontolex** (Core)                            | `ontolex:`  | `http://www.w3.org/ns/lemon/ontolex#`  |
+| ✅ Required | **lime** (Linguistic Metadata)                | `lime:`     | `http://www.w3.org/ns/lemon/lime#`     |
+| ✅ Required | **vartrans** (Variation & Translation)        | `vartrans:` | `http://www.w3.org/ns/lemon/vartrans#` |
+| ✅ Required | **decomp** (Decomposition)                    | `decomp:`   | `http://www.w3.org/ns/lemon/decomp#`   |
+| ✅ Required | **synsem** (Syntax & Semantics)               | `synsem:`   | `http://www.w3.org/ns/lemon/synsem#`   |
+| ✅ Required | **lexicog** (Lexicography)                    | `lexicog:`  | `http://www.w3.org/ns/lemon/lexicog#`  |
+| 🔜 Planned  | **morph** (Morphology — CG Draft)             | `morph:`    | `http://www.w3.org/ns/lemon/morph`     |
+| 🔜 Planned  | **frac** (Frequency & Attestation — CG Draft) | `frac:`     | _(TBD per spec)_                       |
 
 Reference spec: https://www.w3.org/2016/05/ontolex/ (core + vartrans + decomp +
 synsem + lime); https://www.w3.org/2019/09/lexicog/ (lexicog).
 
 ### 2.2 Companion Ontologies
 
-| Standard | Prefix | Namespace | Role |
-|----------|--------|-----------|------|
-| **LexInfo 3.0** | `lexinfo:` | `http://www.lexinfo.net/ontology/3.0/lexinfo#` | Morphosyntactic feature values (PoS, case, tense, gender, …) |
-| **SKOS** | `skos:` | `http://www.w3.org/2004/02/skos/core#` | Concept schemes; `LexicalConcept` is a subclass of `skos:Concept` |
-| **Dublin Core Terms** | `dcterms:` | `http://purl.org/dc/terms/` | Lexicon metadata (creator, license, date, …) |
-| **OWL** | `owl:` | `http://www.w3.org/2002/07/owl#` | Ontology linking (`owl:sameAs`, `owl:equivalentClass`) |
-| **RDF / RDFS** | `rdf:`, `rdfs:` | standard W3C URIs | Foundational RDF primitives |
-| **Global WordNet schema** | `wn:` | `https://globalwordnet.github.io/schemas/wn#` | Interop layer for Open English WordNet / GWA resources |
-| **DBnary extension** | `dbnary:` | `http://kaiko.getalp.org/dbnary#` | Interop layer for DBnary / Wiktionary-based resources |
+| Standard                  | Prefix          | Namespace                                      | Role                                                              |
+| ------------------------- | --------------- | ---------------------------------------------- | ----------------------------------------------------------------- |
+| **LexInfo 3.0**           | `lexinfo:`      | `http://www.lexinfo.net/ontology/3.0/lexinfo#` | Morphosyntactic feature values (PoS, case, tense, gender, …)      |
+| **SKOS**                  | `skos:`         | `http://www.w3.org/2004/02/skos/core#`         | Concept schemes; `LexicalConcept` is a subclass of `skos:Concept` |
+| **Dublin Core Terms**     | `dcterms:`      | `http://purl.org/dc/terms/`                    | Lexicon metadata (creator, license, date, …)                      |
+| **OWL**                   | `owl:`          | `http://www.w3.org/2002/07/owl#`               | Ontology linking (`owl:sameAs`, `owl:equivalentClass`)            |
+| **RDF / RDFS**            | `rdf:`, `rdfs:` | standard W3C URIs                              | Foundational RDF primitives                                       |
+| **Global WordNet schema** | `wn:`           | `https://globalwordnet.github.io/schemas/wn#`  | Interop layer for Open English WordNet / GWA resources            |
+| **DBnary extension**      | `dbnary:`       | `http://kaiko.getalp.org/dbnary#`              | Interop layer for DBnary / Wiktionary-based resources             |
 
 **DBnary URI convention note**
 
@@ -115,13 +115,13 @@ https://kaiko.getalp.org/about-dbnary/online-access/
 
 ### 2.3 Export Targets
 
-| Target | Format | Audience |
-|--------|--------|----------|
-| **JSON-LD** | `.jsonld` | Primary; all LLOD consumers |
-| **Turtle** | `.ttl` | SPARQL, Linked Data publishing |
-| **RDF/XML** | `.rdf` | Legacy triple stores; official ontology publishing format |
-| **DICT** | `.dict` + `.index` (dictzip-compatible) | Public DICT servers, `dict.org` |
-| **Apple Dictionary XML** | `.xml` (Apple DDS schema) | macOS/iOS Dictionary Services |
+| Target                   | Format                                  | Audience                                                  |
+| ------------------------ | --------------------------------------- | --------------------------------------------------------- |
+| **JSON-LD**              | `.jsonld`                               | Primary; all LLOD consumers                               |
+| **Turtle**               | `.ttl`                                  | SPARQL, Linked Data publishing                            |
+| **RDF/XML**              | `.rdf`                                  | Legacy triple stores; official ontology publishing format |
+| **DICT**                 | `.dict` + `.index` (dictzip-compatible) | Public DICT servers, `dict.org`                           |
+| **Apple Dictionary XML** | `.xml` (Apple DDS schema)               | macOS/iOS Dictionary Services                             |
 
 ---
 
@@ -367,69 +367,69 @@ instances, linked if desired via a parent `lime:LexicalizationSet` or a SKOS
 
 Implements all classes and properties for lexical variation and translation.
 
-**Fundamental distinction:** `vartrans` offers both *shortcut* properties (no
-reification, simple triple) and *reified* relation nodes (carry provenance,
+**Fundamental distinction:** `vartrans` offers both _shortcut_ properties (no
+reification, simple triple) and _reified_ relation nodes (carry provenance,
 category, source/target). Etrog exposes both forms.
 
 #### Classes
 
-| Class | Description |
-|-------|-------------|
-| `vartrans:LexicoSemanticRelation` | Abstract base; relates two lexical resources |
-| `vartrans:LexicalRelation` | Entry-to-entry form-level relation (abbreviation, derivation, spelling variant) |
-| `vartrans:SenseRelation` | Sense-to-sense meaning-level relation (synonymy, antonymy, hypernymy, …) |
+| Class                             | Description                                                                       |
+| --------------------------------- | --------------------------------------------------------------------------------- |
+| `vartrans:LexicoSemanticRelation` | Abstract base; relates two lexical resources                                      |
+| `vartrans:LexicalRelation`        | Entry-to-entry form-level relation (abbreviation, derivation, spelling variant)   |
+| `vartrans:SenseRelation`          | Sense-to-sense meaning-level relation (synonymy, antonymy, hypernymy, …)          |
 | `vartrans:TerminologicalRelation` | Sense variant on a terminological dimension (diatopic, diastratic, diachronic, …) |
-| `vartrans:Translation` | Cross-lingual sense equivalence |
-| `vartrans:TranslationSet` | Groups `Translation` instances sharing provenance |
-| `vartrans:ConceptualRelation` | Concept-to-concept relation (WordNet synset relations) |
+| `vartrans:Translation`            | Cross-lingual sense equivalence                                                   |
+| `vartrans:TranslationSet`         | Groups `Translation` instances sharing provenance                                 |
+| `vartrans:ConceptualRelation`     | Concept-to-concept relation (WordNet synset relations)                            |
 
 #### Shortcut properties
 
-| Property | Domain → Range | Notes |
-|----------|---------------|-------|
-| `vartrans:translatableAs` | `LexicalEntry` → `LexicalEntry` | Entry-level; symmetric; no sense disambiguation |
-| `vartrans:translation` | `LexicalSense` → `LexicalSense` | Sense-level; prefer over `translatableAs` when sense is known |
-| `vartrans:senseRel` | `LexicalSense` → `LexicalSense` | Generic; sub-propertied via LexInfo for specific types |
-| `vartrans:lexicalRel` | `LexicalEntry` → `LexicalEntry` | Generic; sub-propertied for specific types |
-| `vartrans:conceptRel` | `LexicalConcept` → `LexicalConcept` | Concept-level; used for WordNet synset relations |
+| Property                  | Domain → Range                      | Notes                                                         |
+| ------------------------- | ----------------------------------- | ------------------------------------------------------------- |
+| `vartrans:translatableAs` | `LexicalEntry` → `LexicalEntry`     | Entry-level; symmetric; no sense disambiguation               |
+| `vartrans:translation`    | `LexicalSense` → `LexicalSense`     | Sense-level; prefer over `translatableAs` when sense is known |
+| `vartrans:senseRel`       | `LexicalSense` → `LexicalSense`     | Generic; sub-propertied via LexInfo for specific types        |
+| `vartrans:lexicalRel`     | `LexicalEntry` → `LexicalEntry`     | Generic; sub-propertied for specific types                    |
+| `vartrans:conceptRel`     | `LexicalConcept` → `LexicalConcept` | Concept-level; used for WordNet synset relations              |
 
 #### Reification properties
 
 Used on instances of `vartrans:LexicoSemanticRelation`:
 
-| Property | Range | Notes |
-|----------|-------|-------|
-| `vartrans:source` | lexical resource | The "from" side of an asymmetric relation |
-| `vartrans:target` | lexical resource | The "to" side |
-| `vartrans:category` | external URI | Type of relation, e.g. `lexinfo:hypernym`, `wn:hypernym` |
-| `vartrans:trans` | `Translation` | Links `TranslationSet` to its member translations |
+| Property            | Range            | Notes                                                    |
+| ------------------- | ---------------- | -------------------------------------------------------- |
+| `vartrans:source`   | lexical resource | The "from" side of an asymmetric relation                |
+| `vartrans:target`   | lexical resource | The "to" side                                            |
+| `vartrans:category` | external URI     | Type of relation, e.g. `lexinfo:hypernym`, `wn:hypernym` |
+| `vartrans:trans`    | `Translation`    | Links `TranslationSet` to its member translations        |
 
 ### 5.4 `@etrog/core` — decomp Module
 
 Models morphological decomposition of complex words and multiword expressions.
 
-| Class/Property | Description |
-|----------------|-------------|
-| `decomp:Component` | A constituent part of a compound/multiword |
-| `decomp:subterm` | `LexicalEntry` → `Component` — the immediate constituents |
-| `decomp:constituent` | `Component` → `LexicalEntry` — what the component corresponds to at entry level |
-| `decomp:correspondsTo` | `Component` → `LexicalEntry` — the lexical entry this component stands for |
+| Class/Property         | Description                                                                     |
+| ---------------------- | ------------------------------------------------------------------------------- |
+| `decomp:Component`     | A constituent part of a compound/multiword                                      |
+| `decomp:subterm`       | `LexicalEntry` → `Component` — the immediate constituents                       |
+| `decomp:constituent`   | `Component` → `LexicalEntry` — what the component corresponds to at entry level |
+| `decomp:correspondsTo` | `Component` → `LexicalEntry` — the lexical entry this component stands for      |
 
 ### 5.5 `@etrog/core` — synsem Module
 
 Models subcategorization frames and the syntax-semantics interface.
 
-| Class/Property | Description |
-|----------------|-------------|
-| `synsem:SyntacticFrame` | A syntactic behavior pattern (transitive, intransitive, …) |
-| `synsem:SyntacticArgument` | A slot within a syntactic frame |
-| `synsem:OntoMap` | Maps a syntactic argument to an ontological predicate |
-| `synsem:synBehavior` | `LexicalEntry` → `SyntacticFrame` — the frames a word participates in |
-| `synsem:synArg` | `SyntacticFrame` → `SyntacticArgument` |
-| `synsem:ontoCorrespondence` | `SyntacticFrame` → `OntoMap` |
-| `synsem:subjOfProp` | Maps subject argument to ontology property |
-| `synsem:objOfProp` | Maps object argument to ontology property |
-| `synsem:isA` | `LexicalEntry` → OWL class — asserts that the entry denotes a member of the class |
+| Class/Property              | Description                                                                       |
+| --------------------------- | --------------------------------------------------------------------------------- |
+| `synsem:SyntacticFrame`     | A syntactic behavior pattern (transitive, intransitive, …)                        |
+| `synsem:SyntacticArgument`  | A slot within a syntactic frame                                                   |
+| `synsem:OntoMap`            | Maps a syntactic argument to an ontological predicate                             |
+| `synsem:synBehavior`        | `LexicalEntry` → `SyntacticFrame` — the frames a word participates in             |
+| `synsem:synArg`             | `SyntacticFrame` → `SyntacticArgument`                                            |
+| `synsem:ontoCorrespondence` | `SyntacticFrame` → `OntoMap`                                                      |
+| `synsem:subjOfProp`         | Maps subject argument to ontology property                                        |
+| `synsem:objOfProp`          | Maps object argument to ontology property                                         |
+| `synsem:isA`                | `LexicalEntry` → OWL class — asserts that the entry denotes a member of the class |
 
 LexInfo provides a rich vocabulary of `SyntacticFrame` sub-classes (e.g.,
 `lexinfo:TransitiveFrame`, `lexinfo:DitransitiveFrame`, `lexinfo:NounPPFrame`)
@@ -442,18 +442,18 @@ module.
 Bridges the OntoLex model to the structural representation of actual dictionary
 entries, as defined in the 2019 lexicography spec.
 
-| Class/Property | Description |
-|----------------|-------------|
-| `lexicog:LexicographicResource` | A structured dictionary or lexicographic work |
-| `lexicog:Entry` | One dictionary entry within the resource |
-| `lexicog:LexicographicComponent` | A component part of an entry (headword, sense block, …) |
-| `lexicog:UsageExample` | A structured usage example with optional source attribution |
-| `lexicog:FormRestriction` | Restricts a usage example to a particular form |
-| `lexicog:entry` | `LexicographicResource` → `Entry` |
-| `lexicog:describes` | `Entry` → `LexicalEntry` (links dictionary entry to the ontolex entry) |
-| `lexicog:subComponent` | `LexicographicComponent` → `LexicographicComponent` |
-| `lexicog:usageExample` | `LexicalSense` → `UsageExample` |
-| `lexicog:restrictedTo` | `UsageExample` → `FormRestriction` |
+| Class/Property                   | Description                                                            |
+| -------------------------------- | ---------------------------------------------------------------------- |
+| `lexicog:LexicographicResource`  | A structured dictionary or lexicographic work                          |
+| `lexicog:Entry`                  | One dictionary entry within the resource                               |
+| `lexicog:LexicographicComponent` | A component part of an entry (headword, sense block, …)                |
+| `lexicog:UsageExample`           | A structured usage example with optional source attribution            |
+| `lexicog:FormRestriction`        | Restricts a usage example to a particular form                         |
+| `lexicog:entry`                  | `LexicographicResource` → `Entry`                                      |
+| `lexicog:describes`              | `Entry` → `LexicalEntry` (links dictionary entry to the ontolex entry) |
+| `lexicog:subComponent`           | `LexicographicComponent` → `LexicographicComponent`                    |
+| `lexicog:usageExample`           | `LexicalSense` → `UsageExample`                                        |
+| `lexicog:restrictedTo`           | `UsageExample` → `FormRestriction`                                     |
 
 ### 5.7 `@etrog/core` — LexInfo 3.0 Enumerations
 
@@ -569,12 +569,12 @@ vartrans as the GWA context does).
 
 ### 7.1 Supported Formats
 
-| Format | Read | Write | MIME type |
-|--------|------|-------|-----------|
-| JSON-LD 1.1 | ✅ | ✅ | `application/ld+json` |
-| Turtle (TTL) | ✅ | ✅ | `text/turtle` |
-| RDF/XML | ✅ | ✅ | `application/rdf+xml` |
-| N-Triples | ✅ | ✅ | `application/n-triples` |
+| Format       | Read | Write | MIME type               |
+| ------------ | ---- | ----- | ----------------------- |
+| JSON-LD 1.1  | ✅   | ✅    | `application/ld+json`   |
+| Turtle (TTL) | ✅   | ✅    | `text/turtle`           |
+| RDF/XML      | ✅   | ✅    | `application/rdf+xml`   |
+| N-Triples    | ✅   | ✅    | `application/n-triples` |
 
 The `@etrog/rdf` package exposes a unified I/O API across all supported formats:
 
@@ -601,6 +601,7 @@ export function lexiconToDataset(lexicon: Lexicon): EtrogDataset
 ### 7.2 Round-Trip Fidelity
 
 All tests must verify that:
+
 1. A `Lexicon` object serialized to JSON-LD and parsed back produces an
    object that is deep-equal to the original (`lexicon → jsonld → lexicon`).
 2. A `Lexicon` serialized to Turtle, parsed with N3, re-serialized to JSON-LD,
@@ -622,13 +623,13 @@ The DICT protocol (RFC 2229, port 2628) uses a simple pair of files:
 
 #### Mapping from OntoLex to DICT
 
-| DICT concept | OntoLex source |
-|--------------|----------------|
-| Headword | `ontolex:writtenRep` of the `ontolex:canonicalForm` |
-| Definition block | One per `ontolex:LexicalSense` with a `skos:definition` |
+| DICT concept     | OntoLex source                                                    |
+| ---------------- | ----------------------------------------------------------------- |
+| Headword         | `ontolex:writtenRep` of the `ontolex:canonicalForm`               |
+| Definition block | One per `ontolex:LexicalSense` with a `skos:definition`           |
 | Cross-references | `vartrans:senseRel` targets rendered as `{see also: word}` markup |
-| Part of speech | `lexinfo:partOfSpeech` value, mapped to a human-readable string |
-| Pronunciation | `ontolex:phoneticRep` (IPA) |
+| Part of speech   | `lexinfo:partOfSpeech` value, mapped to a human-readable string   |
+| Pronunciation    | `ontolex:phoneticRep` (IPA)                                       |
 
 DICT definition text uses a simple plain-text convention. Etrog will produce
 output compatible with the `dictd` server format and DICT protocol clients.
@@ -649,19 +650,19 @@ processes the XML + CSS + Info.plist into a `.dictionary` bundle.
 
 #### Element mapping
 
-| Apple XML element | OntoLex source |
-|-------------------|----------------|
-| `<d:entry id="…" d:title="…">` | One per `LexicalEntry`; `d:title` = canonical written rep |
-| `<d:index d:value="…">` | One per `ontolex:Form` (canonical + other forms), for lookup indexing |
+| Apple XML element                  | OntoLex source                                                         |
+| ---------------------------------- | ---------------------------------------------------------------------- |
+| `<d:entry id="…" d:title="…">`     | One per `LexicalEntry`; `d:title` = canonical written rep              |
+| `<d:index d:value="…">`            | One per `ontolex:Form` (canonical + other forms), for lookup indexing  |
 | `<d:index d:value="…" d:yomi="…">` | For Japanese/CJK entries: `d:value` = romanization, `d:yomi` = reading |
-| `<h1>` (XHTML) | Headword (canonical written rep) |
-| `<span class="part-of-speech">` | LexInfo PoS value, mapped to human-readable string |
-| `<span class="pronunciation">` | `ontolex:phoneticRep` (IPA) |
-| `<ol class="senses">` + `<li>` | One `<li>` per `ontolex:LexicalSense` |
-| `<p class="definition">` | `skos:definition` for the sense |
-| `<p class="example">` | `lexicog:usageExample` text |
-| `<span class="translation">` | `vartrans:translation` target (written rep + language tag) |
-| `<d:parental-control/>` | Triggered by `lexinfo:register` = `lexinfo:vulgar` or similar |
+| `<h1>` (XHTML)                     | Headword (canonical written rep)                                       |
+| `<span class="part-of-speech">`    | LexInfo PoS value, mapped to human-readable string                     |
+| `<span class="pronunciation">`     | `ontolex:phoneticRep` (IPA)                                            |
+| `<ol class="senses">` + `<li>`     | One `<li>` per `ontolex:LexicalSense`                                  |
+| `<p class="definition">`           | `skos:definition` for the sense                                        |
+| `<p class="example">`              | `lexicog:usageExample` text                                            |
+| `<span class="translation">`       | `vartrans:translation` target (written rep + language tag)             |
+| `<d:parental-control/>`            | Triggered by `lexinfo:register` = `lexinfo:vulgar` or similar          |
 
 The exporter must produce well-formed XML. Use Bun's built-in text handling or a
 lightweight XML builder (no heavyweight DOM library required). The output is a
@@ -678,25 +679,25 @@ script.
 
 ## 9. Glossary
 
-| Term | Definition |
-|------|------------|
-| **BCP 47** | IETF language tag standard (e.g., `en`, `de`, `he`, `yi-Latn`). Used for `lime:language` and `@language` in LangStrings. |
-| **Blank node** | An RDF resource with no global URI, identified by a local `_:bN` identifier within a document. |
-| **Compaction** | JSON-LD operation that applies a `@context` to shorten expanded property URIs to prefixed names. |
-| **ConceptSet** | `ontolex:ConceptSet` — a `skos:ConceptScheme` organizing `LexicalConcept` instances. |
-| **DBnary** | A project extracting structured RDF from 26+ Wiktionary editions using OntoLex-Lemon + `dbnary:` extensions. |
-| **DDK** | Apple Dictionary Development Kit — the toolchain for building `.dictionary` bundles from XML source files. |
-| **DICT** | RFC 2229 dictionary access protocol (TCP port 2628). Used by `dict.org` and the `dictd` server. |
-| **Expanded JSON-LD** | JSON-LD form where all property names are full URIs and all values are arrays. The canonical form inside Etrog. |
-| **GWA** | Global WordNet Association — publishes the GWA-LMF format and the `wn:` RDF schema used by Open English WordNet. |
-| **LangString** | A string value paired with a BCP 47 language tag. Represented as `{ "@value": "…", "@language": "…" }` in expanded JSON-LD. |
-| **LIME** | Linguistic Metadata module of OntoLex-Lemon. Provides `lime:Lexicon`, the top-level lexicon container. |
-| **LexInfo** | Companion OWL ontology providing a vocabulary of morphosyntactic feature values and syntactic frames for OntoLex. |
-| **LLOD** | Linguistic Linked Open Data — the body of language resources published as RDF on the Web. |
-| **OntoLex-Lemon** | W3C Community Group specification for encoding lexical information as Linked Data. Six published modules. |
-| **OEWN** | Open English WordNet — an open-source fork of Princeton WordNet published in RDF using OntoLex. |
-| **Reification** | Modeling a relation as a named RDF node (instead of a direct triple) so that it can carry metadata (provenance, category). Used in `vartrans:LexicoSemanticRelation`. |
-| **SKOS** | W3C Simple Knowledge Organization System. `ontolex:LexicalConcept` is a subclass of `skos:Concept`. |
-| **Turtle (TTL)** | Terse RDF Triple Language — a compact RDF serialization format. Primary format for OEWN and DBnary dumps. |
-| **UUIDv5** | Deterministic UUID generated by hashing a namespace UUID and a local name string (SHA-1). Used for minting stable, reproducible URIs. |
-| **vartrans** | OntoLex-Lemon module for modeling lexical variation, sense relations, and translation equivalences. |
+| Term                 | Definition                                                                                                                                                            |
+| -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **BCP 47**           | IETF language tag standard (e.g., `en`, `de`, `he`, `yi-Latn`). Used for `lime:language` and `@language` in LangStrings.                                              |
+| **Blank node**       | An RDF resource with no global URI, identified by a local `_:bN` identifier within a document.                                                                        |
+| **Compaction**       | JSON-LD operation that applies a `@context` to shorten expanded property URIs to prefixed names.                                                                      |
+| **ConceptSet**       | `ontolex:ConceptSet` — a `skos:ConceptScheme` organizing `LexicalConcept` instances.                                                                                  |
+| **DBnary**           | A project extracting structured RDF from 26+ Wiktionary editions using OntoLex-Lemon + `dbnary:` extensions.                                                          |
+| **DDK**              | Apple Dictionary Development Kit — the toolchain for building `.dictionary` bundles from XML source files.                                                            |
+| **DICT**             | RFC 2229 dictionary access protocol (TCP port 2628). Used by `dict.org` and the `dictd` server.                                                                       |
+| **Expanded JSON-LD** | JSON-LD form where all property names are full URIs and all values are arrays. The canonical form inside Etrog.                                                       |
+| **GWA**              | Global WordNet Association — publishes the GWA-LMF format and the `wn:` RDF schema used by Open English WordNet.                                                      |
+| **LangString**       | A string value paired with a BCP 47 language tag. Represented as `{ "@value": "…", "@language": "…" }` in expanded JSON-LD.                                           |
+| **LIME**             | Linguistic Metadata module of OntoLex-Lemon. Provides `lime:Lexicon`, the top-level lexicon container.                                                                |
+| **LexInfo**          | Companion OWL ontology providing a vocabulary of morphosyntactic feature values and syntactic frames for OntoLex.                                                     |
+| **LLOD**             | Linguistic Linked Open Data — the body of language resources published as RDF on the Web.                                                                             |
+| **OntoLex-Lemon**    | W3C Community Group specification for encoding lexical information as Linked Data. Six published modules.                                                             |
+| **OEWN**             | Open English WordNet — an open-source fork of Princeton WordNet published in RDF using OntoLex.                                                                       |
+| **Reification**      | Modeling a relation as a named RDF node (instead of a direct triple) so that it can carry metadata (provenance, category). Used in `vartrans:LexicoSemanticRelation`. |
+| **SKOS**             | W3C Simple Knowledge Organization System. `ontolex:LexicalConcept` is a subclass of `skos:Concept`.                                                                   |
+| **Turtle (TTL)**     | Terse RDF Triple Language — a compact RDF serialization format. Primary format for OEWN and DBnary dumps.                                                             |
+| **UUIDv5**           | Deterministic UUID generated by hashing a namespace UUID and a local name string (SHA-1). Used for minting stable, reproducible URIs.                                 |
+| **vartrans**         | OntoLex-Lemon module for modeling lexical variation, sense relations, and translation equivalences.                                                                   |
