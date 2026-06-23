@@ -10,7 +10,8 @@
 		"test": "bun run --workspaces test",
 		"typecheck": "bun run --workspaces typecheck",
 		"lint": "bun run --workspaces lint",
-		"format": "bun run --workspaces format"
+		"format": "bun run --workspaces format",
+		"docs": "typedoc"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^2.5.0",
