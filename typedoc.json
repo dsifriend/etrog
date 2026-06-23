@@ -1,0 +1,25 @@
+{
+	"$schema": "https://typedoc.org/schema.json",
+	"entryPoints": [
+		"packages/rdf/",
+		"packages/core/",
+		"packages/wordnet/",
+		"packages/dbnary/",
+		"packages/export-dict/",
+		"packages/export-apple/"
+	],
+	"entryPointStrategy": "packages",
+	"out": "docs",
+	"theme": "default",
+	"excludePrivate": true,
+	"excludeInternal": true,
+	"excludeProtected": false,
+	"readme": "./README.md",
+	"name": "Etrog",
+	"navigation": {
+		"includeCategories": true,
+		"includeGroups": true,
+		"includeFolders": true
+	},
+	"hideGenerator": false
+}
