@@ -38,7 +38,7 @@ tooling. The guiding principles are:
 
   - **Standards coverage:** This library aims for full coverage of its standards,
     however, priority was given those parts for which the library authors had
-    immediate need. If the standards have drifted or you identify a need for a
+    immediate need. If the standards have drifted or you identify a need for
     some unsupported feature, please open an issue or submit a pull request.
 
 - **JSON-LD is the native representation.** RDF triples are a first-class citizen
