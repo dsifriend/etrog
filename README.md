@@ -127,7 +127,7 @@ https://kaiko.getalp.org/about-dbnary/online-access/
 
 ## 3. Repository Layout
 
-```/dev/null/layout.txt#L1-55
+```
 etrog/
 ├── AGENTS.md
 ├── README.md
