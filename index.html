@@ -1,0 +1,906 @@
+<!DOCTYPE html><html class="default" lang="en" data-base="./"><head><meta charset="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>Etrog</title><meta name="description" content="Documentation for Etrog"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script defer src="assets/main.js"></script><script async src="assets/icons.js" id="tsd-icons-script"></script><script async src="assets/search.js" id="tsd-search-script"></script><script async src="assets/navigation.js" id="tsd-nav-script"></script><link rel="stylesheet" href="assets/typedoc-github-style.css"/></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os";document.body.style.display="none";setTimeout(() => window.app?app.showPage():document.body.style.removeProperty("display"),500)</script><header class="tsd-page-toolbar"><div class="tsd-toolbar-contents container"><a href="index.html" class="title">Etrog</a><div id="tsd-toolbar-links"></div><button id="tsd-search-trigger" class="tsd-widget" aria-label="Search"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><use href="assets/icons.svg#icon-search"></use></svg></button><dialog id="tsd-search" aria-label="Search"><input role="combobox" id="tsd-search-input" aria-controls="tsd-search-results" aria-autocomplete="list" aria-expanded="true" autocapitalize="off" autocomplete="off" placeholder="Search the docs" maxLength="100"/><ul role="listbox" id="tsd-search-results"></ul><div id="tsd-search-status" aria-live="polite" aria-atomic="true"><div>Preparing search index...</div></div></dialog><a href="#" class="tsd-widget menu" id="tsd-toolbar-menu-trigger" data-toggle="menu" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><use href="assets/icons.svg#icon-menu"></use></svg></a></div></header><div class="container container-main"><div class="col-content"><div class="tsd-page-title"><h1>Etrog</h1></div><div class="tsd-panel tsd-typography"><h1 id="etrog" class="tsd-anchor-link">Etrog<a href="#etrog" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h1>
+<blockquote>
+<p><strong>Etrog</strong> is a public TypeScript library (built with Bun) for working with
+Linguistic Linked Open Data. It provides first-class JSON-LD support for all
+published OntoLex-Lemon modules, round-trips to RDF/XML and Turtle, and
+targeted export to DICT and Apple Dictionary XML formats.</p>
+<p>The name is a nod to the Yiddict.app project that inspired it, while keeping
+with the citrus theme of the OntoLex-Lemon family of standards.</p>
+</blockquote>
+<h2 id="table-of-contents" class="tsd-anchor-link">Table of Contents<a href="#table-of-contents" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<ol>
+<li><a href="#1-project-philosophy">Project Philosophy</a></li>
+<li><a href="#2-standards-coverage">Standards Coverage</a></li>
+<li><a href="#3-repository-layout">Repository Layout</a></li>
+<li><a href="#4-architecture-overview">Architecture Overview</a></li>
+<li><a href="#5-module-specifications">Module Specifications</a></li>
+<li><a href="#6-json-ld-strategy">JSON-LD Strategy</a></li>
+<li><a href="#7-rdf-round-trip-strategy">RDF Round-Trip Strategy</a></li>
+<li><a href="#8-export-targets">Export Targets</a></li>
+<li><a href="#9-ai-usage-disclosure">AI Usage Disclosure</a></li>
+<li><a href="#10-contribution-guidelines">Contribution Guidelines</a></li>
+<li><a href="#11-glossary">Glossary</a></li>
+</ol>
+<p>For developer-facing tooling, build, testing, API design, and publishing
+conventions, see <a href="media/AGENTS.md"><code>AGENTS.md</code></a>.</p>
+<hr>
+<h2 id="1-project-philosophy" class="tsd-anchor-link">1. Project Philosophy<a href="#1-project-philosophy" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<p>Etrog is designed for <strong>web developers</strong> who need to produce, consume, or extend
+Linguistic Linked Open Data (LLOD) without being experts in Semantic Web
+tooling. The guiding principles are:</p>
+<ul>
+<li>
+<p><strong>Standards-first, not standards-only.</strong> Every type, property, and relation in
+the public API maps directly to a named class or property in an official
+standard. Developer ergonomics are layered <em>on top of</em> — never <em>instead of</em> —
+the standard model.</p>
+<ul>
+<li><strong>Standards coverage:</strong> This library aims for full coverage of its standards,
+however, priority was given those parts for which the library authors had
+immediate need. If the standards have drifted or you identify a need for
+some unsupported feature, please open an issue or submit a pull request.</li>
+</ul>
+</li>
+<li>
+<p><strong>JSON-LD is the native representation.</strong> RDF triples are a first-class citizen
+internally, but the primary serialization surface is JSON-LD. Every object the
+library produces is valid JSON-LD and can be consumed by any JSON-LD 1.1
+processor without any Etrog dependency.</p>
+</li>
+<li>
+<p><strong>Interoperability over convenience.</strong> Where a convenient shortcut would
+produce output that cannot round-trip cleanly to standard RDF, the shortcut is
+not offered. Builder helpers are syntactic sugar that compile to the canonical
+model, not divergent representations.</p>
+</li>
+<li>
+<p><strong>No database coupling.</strong> Etrog has no opinion about persistence. It is a
+data-modeling and serialization library. Database adapters (Supabase, Postgres,
+triple stores) belong in separate packages built on top of Etrog.</p>
+</li>
+<li>
+<p><strong>Bun-native, Node.js-compatible.</strong> The library is developed with Bun and uses
+Bun's test runner, bundler, and workspace tooling. All published packages must
+also work on current Node.js via standard ESM interop. Bun-specific APIs (e.g.
+<code>Bun.file</code>) must not appear in any code path reachable by consumers; they are
+permitted only in internal dev tooling and scripts.</p>
+</li>
+</ul>
+<hr>
+<h2 id="2-standards-coverage" class="tsd-anchor-link">2. Standards Coverage<a href="#2-standards-coverage" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<h3 id="21-ontolex-lemon-modules" class="tsd-anchor-link">2.1 OntoLex-Lemon Modules<a href="#21-ontolex-lemon-modules" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p>All six published modules of the OntoLex-Lemon vocabulary family must be
+covered. Each maps to a dedicated sub-module in the library (see §3).</p>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Module</th>
+<th>Prefix</th>
+<th>Namespace</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>✅ Required</td>
+<td><strong>ontolex</strong> (Core)</td>
+<td><code>ontolex:</code></td>
+<td><code>http://www.w3.org/ns/lemon/ontolex#</code></td>
+</tr>
+<tr>
+<td>✅ Required</td>
+<td><strong>lime</strong> (Linguistic Metadata)</td>
+<td><code>lime:</code></td>
+<td><code>http://www.w3.org/ns/lemon/lime#</code></td>
+</tr>
+<tr>
+<td>✅ Required</td>
+<td><strong>vartrans</strong> (Variation &amp; Translation)</td>
+<td><code>vartrans:</code></td>
+<td><code>http://www.w3.org/ns/lemon/vartrans#</code></td>
+</tr>
+<tr>
+<td>✅ Required</td>
+<td><strong>decomp</strong> (Decomposition)</td>
+<td><code>decomp:</code></td>
+<td><code>http://www.w3.org/ns/lemon/decomp#</code></td>
+</tr>
+<tr>
+<td>✅ Required</td>
+<td><strong>synsem</strong> (Syntax &amp; Semantics)</td>
+<td><code>synsem:</code></td>
+<td><code>http://www.w3.org/ns/lemon/synsem#</code></td>
+</tr>
+<tr>
+<td>✅ Required</td>
+<td><strong>lexicog</strong> (Lexicography)</td>
+<td><code>lexicog:</code></td>
+<td><code>http://www.w3.org/ns/lemon/lexicog#</code></td>
+</tr>
+<tr>
+<td>🔜 Planned</td>
+<td><strong>morph</strong> (Morphology — CG Draft)</td>
+<td><code>morph:</code></td>
+<td><code>http://www.w3.org/ns/lemon/morph</code></td>
+</tr>
+<tr>
+<td>🔜 Planned</td>
+<td><strong>frac</strong> (Frequency &amp; Attestation — CG Draft)</td>
+<td><code>frac:</code></td>
+<td><em>(TBD per spec)</em></td>
+</tr>
+</tbody>
+</table>
+<p>Reference spec: <a href="https://www.w3.org/2016/05/ontolex/">https://www.w3.org/2016/05/ontolex/</a> (core + vartrans + decomp +
+synsem + lime); <a href="https://www.w3.org/2019/09/lexicog/">https://www.w3.org/2019/09/lexicog/</a> (lexicog).</p>
+<h3 id="22-companion-ontologies" class="tsd-anchor-link">2.2 Companion Ontologies<a href="#22-companion-ontologies" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<table>
+<thead>
+<tr>
+<th>Standard</th>
+<th>Prefix</th>
+<th>Namespace</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>LexInfo 3.0</strong></td>
+<td><code>lexinfo:</code></td>
+<td><code>http://www.lexinfo.net/ontology/3.0/lexinfo#</code></td>
+<td>Morphosyntactic feature values (PoS, case, tense, gender, …)</td>
+</tr>
+<tr>
+<td><strong>SKOS</strong></td>
+<td><code>skos:</code></td>
+<td><code>http://www.w3.org/2004/02/skos/core#</code></td>
+<td>Concept schemes; <code>LexicalConcept</code> is a subclass of <code>skos:Concept</code></td>
+</tr>
+<tr>
+<td><strong>Dublin Core Terms</strong></td>
+<td><code>dcterms:</code></td>
+<td><code>http://purl.org/dc/terms/</code></td>
+<td>Lexicon metadata (creator, license, date, …)</td>
+</tr>
+<tr>
+<td><strong>OWL</strong></td>
+<td><code>owl:</code></td>
+<td><code>http://www.w3.org/2002/07/owl#</code></td>
+<td>Ontology linking (<code>owl:sameAs</code>, <code>owl:equivalentClass</code>)</td>
+</tr>
+<tr>
+<td><strong>RDF / RDFS</strong></td>
+<td><code>rdf:</code>, <code>rdfs:</code></td>
+<td>standard W3C URIs</td>
+<td>Foundational RDF primitives</td>
+</tr>
+<tr>
+<td><strong>Global WordNet schema</strong></td>
+<td><code>wn:</code></td>
+<td><code>https://globalwordnet.github.io/schemas/wn#</code></td>
+<td>Interop layer for Open English WordNet / GWA resources</td>
+</tr>
+<tr>
+<td><strong>DBnary extension</strong></td>
+<td><code>dbnary:</code></td>
+<td><code>http://kaiko.getalp.org/dbnary#</code></td>
+<td>Interop layer for DBnary / Wiktionary-based resources</td>
+</tr>
+</tbody>
+</table>
+<p><strong>DBnary URI convention note</strong></p>
+<p>DBnary uses two related but distinct URI spaces:</p>
+<ul>
+<li><strong>Vocabulary terms</strong> use the hash namespace, e.g.
+<code>http://kaiko.getalp.org/dbnary#isTranslationOf</code></li>
+<li><strong>Extracted resources</strong> use a path-based IRI with a language/graph segment,
+e.g. <code>http://kaiko.getalp.org/dbnary/eng/cat__Noun__1</code> or
+<code>http://kaiko.getalp.org/dbnary/fra/chat</code></li>
+</ul>
+<p>In Etrog, <code>@etrog/dbnary</code> mirrors this split:
+<code>isDbnaryUri</code> is for the <code>dbnary#</code> vocabulary namespace, while
+<code>isDbnaryResourceIri</code> validates path-based DBnary resource IRIs.</p>
+<p>Reference: DBnary online access examples and documentation:
+<a href="https://kaiko.getalp.org/about-dbnary/online-access/">https://kaiko.getalp.org/about-dbnary/online-access/</a></p>
+<h3 id="23-export-targets" class="tsd-anchor-link">2.3 Export Targets<a href="#23-export-targets" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<table>
+<thead>
+<tr>
+<th>Target</th>
+<th>Format</th>
+<th>Audience</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>JSON-LD</strong></td>
+<td><code>.jsonld</code></td>
+<td>Primary; all LLOD consumers</td>
+</tr>
+<tr>
+<td><strong>Turtle</strong></td>
+<td><code>.ttl</code></td>
+<td>SPARQL, Linked Data publishing</td>
+</tr>
+<tr>
+<td><strong>RDF/XML</strong></td>
+<td><code>.rdf</code></td>
+<td>Legacy triple stores; official ontology publishing format</td>
+</tr>
+<tr>
+<td><strong>DICT</strong></td>
+<td><code>.dict</code> + <code>.index</code> (dictzip-compatible)</td>
+<td>Public DICT servers, <code>dict.org</code></td>
+</tr>
+<tr>
+<td><strong>Apple Dictionary XML</strong></td>
+<td><code>.xml</code> (Apple DDS schema)</td>
+<td>macOS/iOS Dictionary Services</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="3-repository-layout" class="tsd-anchor-link">3. Repository Layout<a href="#3-repository-layout" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<pre><code><span class="hl-0">etrog</span><span class="hl-1">/</span><br/><span class="hl-1">├── </span><span class="hl-2">AGENTS</span><span class="hl-1">.</span><span class="hl-0">md</span><br/><span class="hl-1">├── </span><span class="hl-2">README</span><span class="hl-1">.</span><span class="hl-0">md</span><br/><span class="hl-1">├── </span><span class="hl-2">LICENSE</span><span class="hl-1">                        # </span><span class="hl-2">MIT</span><br/><span class="hl-1">├── </span><span class="hl-0">package</span><span class="hl-1">.</span><span class="hl-0">json</span><span class="hl-1">                   # </span><span class="hl-0">Bun</span><span class="hl-1"> </span><span class="hl-0">workspace</span><span class="hl-1"> </span><span class="hl-0">root</span><br/><span class="hl-1">├── </span><span class="hl-0">bunfig</span><span class="hl-1">.</span><span class="hl-0">toml</span><br/><span class="hl-1">├── </span><span class="hl-0">tsconfig</span><span class="hl-1">.</span><span class="hl-0">json</span><span class="hl-1">                  # </span><span class="hl-0">base</span><span class="hl-1"> </span><span class="hl-3">tsconfig</span><span class="hl-1"> (</span><span class="hl-0">strict</span><span class="hl-1">, </span><span class="hl-2">ESM</span><span class="hl-1">)</span><br/><span class="hl-1">│</span><br/><span class="hl-1">├── </span><span class="hl-0">packages</span><span class="hl-1">/</span><br/><span class="hl-1">│   │</span><br/><span class="hl-1">│   ├── </span><span class="hl-0">core</span><span class="hl-1">/                      # @</span><span class="hl-0">etrog</span><span class="hl-1">/</span><span class="hl-0">core</span><br/><span class="hl-1">│   │   ├── </span><span class="hl-0">src</span><span class="hl-1">/</span><br/><span class="hl-1">│   │   │   ├── </span><span class="hl-0">namespaces</span><span class="hl-1">.</span><span class="hl-0">ts</span><span class="hl-1">      # </span><span class="hl-0">All</span><span class="hl-1"> </span><span class="hl-0">standard</span><span class="hl-1"> </span><span class="hl-4">namespace</span><span class="hl-1"> </span><span class="hl-5">URIs</span><span class="hl-1"> + </span><span class="hl-5">DEFAULT_CONTEXT</span><br/><span class="hl-1">│   │   │   ├── </span><span class="hl-5">types</span><span class="hl-1">/             # </span><span class="hl-5">Foundational</span><span class="hl-1"> </span><span class="hl-5">TS</span><span class="hl-1"> </span><span class="hl-5">types</span><span class="hl-1"> (</span><span class="hl-5">URI</span><span class="hl-1">, </span><span class="hl-5">LangString</span><span class="hl-1">, …)</span><br/><span class="hl-1">│   │   │   ├── </span><span class="hl-5">ontolex</span><span class="hl-1">/           # </span><span class="hl-5">ontolex</span><span class="hl-1">: </span><span class="hl-5">module</span><span class="hl-1"> </span><span class="hl-5">types</span><span class="hl-1"> &amp; </span><span class="hl-5">helpers</span><br/><span class="hl-1">│   │   │   ├── </span><span class="hl-5">lime</span><span class="hl-1">/              # </span><span class="hl-5">lime</span><span class="hl-1">: </span><span class="hl-5">module</span><span class="hl-1"> </span><span class="hl-5">types</span><span class="hl-1"> &amp; </span><span class="hl-5">helpers</span><br/><span class="hl-1">│   │   │   ├── </span><span class="hl-5">vartrans</span><span class="hl-1">/          # </span><span class="hl-5">vartrans</span><span class="hl-1">: </span><span class="hl-5">module</span><span class="hl-1"> </span><span class="hl-5">types</span><span class="hl-1"> &amp; </span><span class="hl-5">helpers</span><br/><span class="hl-1">│   │   │   ├── </span><span class="hl-5">decomp</span><span class="hl-1">/            # </span><span class="hl-5">decomp</span><span class="hl-1">: </span><span class="hl-5">module</span><span class="hl-1"> </span><span class="hl-5">types</span><span class="hl-1"> &amp; </span><span class="hl-5">helpers</span><br/><span class="hl-1">│   │   │   ├── </span><span class="hl-5">synsem</span><span class="hl-1">/            # </span><span class="hl-5">synsem</span><span class="hl-1">: </span><span class="hl-5">module</span><span class="hl-1"> </span><span class="hl-5">types</span><span class="hl-1"> &amp; </span><span class="hl-5">helpers</span><br/><span class="hl-1">│   │   │   ├── </span><span class="hl-5">lexicog</span><span class="hl-1">/           # </span><span class="hl-5">lexicog</span><span class="hl-1">: </span><span class="hl-5">module</span><span class="hl-1"> </span><span class="hl-5">types</span><span class="hl-1"> &amp; </span><span class="hl-5">helpers</span><br/><span class="hl-1">│   │   │   ├── </span><span class="hl-5">lexinfo</span><span class="hl-1">/           # </span><span class="hl-5">LexInfo</span><span class="hl-1"> 3.0 </span><span class="hl-5">enumerations</span><span class="hl-1"> &amp; </span><span class="hl-5">property</span><span class="hl-1"> </span><span class="hl-5">maps</span><br/><span class="hl-1">│   │   │   ├── </span><span class="hl-5">skos</span><span class="hl-1">/              # </span><span class="hl-5">SKOS</span><span class="hl-1"> </span><span class="hl-5">concept</span><span class="hl-1">/</span><span class="hl-5">scheme</span><span class="hl-1"> </span><span class="hl-5">helpers</span><br/><span class="hl-1">│   │   │   ├── </span><span class="hl-5">context</span><span class="hl-1">/           # </span><span class="hl-5">JSON</span><span class="hl-1">-</span><span class="hl-5">LD</span><span class="hl-1"> @</span><span class="hl-5">context</span><span class="hl-1"> </span><span class="hl-5">construction</span><span class="hl-1"> &amp; </span><span class="hl-5">compaction</span><br/><span class="hl-1">│   │   │   ├── </span><span class="hl-5">builders</span><span class="hl-1">/          # </span><span class="hl-5">Fluent</span><span class="hl-1"> </span><span class="hl-5">builder</span><span class="hl-1"> </span><span class="hl-5">API</span><br/><span class="hl-1">│   │   │   └── </span><span class="hl-5">index</span><span class="hl-1">.</span><span class="hl-5">ts</span><br/><span class="hl-1">│   │   ├── </span><span class="hl-5">test</span><span class="hl-1">/</span><br/><span class="hl-1">│   │   └── </span><span class="hl-5">package</span><span class="hl-1">.</span><span class="hl-5">json</span><br/><span class="hl-1">│   │</span><br/><span class="hl-1">│   ├── </span><span class="hl-5">rdf</span><span class="hl-1">/                       # @</span><span class="hl-5">etrog</span><span class="hl-1">/</span><span class="hl-5">rdf</span><br/><span class="hl-1">│   │   ├── </span><span class="hl-5">src</span><span class="hl-1">/</span><br/><span class="hl-1">│   │   │   ├── </span><span class="hl-5">turtle</span><span class="hl-1">/            # </span><span class="hl-5">Turtle</span><span class="hl-1"> </span><span class="hl-5">parser</span><span class="hl-1"> &amp; </span><span class="hl-5">serializer</span><br/><span class="hl-1">│   │   │   ├── </span><span class="hl-5">rdfxml</span><span class="hl-1">/            # </span><span class="hl-5">RDF</span><span class="hl-1">/</span><span class="hl-5">XML</span><span class="hl-1"> </span><span class="hl-5">parser</span><span class="hl-1"> &amp; </span><span class="hl-5">serializer</span><br/><span class="hl-1">│   │   │   ├── </span><span class="hl-5">jsonld</span><span class="hl-1">/            # </span><span class="hl-5">JSON</span><span class="hl-1">-</span><span class="hl-5">LD</span><span class="hl-1"> </span><span class="hl-5">expand</span><span class="hl-1"> / </span><span class="hl-5">compact</span><span class="hl-1"> / </span><span class="hl-5">frame</span><br/><span class="hl-1">│   │   │   └── </span><span class="hl-5">index</span><span class="hl-1">.</span><span class="hl-5">ts</span><br/><span class="hl-1">│   │   ├── </span><span class="hl-5">test</span><span class="hl-1">/</span><br/><span class="hl-1">│   │   └── </span><span class="hl-5">package</span><span class="hl-1">.</span><span class="hl-5">json</span><br/><span class="hl-1">│   │</span><br/><span class="hl-1">│   ├── </span><span class="hl-5">wordnet</span><span class="hl-1">/                   # @</span><span class="hl-5">etrog</span><span class="hl-1">/</span><span class="hl-5">wordnet</span><span class="hl-1">  (</span><span class="hl-5">GWA</span><span class="hl-1"> / </span><span class="hl-5">OEWN</span><span class="hl-1"> </span><span class="hl-5">interop</span><span class="hl-1">)</span><br/><span class="hl-1">│   │   ├── </span><span class="hl-5">src</span><span class="hl-1">/</span><br/><span class="hl-1">│   │   │   ├── </span><span class="hl-5">schema</span><span class="hl-1">.</span><span class="hl-5">ts</span><span class="hl-1">          # </span><span class="hl-5">wn</span><span class="hl-1">: </span><span class="hl-5">namespace</span><span class="hl-1"> </span><span class="hl-5">types</span><br/><span class="hl-1">│   │   │   ├── </span><span class="hl-5">reader</span><span class="hl-1">.</span><span class="hl-5">ts</span><span class="hl-1">          # </span><span class="hl-5">Load</span><span class="hl-1"> </span><span class="hl-5">OEWN</span><span class="hl-1"> </span><span class="hl-5">Turtle</span><span class="hl-1"> </span><span class="hl-5">dumps</span><br/><span class="hl-1">│   │   │   └── </span><span class="hl-5">index</span><span class="hl-1">.</span><span class="hl-5">ts</span><br/><span class="hl-1">│   │   ├── </span><span class="hl-5">test</span><span class="hl-1">/</span><br/><span class="hl-1">│   │   └── </span><span class="hl-5">package</span><span class="hl-1">.</span><span class="hl-5">json</span><br/><span class="hl-1">│   │</span><br/><span class="hl-1">│   ├── </span><span class="hl-5">dbnary</span><span class="hl-1">/                    # @</span><span class="hl-5">etrog</span><span class="hl-1">/</span><span class="hl-5">dbnary</span><span class="hl-1">  (</span><span class="hl-5">DBnary</span><span class="hl-1"> </span><span class="hl-5">interop</span><span class="hl-1">)</span><br/><span class="hl-1">│   │   ├── </span><span class="hl-5">src</span><span class="hl-1">/</span><br/><span class="hl-1">│   │   │   ├── </span><span class="hl-5">schema</span><span class="hl-1">.</span><span class="hl-5">ts</span><span class="hl-1">          # </span><span class="hl-5">dbnary</span><span class="hl-1">: </span><span class="hl-5">namespace</span><span class="hl-1"> </span><span class="hl-5">types</span><br/><span class="hl-1">│   │   │   ├── </span><span class="hl-5">reader</span><span class="hl-1">.</span><span class="hl-5">ts</span><span class="hl-1">          # </span><span class="hl-5">Load</span><span class="hl-1"> </span><span class="hl-5">DBnary</span><span class="hl-1"> </span><span class="hl-5">Turtle</span><span class="hl-1"> </span><span class="hl-5">dumps</span><br/><span class="hl-1">│   │   │   └── </span><span class="hl-5">index</span><span class="hl-1">.</span><span class="hl-5">ts</span><br/><span class="hl-1">│   │   ├── </span><span class="hl-5">test</span><span class="hl-1">/</span><br/><span class="hl-1">│   │   └── </span><span class="hl-5">package</span><span class="hl-1">.</span><span class="hl-5">json</span><br/><span class="hl-1">│   │</span><br/><span class="hl-1">│   ├── </span><span class="hl-5">export</span><span class="hl-1">-</span><span class="hl-5">dict</span><span class="hl-1">/               # @</span><span class="hl-5">etrog</span><span class="hl-1">/</span><span class="hl-5">export</span><span class="hl-1">-</span><span class="hl-5">dict</span><br/><span class="hl-1">│   │   ├── </span><span class="hl-5">src</span><span class="hl-1">/</span><br/><span class="hl-1">│   │   │   ├── </span><span class="hl-5">serializer</span><span class="hl-1">.</span><span class="hl-5">ts</span><span class="hl-1">      # </span><span class="hl-5">Lexicon</span><span class="hl-1"> → .</span><span class="hl-5">dict</span><span class="hl-1"> + .</span><span class="hl-5">index</span><br/><span class="hl-1">│   │   │   └── </span><span class="hl-5">index</span><span class="hl-1">.</span><span class="hl-5">ts</span><br/><span class="hl-1">│   │   ├── </span><span class="hl-5">test</span><span class="hl-1">/</span><br/><span class="hl-1">│   │   └── </span><span class="hl-5">package</span><span class="hl-1">.</span><span class="hl-5">json</span><br/><span class="hl-1">│   │</span><br/><span class="hl-1">│   └── </span><span class="hl-5">export</span><span class="hl-1">-</span><span class="hl-5">apple</span><span class="hl-1">/              # @</span><span class="hl-5">etrog</span><span class="hl-1">/</span><span class="hl-5">export</span><span class="hl-1">-</span><span class="hl-5">apple</span><br/><span class="hl-1">│       ├── </span><span class="hl-5">src</span><span class="hl-1">/</span><br/><span class="hl-1">│       │   ├── </span><span class="hl-5">serializer</span><span class="hl-1">.</span><span class="hl-5">ts</span><span class="hl-1">      # </span><span class="hl-5">Lexicon</span><span class="hl-1"> → </span><span class="hl-5">Apple</span><span class="hl-1"> </span><span class="hl-5">DDS</span><span class="hl-1"> </span><span class="hl-5">XML</span><br/><span class="hl-1">│       │   └── </span><span class="hl-5">index</span><span class="hl-1">.</span><span class="hl-5">ts</span><br/><span class="hl-1">│       ├── </span><span class="hl-5">test</span><span class="hl-1">/</span><br/><span class="hl-1">│       └── </span><span class="hl-5">package</span><span class="hl-1">.</span><span class="hl-5">json</span><br/><span class="hl-1">│</span><br/><span class="hl-1">└── </span><span class="hl-5">docs</span><span class="hl-1">/                          # </span><span class="hl-5">API</span><span class="hl-1"> </span><span class="hl-5">docs</span><span class="hl-1"> (</span><span class="hl-5">auto</span><span class="hl-1">-</span><span class="hl-5">generated</span><span class="hl-1"> </span><span class="hl-5">via</span><span class="hl-1"> </span><span class="hl-5">typedoc</span><span class="hl-1">)</span>
+</code><button>Copy</button></pre>
+
+<hr>
+<h2 id="4-architecture-overview" class="tsd-anchor-link">4. Architecture Overview<a href="#4-architecture-overview" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<h3 id="41-data-model" class="tsd-anchor-link">4.1 Data Model<a href="#41-data-model" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p>The canonical in-memory representation is a <strong>plain TypeScript object graph</strong>
+that mirrors the RDF model one-to-one. Every interface bears a mandatory <code>@type</code>
+field containing the full expanded URI of the RDF class (e.g.,
+<code>&quot;http://www.w3.org/ns/lemon/ontolex#LexicalEntry&quot;</code>), and every resource bears
+a mandatory <code>@id</code> field containing its URI or a blank-node identifier (e.g.,
+<code>&quot;_:b0&quot;</code>).</p>
+<p>This object graph is structurally equivalent to <strong>expanded JSON-LD</strong> and can be
+passed directly to any JSON-LD 1.1 processor. Compaction with the standard Etrog
+<code>@context</code> is provided as a convenience serialization step.</p>
+<h3 id="42-layered-design" class="tsd-anchor-link">4.2 Layered Design<a href="#42-layered-design" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<pre><code><span class="hl-1">┌──────────────────────────────────────────────────────────┐</span><br/><span class="hl-1">│  </span><span class="hl-0">Export</span><span class="hl-1"> </span><span class="hl-0">layer</span><span class="hl-1">   │ </span><span class="hl-2">DICT</span><span class="hl-1"> </span><span class="hl-0">serializer</span><span class="hl-1"> │ </span><span class="hl-0">Apple</span><span class="hl-1"> </span><span class="hl-2">XML</span><span class="hl-1"> </span><span class="hl-0">serializer</span><span class="hl-1"> │</span><br/><span class="hl-1">├──────────────────────────────────────────────────────────┤</span><br/><span class="hl-1">│  </span><span class="hl-2">RDF</span><span class="hl-1"> </span><span class="hl-0">layer</span><span class="hl-1">      │ </span><span class="hl-0">Turtle</span><span class="hl-1"> </span><span class="hl-2">I</span><span class="hl-1">/</span><span class="hl-2">O</span><span class="hl-1"> │ </span><span class="hl-2">RDF</span><span class="hl-1">/</span><span class="hl-2">XML</span><span class="hl-1"> </span><span class="hl-2">I</span><span class="hl-1">/</span><span class="hl-2">O</span><span class="hl-1"> │ </span><span class="hl-2">JSON</span><span class="hl-1">-</span><span class="hl-2">LD</span><span class="hl-1"> </span><span class="hl-2">I</span><span class="hl-1">/</span><span class="hl-2">O</span><span class="hl-1"> │</span><br/><span class="hl-1">├──────────────────────────────────────────────────────────┤</span><br/><span class="hl-1">│  </span><span class="hl-0">Builder</span><span class="hl-1"> </span><span class="hl-0">layer</span><span class="hl-1">  │ </span><span class="hl-0">Fluent</span><span class="hl-1"> </span><span class="hl-0">builder</span><span class="hl-1"> </span><span class="hl-3">API</span><span class="hl-1"> (</span><span class="hl-0">entry</span><span class="hl-1">, </span><span class="hl-0">sense</span><span class="hl-1">, …)   │</span><br/><span class="hl-1">├──────────────────────────────────────────────────────────┤</span><br/><span class="hl-1">│  </span><span class="hl-0">Core</span><span class="hl-1"> </span><span class="hl-0">layer</span><span class="hl-1">     │ </span><span class="hl-0">Types</span><span class="hl-1"> · </span><span class="hl-0">Interfaces</span><span class="hl-1"> · </span><span class="hl-0">Namespaces</span><span class="hl-1">        │</span><br/><span class="hl-1">└──────────────────────────────────────────────────────────┘</span>
+</code><button>Copy</button></pre>
+
+<p>Each layer depends only on layers below it. The export layer never depends on
+the builder layer; exporters accept the plain object graph directly.</p>
+<h3 id="43-uri-strategy" class="tsd-anchor-link">4.3 URI Strategy<a href="#43-uri-strategy" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p>URIs are the identity mechanism for all RDF resources. Etrog follows this policy:</p>
+<ul>
+<li><strong>Named resources (lexicons, entries, senses, forms):</strong> Use UUIDv5 seeded from
+a deterministic namespace + canonical string, so repeated construction of the
+same resource yields the same URI. Default URI scheme:
+<code>urn:uuid:&lt;uuidv5&gt;</code> for locally-minted resources.</li>
+<li><strong>External resources:</strong> Passed through verbatim. No rewriting.</li>
+<li><strong>Blank nodes:</strong> Represented as <code>&quot;_:b&lt;n&gt;&quot;</code> strings. Discouraged for anything
+that needs to be referenced externally.</li>
+<li><strong>LexInfo feature values:</strong> Always emitted as full URIs
+(<code>http://www.lexinfo.net/ontology/3.0/lexinfo#masculine</code>), never as bare
+strings. TypeScript enums map enum members to their canonical LexInfo URI.</li>
+</ul>
+<hr>
+<h2 id="5-module-specifications" class="tsd-anchor-link">5. Module Specifications<a href="#5-module-specifications" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<h3 id="51-ontolex-module" class="tsd-anchor-link">5.1 <code>@etrog/core</code> — ontolex Module<a href="#51-ontolex-module" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p>Implements all classes and properties from the <strong>ontolex core module</strong> (§3 of
+the 2016 spec).</p>
+<h4 id="key-interfaces" class="tsd-anchor-link">Key interfaces<a href="#key-interfaces" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h4>
+<pre><code><span class="hl-6">/** http://www.w3.org/ns/lemon/ontolex#LexicalEntry */</span><br/><span class="hl-4">interface</span><span class="hl-1"> </span><span class="hl-5">LexicalEntry</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-7">&quot;@id&quot;</span><span class="hl-1">: </span><span class="hl-5">URI</span><span class="hl-1">;</span><br/><span class="hl-1">  </span><span class="hl-7">&quot;@type&quot;</span><span class="hl-1">: </span><span class="hl-7">&quot;ontolex:LexicalEntry&quot;</span><span class="hl-1"> | </span><span class="hl-5">URI</span><span class="hl-1">;</span><br/><br/><span class="hl-1">  </span><span class="hl-6">// Core OntoLex properties</span><br/><span class="hl-1">  </span><span class="hl-7">&quot;ontolex:canonicalForm&quot;</span><span class="hl-1">: </span><span class="hl-5">Form</span><span class="hl-1">;</span><br/><span class="hl-1">  </span><span class="hl-7">&quot;ontolex:otherForm&quot;</span><span class="hl-1">?: </span><span class="hl-5">Form</span><span class="hl-1">[];</span><br/><span class="hl-1">  </span><span class="hl-7">&quot;ontolex:lexicalForm&quot;</span><span class="hl-1">?: </span><span class="hl-5">Form</span><span class="hl-1">[];       </span><span class="hl-6">// alias covering canonical + other</span><br/><span class="hl-1">  </span><span class="hl-7">&quot;ontolex:sense&quot;</span><span class="hl-1">?: </span><span class="hl-5">LexicalSense</span><span class="hl-1">[];</span><br/><span class="hl-1">  </span><span class="hl-7">&quot;ontolex:evokes&quot;</span><span class="hl-1">?: </span><span class="hl-5">LexicalConcept</span><span class="hl-1">[];  </span><span class="hl-6">// shortcut; prefer via LexicalSense</span><br/><br/><span class="hl-1">  </span><span class="hl-6">// LexInfo properties (values are LexInfo URIs)</span><br/><span class="hl-1">  </span><span class="hl-7">&quot;lexinfo:partOfSpeech&quot;</span><span class="hl-1">?: </span><span class="hl-5">LexInfoPartOfSpeech</span><span class="hl-1">[];</span><br/><br/><span class="hl-1">  </span><span class="hl-6">// LIME metadata</span><br/><span class="hl-1">  </span><span class="hl-7">&quot;lime:language&quot;</span><span class="hl-1">: </span><span class="hl-5">LanguageTag</span><span class="hl-1">;         </span><span class="hl-6">// BCP 47</span><br/><br/><span class="hl-1">  </span><span class="hl-6">// Decomp</span><br/><span class="hl-1">  </span><span class="hl-7">&quot;decomp:subterm&quot;</span><span class="hl-1">?: </span><span class="hl-5">Component</span><span class="hl-1">[];</span><br/><br/><span class="hl-1">  </span><span class="hl-6">// Provenance (DCTerms)</span><br/><span class="hl-1">  </span><span class="hl-7">&quot;dcterms:source&quot;</span><span class="hl-1">?: </span><span class="hl-5">URI</span><span class="hl-1">;</span><br/><span class="hl-1">  </span><span class="hl-7">&quot;dcterms:created&quot;</span><span class="hl-1">?: </span><span class="hl-5">XSDDate</span><span class="hl-1">;</span><br/><span class="hl-1">  </span><span class="hl-7">&quot;dcterms:modified&quot;</span><span class="hl-1">?: </span><span class="hl-5">XSDDate</span><span class="hl-1">;</span><br/><span class="hl-1">  </span><span class="hl-7">&quot;dcterms:creator&quot;</span><span class="hl-1">?: </span><span class="hl-5">string</span><span class="hl-1">;</span><br/><br/><span class="hl-1">  </span><span class="hl-6">// RDFS</span><br/><span class="hl-1">  </span><span class="hl-7">&quot;rdfs:label&quot;</span><span class="hl-1">?: </span><span class="hl-5">LangString</span><span class="hl-1">[];</span><br/><span class="hl-1">  </span><span class="hl-7">&quot;rdfs:comment&quot;</span><span class="hl-1">?: </span><span class="hl-5">LangString</span><span class="hl-1">[];</span><br/><span class="hl-1">  </span><span class="hl-7">&quot;rdfs:seeAlso&quot;</span><span class="hl-1">?: </span><span class="hl-5">URI</span><span class="hl-1">[];</span><br/><span class="hl-1">}</span><br/><br/><span class="hl-6">/** http://www.w3.org/ns/lemon/ontolex#Form */</span><br/><span class="hl-4">interface</span><span class="hl-1"> </span><span class="hl-5">Form</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-7">&quot;@id&quot;</span><span class="hl-1">: </span><span class="hl-5">URI</span><span class="hl-1">;</span><br/><span class="hl-1">  </span><span class="hl-7">&quot;@type&quot;</span><span class="hl-1">: </span><span class="hl-7">&quot;ontolex:Form&quot;</span><span class="hl-1"> | </span><span class="hl-5">URI</span><span class="hl-1">;</span><br/><span class="hl-1">  </span><span class="hl-7">&quot;ontolex:writtenRep&quot;</span><span class="hl-1">: </span><span class="hl-5">LangString</span><span class="hl-1">[];</span><br/><span class="hl-1">  </span><span class="hl-7">&quot;ontolex:phoneticRep&quot;</span><span class="hl-1">?: </span><span class="hl-5">LangString</span><span class="hl-1">[];</span><br/><br/><span class="hl-1">  </span><span class="hl-6">// LexInfo morphosyntactic properties</span><br/><span class="hl-1">  </span><span class="hl-7">&quot;lexinfo:gender&quot;</span><span class="hl-1">?: </span><span class="hl-5">LexInfoGender</span><span class="hl-1">[];</span><br/><span class="hl-1">  </span><span class="hl-7">&quot;lexinfo:number&quot;</span><span class="hl-1">?: </span><span class="hl-5">LexInfoNumber</span><span class="hl-1">[];</span><br/><span class="hl-1">  </span><span class="hl-7">&quot;lexinfo:case&quot;</span><span class="hl-1">?: </span><span class="hl-5">LexInfoCase</span><span class="hl-1">[];</span><br/><span class="hl-1">  </span><span class="hl-7">&quot;lexinfo:tense&quot;</span><span class="hl-1">?: </span><span class="hl-5">LexInfoTense</span><span class="hl-1">[];</span><br/><span class="hl-1">  </span><span class="hl-7">&quot;lexinfo:mood&quot;</span><span class="hl-1">?: </span><span class="hl-5">LexInfoMood</span><span class="hl-1">[];</span><br/><span class="hl-1">  </span><span class="hl-7">&quot;lexinfo:voice&quot;</span><span class="hl-1">?: </span><span class="hl-5">LexInfoVoice</span><span class="hl-1">[];</span><br/><span class="hl-1">  </span><span class="hl-7">&quot;lexinfo:person&quot;</span><span class="hl-1">?: </span><span class="hl-5">LexInfoPerson</span><span class="hl-1">[];</span><br/><span class="hl-1">  </span><span class="hl-7">&quot;lexinfo:degree&quot;</span><span class="hl-1">?: </span><span class="hl-5">LexInfoDegree</span><span class="hl-1">[];</span><br/><span class="hl-1">}</span><br/><br/><span class="hl-6">/** http://www.w3.org/ns/lemon/ontolex#LexicalSense */</span><br/><span class="hl-4">interface</span><span class="hl-1"> </span><span class="hl-5">LexicalSense</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-7">&quot;@id&quot;</span><span class="hl-1">: </span><span class="hl-5">URI</span><span class="hl-1">;</span><br/><span class="hl-1">  </span><span class="hl-7">&quot;@type&quot;</span><span class="hl-1">: </span><span class="hl-7">&quot;ontolex:LexicalSense&quot;</span><span class="hl-1"> | </span><span class="hl-5">URI</span><span class="hl-1">;</span><br/><span class="hl-1">  </span><span class="hl-7">&quot;ontolex:reference&quot;</span><span class="hl-1">?: </span><span class="hl-5">URI</span><span class="hl-1">;           </span><span class="hl-6">// link to formal ontology entity</span><br/><span class="hl-1">  </span><span class="hl-7">&quot;ontolex:isLexicalizedSenseOf&quot;</span><span class="hl-1">?: </span><span class="hl-5">URI</span><span class="hl-1">; </span><span class="hl-6">// link to LexicalConcept</span><br/><span class="hl-1">  </span><span class="hl-7">&quot;skos:definition&quot;</span><span class="hl-1">?: </span><span class="hl-5">LangString</span><span class="hl-1">[];</span><br/><span class="hl-1">  </span><span class="hl-7">&quot;lexicog:usageExample&quot;</span><span class="hl-1">?: </span><span class="hl-5">UsageExample</span><span class="hl-1">[];</span><br/><span class="hl-1">  </span><span class="hl-6">// … vartrans sense relations (see §5.3)</span><br/><span class="hl-1">}</span>
+</code><button>Copy</button></pre>
+
+<blockquote>
+<p><strong>A note on naming conventions.</strong> Etrog uses the actual JSON-LD property key
+syntax (<code>&quot;ontolex:canonicalForm&quot;</code>) so that the object is directly
+serializable JSON-LD without a translation step. Compaction with a <code>@context</code>
+can shorten these to bare names in exported documents if desired.</p>
+</blockquote>
+<h3 id="52-lime-module" class="tsd-anchor-link">5.2 <code>@etrog/core</code> — lime Module<a href="#52-lime-module" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p>Implements <code>lime:Lexicon</code>, <code>lime:LexicalizationSet</code>, <code>lime:LexicalLinkset</code>, and
+related metadata vocabulary.</p>
+<pre><code><span class="hl-6">/** http://www.w3.org/ns/lemon/lime#Lexicon */</span><br/><span class="hl-4">interface</span><span class="hl-1"> </span><span class="hl-5">Lexicon</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-7">&quot;@id&quot;</span><span class="hl-1">: </span><span class="hl-5">URI</span><span class="hl-1">;</span><br/><span class="hl-1">  </span><span class="hl-7">&quot;@type&quot;</span><span class="hl-1">: </span><span class="hl-7">&quot;lime:Lexicon&quot;</span><span class="hl-1"> | </span><span class="hl-5">URI</span><span class="hl-1">;</span><br/><span class="hl-1">  </span><span class="hl-7">&quot;lime:language&quot;</span><span class="hl-1">: </span><span class="hl-5">LanguageTag</span><span class="hl-1">;         </span><span class="hl-6">// MUST be a single BCP 47 tag</span><br/><span class="hl-1">  </span><span class="hl-7">&quot;lime:entry&quot;</span><span class="hl-1">: </span><span class="hl-5">LexicalEntry</span><span class="hl-1">[];         </span><span class="hl-6">// or IRIs referencing external entries</span><br/><span class="hl-1">  </span><span class="hl-7">&quot;lime:lexicalEntries&quot;</span><span class="hl-1">?: </span><span class="hl-5">number</span><span class="hl-1">;       </span><span class="hl-6">// statistical count</span><br/><br/><span class="hl-1">  </span><span class="hl-6">// Concept set link</span><br/><span class="hl-1">  </span><span class="hl-7">&quot;ontolex:conceptSet&quot;</span><span class="hl-1">?: </span><span class="hl-5">URI</span><span class="hl-1">;          </span><span class="hl-6">// points to a ConceptSet / skos:ConceptScheme</span><br/><br/><span class="hl-1">  </span><span class="hl-6">// Dublin Core metadata</span><br/><span class="hl-1">  </span><span class="hl-7">&quot;dcterms:title&quot;</span><span class="hl-1">?: </span><span class="hl-5">LangString</span><span class="hl-1">[];</span><br/><span class="hl-1">  </span><span class="hl-7">&quot;dcterms:description&quot;</span><span class="hl-1">?: </span><span class="hl-5">LangString</span><span class="hl-1">[];</span><br/><span class="hl-1">  </span><span class="hl-7">&quot;dcterms:license&quot;</span><span class="hl-1">?: </span><span class="hl-5">URI</span><span class="hl-1">;</span><br/><span class="hl-1">  </span><span class="hl-7">&quot;dcterms:creator&quot;</span><span class="hl-1">?: </span><span class="hl-5">string</span><span class="hl-1">[];</span><br/><span class="hl-1">  </span><span class="hl-7">&quot;dcterms:created&quot;</span><span class="hl-1">?: </span><span class="hl-5">XSDDate</span><span class="hl-1">;</span><br/><span class="hl-1">  </span><span class="hl-7">&quot;dcterms:modified&quot;</span><span class="hl-1">?: </span><span class="hl-5">XSDDate</span><span class="hl-1">;</span><br/><span class="hl-1">  </span><span class="hl-7">&quot;owl:versionInfo&quot;</span><span class="hl-1">?: </span><span class="hl-5">string</span><span class="hl-1">;</span><br/><br/><span class="hl-1">  </span><span class="hl-6">// Namespace declarations (serialization hint, not an RDF property)</span><br/><span class="hl-1">  </span><span class="hl-7">&quot;@context&quot;</span><span class="hl-1">?: </span><span class="hl-5">JsonLdContext</span><span class="hl-1">;</span><br/><span class="hl-1">}</span>
+</code><button>Copy</button></pre>
+
+<p>Note: Per the spec, a <code>lime:Lexicon</code> is monolingual (<code>lime:language</code> takes
+exactly one value). A multilingual resource is modeled as multiple <code>Lexicon</code>
+instances, linked if desired via a parent <code>lime:LexicalizationSet</code> or a SKOS
+<code>ConceptScheme</code>.</p>
+<h3 id="53-vartrans-module" class="tsd-anchor-link">5.3 <code>@etrog/core</code> — vartrans Module<a href="#53-vartrans-module" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p>Implements all classes and properties for lexical variation and translation.</p>
+<p><strong>Fundamental distinction:</strong> <code>vartrans</code> offers both <em>shortcut</em> properties (no
+reification, simple triple) and <em>reified</em> relation nodes (carry provenance,
+category, source/target). Etrog exposes both forms.</p>
+<h4 id="classes" class="tsd-anchor-link">Classes<a href="#classes" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h4>
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>vartrans:LexicoSemanticRelation</code></td>
+<td>Abstract base; relates two lexical resources</td>
+</tr>
+<tr>
+<td><code>vartrans:LexicalRelation</code></td>
+<td>Entry-to-entry form-level relation (abbreviation, derivation, spelling variant)</td>
+</tr>
+<tr>
+<td><code>vartrans:SenseRelation</code></td>
+<td>Sense-to-sense meaning-level relation (synonymy, antonymy, hypernymy, …)</td>
+</tr>
+<tr>
+<td><code>vartrans:TerminologicalRelation</code></td>
+<td>Sense variant on a terminological dimension (diatopic, diastratic, diachronic, …)</td>
+</tr>
+<tr>
+<td><code>vartrans:Translation</code></td>
+<td>Cross-lingual sense equivalence</td>
+</tr>
+<tr>
+<td><code>vartrans:TranslationSet</code></td>
+<td>Groups <code>Translation</code> instances sharing provenance</td>
+</tr>
+<tr>
+<td><code>vartrans:ConceptualRelation</code></td>
+<td>Concept-to-concept relation (WordNet synset relations)</td>
+</tr>
+</tbody>
+</table>
+<h4 id="shortcut-properties" class="tsd-anchor-link">Shortcut properties<a href="#shortcut-properties" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h4>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Domain → Range</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>vartrans:translatableAs</code></td>
+<td><code>LexicalEntry</code> → <code>LexicalEntry</code></td>
+<td>Entry-level; symmetric; no sense disambiguation</td>
+</tr>
+<tr>
+<td><code>vartrans:translation</code></td>
+<td><code>LexicalSense</code> → <code>LexicalSense</code></td>
+<td>Sense-level; prefer over <code>translatableAs</code> when sense is known</td>
+</tr>
+<tr>
+<td><code>vartrans:senseRel</code></td>
+<td><code>LexicalSense</code> → <code>LexicalSense</code></td>
+<td>Generic; sub-propertied via LexInfo for specific types</td>
+</tr>
+<tr>
+<td><code>vartrans:lexicalRel</code></td>
+<td><code>LexicalEntry</code> → <code>LexicalEntry</code></td>
+<td>Generic; sub-propertied for specific types</td>
+</tr>
+<tr>
+<td><code>vartrans:conceptRel</code></td>
+<td><code>LexicalConcept</code> → <code>LexicalConcept</code></td>
+<td>Concept-level; used for WordNet synset relations</td>
+</tr>
+</tbody>
+</table>
+<h4 id="reification-properties" class="tsd-anchor-link">Reification properties<a href="#reification-properties" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h4>
+<p>Used on instances of <code>vartrans:LexicoSemanticRelation</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Range</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>vartrans:source</code></td>
+<td>lexical resource</td>
+<td>The &quot;from&quot; side of an asymmetric relation</td>
+</tr>
+<tr>
+<td><code>vartrans:target</code></td>
+<td>lexical resource</td>
+<td>The &quot;to&quot; side</td>
+</tr>
+<tr>
+<td><code>vartrans:category</code></td>
+<td>external URI</td>
+<td>Type of relation, e.g. <code>lexinfo:hypernym</code>, <code>wn:hypernym</code></td>
+</tr>
+<tr>
+<td><code>vartrans:trans</code></td>
+<td><code>Translation</code></td>
+<td>Links <code>TranslationSet</code> to its member translations</td>
+</tr>
+</tbody>
+</table>
+<h3 id="54-decomp-module" class="tsd-anchor-link">5.4 <code>@etrog/core</code> — decomp Module<a href="#54-decomp-module" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p>Models morphological decomposition of complex words and multiword expressions.</p>
+<table>
+<thead>
+<tr>
+<th>Class/Property</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>decomp:Component</code></td>
+<td>A constituent part of a compound/multiword</td>
+</tr>
+<tr>
+<td><code>decomp:subterm</code></td>
+<td><code>LexicalEntry</code> → <code>Component</code> — the immediate constituents</td>
+</tr>
+<tr>
+<td><code>decomp:constituent</code></td>
+<td><code>Component</code> → <code>LexicalEntry</code> — what the component corresponds to at entry level</td>
+</tr>
+<tr>
+<td><code>decomp:correspondsTo</code></td>
+<td><code>Component</code> → <code>LexicalEntry</code> — the lexical entry this component stands for</td>
+</tr>
+</tbody>
+</table>
+<h3 id="55-synsem-module" class="tsd-anchor-link">5.5 <code>@etrog/core</code> — synsem Module<a href="#55-synsem-module" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p>Models subcategorization frames and the syntax-semantics interface.</p>
+<table>
+<thead>
+<tr>
+<th>Class/Property</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>synsem:SyntacticFrame</code></td>
+<td>A syntactic behavior pattern (transitive, intransitive, …)</td>
+</tr>
+<tr>
+<td><code>synsem:SyntacticArgument</code></td>
+<td>A slot within a syntactic frame</td>
+</tr>
+<tr>
+<td><code>synsem:OntoMap</code></td>
+<td>Maps a syntactic argument to an ontological predicate</td>
+</tr>
+<tr>
+<td><code>synsem:synBehavior</code></td>
+<td><code>LexicalEntry</code> → <code>SyntacticFrame</code> — the frames a word participates in</td>
+</tr>
+<tr>
+<td><code>synsem:synArg</code></td>
+<td><code>SyntacticFrame</code> → <code>SyntacticArgument</code></td>
+</tr>
+<tr>
+<td><code>synsem:ontoCorrespondence</code></td>
+<td><code>SyntacticFrame</code> → <code>OntoMap</code></td>
+</tr>
+<tr>
+<td><code>synsem:subjOfProp</code></td>
+<td>Maps subject argument to ontology property</td>
+</tr>
+<tr>
+<td><code>synsem:objOfProp</code></td>
+<td>Maps object argument to ontology property</td>
+</tr>
+<tr>
+<td><code>synsem:isA</code></td>
+<td><code>LexicalEntry</code> → OWL class — asserts that the entry denotes a member of the class</td>
+</tr>
+</tbody>
+</table>
+<p>LexInfo provides a rich vocabulary of <code>SyntacticFrame</code> sub-classes (e.g.,
+<code>lexinfo:TransitiveFrame</code>, <code>lexinfo:DitransitiveFrame</code>, <code>lexinfo:NounPPFrame</code>)
+and <code>SyntacticArgument</code> sub-properties (e.g., <code>lexinfo:subject</code>,
+<code>lexinfo:directObject</code>). These are pre-registered in <code>@etrog/core</code>'s LexInfo
+module.</p>
+<h3 id="56-lexicog-module" class="tsd-anchor-link">5.6 <code>@etrog/core</code> — lexicog Module<a href="#56-lexicog-module" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p>Bridges the OntoLex model to the structural representation of actual dictionary
+entries, as defined in the 2019 lexicography spec.</p>
+<table>
+<thead>
+<tr>
+<th>Class/Property</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>lexicog:LexicographicResource</code></td>
+<td>A structured dictionary or lexicographic work</td>
+</tr>
+<tr>
+<td><code>lexicog:Entry</code></td>
+<td>One dictionary entry within the resource</td>
+</tr>
+<tr>
+<td><code>lexicog:LexicographicComponent</code></td>
+<td>A component part of an entry (headword, sense block, …)</td>
+</tr>
+<tr>
+<td><code>lexicog:UsageExample</code></td>
+<td>A structured usage example with optional source attribution</td>
+</tr>
+<tr>
+<td><code>lexicog:FormRestriction</code></td>
+<td>Restricts a usage example to a particular form</td>
+</tr>
+<tr>
+<td><code>lexicog:entry</code></td>
+<td><code>LexicographicResource</code> → <code>Entry</code></td>
+</tr>
+<tr>
+<td><code>lexicog:describes</code></td>
+<td><code>Entry</code> → <code>LexicalEntry</code> (links dictionary entry to the ontolex entry)</td>
+</tr>
+<tr>
+<td><code>lexicog:subComponent</code></td>
+<td><code>LexicographicComponent</code> → <code>LexicographicComponent</code></td>
+</tr>
+<tr>
+<td><code>lexicog:usageExample</code></td>
+<td><code>LexicalSense</code> → <code>UsageExample</code></td>
+</tr>
+<tr>
+<td><code>lexicog:restrictedTo</code></td>
+<td><code>UsageExample</code> → <code>FormRestriction</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="57-lexinfo-30-enumerations" class="tsd-anchor-link">5.7 <code>@etrog/core</code> — LexInfo 3.0 Enumerations<a href="#57-lexinfo-30-enumerations" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p>The <code>lexinfo/</code> sub-module exports TypeScript <code>const</code> enumerations for all
+morphosyntactic feature categories. Each member's value is the full expanded
+LexInfo URI.</p>
+<pre><code><span class="hl-6">// Part of Speech (lexinfo:PartOfSpeech individuals)</span><br/><span class="hl-8">export</span><span class="hl-1"> </span><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-2">LexInfoPoS</span><span class="hl-1"> = {</span><br/><span class="hl-1">  </span><span class="hl-0">noun:</span><span class="hl-1">              </span><span class="hl-7">&quot;http://www.lexinfo.net/ontology/3.0/lexinfo#noun&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-0">verb:</span><span class="hl-1">              </span><span class="hl-7">&quot;http://www.lexinfo.net/ontology/3.0/lexinfo#verb&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-0">adjective:</span><span class="hl-1">         </span><span class="hl-7">&quot;http://www.lexinfo.net/ontology/3.0/lexinfo#adjective&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-0">adverb:</span><span class="hl-1">            </span><span class="hl-7">&quot;http://www.lexinfo.net/ontology/3.0/lexinfo#adverb&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-0">pronoun:</span><span class="hl-1">           </span><span class="hl-7">&quot;http://www.lexinfo.net/ontology/3.0/lexinfo#pronoun&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-0">preposition:</span><span class="hl-1">       </span><span class="hl-7">&quot;http://www.lexinfo.net/ontology/3.0/lexinfo#preposition&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-0">conjunction:</span><span class="hl-1">       </span><span class="hl-7">&quot;http://www.lexinfo.net/ontology/3.0/lexinfo#conjunction&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-0">determiner:</span><span class="hl-1">        </span><span class="hl-7">&quot;http://www.lexinfo.net/ontology/3.0/lexinfo#determiner&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-0">interjection:</span><span class="hl-1">      </span><span class="hl-7">&quot;http://www.lexinfo.net/ontology/3.0/lexinfo#interjection&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-0">particle:</span><span class="hl-1">          </span><span class="hl-7">&quot;http://www.lexinfo.net/ontology/3.0/lexinfo#particle&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-0">numeral:</span><span class="hl-1">           </span><span class="hl-7">&quot;http://www.lexinfo.net/ontology/3.0/lexinfo#numeral&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-0">properNoun:</span><span class="hl-1">        </span><span class="hl-7">&quot;http://www.lexinfo.net/ontology/3.0/lexinfo#properNoun&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-0">symbol:</span><span class="hl-1">            </span><span class="hl-7">&quot;http://www.lexinfo.net/ontology/3.0/lexinfo#symbol&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-0">abbreviation:</span><span class="hl-1">      </span><span class="hl-7">&quot;http://www.lexinfo.net/ontology/3.0/lexinfo#abbreviation&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-0">acronym:</span><span class="hl-1">           </span><span class="hl-7">&quot;http://www.lexinfo.net/ontology/3.0/lexinfo#acronym&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">} </span><span class="hl-8">as</span><span class="hl-1"> </span><span class="hl-4">const</span><span class="hl-1">;</span><br/><span class="hl-8">export</span><span class="hl-1"> </span><span class="hl-4">type</span><span class="hl-1"> </span><span class="hl-5">LexInfoPoS</span><span class="hl-1"> = </span><span class="hl-4">typeof</span><span class="hl-1"> </span><span class="hl-0">LexInfoPoS</span><span class="hl-1">[</span><span class="hl-0">keyof</span><span class="hl-1"> </span><span class="hl-4">typeof</span><span class="hl-1"> </span><span class="hl-0">LexInfoPoS</span><span class="hl-1">];</span><br/><br/><span class="hl-6">// Grammatical gender</span><br/><span class="hl-8">export</span><span class="hl-1"> </span><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-2">LexInfoGender</span><span class="hl-1"> = {</span><br/><span class="hl-1">  </span><span class="hl-0">masculine:</span><span class="hl-1">   </span><span class="hl-7">&quot;http://www.lexinfo.net/ontology/3.0/lexinfo#masculine&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-0">feminine:</span><span class="hl-1">    </span><span class="hl-7">&quot;http://www.lexinfo.net/ontology/3.0/lexinfo#feminine&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-0">neuter:</span><span class="hl-1">      </span><span class="hl-7">&quot;http://www.lexinfo.net/ontology/3.0/lexinfo#neuter&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-0">common:</span><span class="hl-1">      </span><span class="hl-7">&quot;http://www.lexinfo.net/ontology/3.0/lexinfo#commonGender&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">} </span><span class="hl-8">as</span><span class="hl-1"> </span><span class="hl-4">const</span><span class="hl-1">;</span><br/><br/><span class="hl-6">// Grammatical number</span><br/><span class="hl-8">export</span><span class="hl-1"> </span><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-2">LexInfoNumber</span><span class="hl-1"> = {</span><br/><span class="hl-1">  </span><span class="hl-0">singular:</span><span class="hl-1">  </span><span class="hl-7">&quot;http://www.lexinfo.net/ontology/3.0/lexinfo#singular&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-0">plural:</span><span class="hl-1">    </span><span class="hl-7">&quot;http://www.lexinfo.net/ontology/3.0/lexinfo#plural&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-0">dual:</span><span class="hl-1">      </span><span class="hl-7">&quot;http://www.lexinfo.net/ontology/3.0/lexinfo#dual&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">} </span><span class="hl-8">as</span><span class="hl-1"> </span><span class="hl-4">const</span><span class="hl-1">;</span><br/><br/><span class="hl-6">// Tense</span><br/><span class="hl-8">export</span><span class="hl-1"> </span><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-2">LexInfoTense</span><span class="hl-1"> = {</span><br/><span class="hl-1">  </span><span class="hl-0">present:</span><span class="hl-1">    </span><span class="hl-7">&quot;http://www.lexinfo.net/ontology/3.0/lexinfo#presentTense&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-0">past:</span><span class="hl-1">       </span><span class="hl-7">&quot;http://www.lexinfo.net/ontology/3.0/lexinfo#pastTense&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-0">future:</span><span class="hl-1">     </span><span class="hl-7">&quot;http://www.lexinfo.net/ontology/3.0/lexinfo#futureTense&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">} </span><span class="hl-8">as</span><span class="hl-1"> </span><span class="hl-4">const</span><span class="hl-1">;</span><br/><br/><span class="hl-6">// Mood</span><br/><span class="hl-8">export</span><span class="hl-1"> </span><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-2">LexInfoMood</span><span class="hl-1"> = {</span><br/><span class="hl-1">  </span><span class="hl-0">indicative:</span><span class="hl-1">  </span><span class="hl-7">&quot;http://www.lexinfo.net/ontology/3.0/lexinfo#indicativeMood&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-0">subjunctive:</span><span class="hl-1"> </span><span class="hl-7">&quot;http://www.lexinfo.net/ontology/3.0/lexinfo#subjunctiveMood&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-0">imperative:</span><span class="hl-1">  </span><span class="hl-7">&quot;http://www.lexinfo.net/ontology/3.0/lexinfo#imperativeMood&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-0">conditional:</span><span class="hl-1"> </span><span class="hl-7">&quot;http://www.lexinfo.net/ontology/3.0/lexinfo#conditionalMood&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-0">optative:</span><span class="hl-1">    </span><span class="hl-7">&quot;http://www.lexinfo.net/ontology/3.0/lexinfo#optativeMood&quot;</span><span class="hl-1">,</span><br/><span class="hl-1">} </span><span class="hl-8">as</span><span class="hl-1"> </span><span class="hl-4">const</span><span class="hl-1">;</span><br/><br/><span class="hl-6">// (Voice, Person, Case, Degree, Aspect, Definiteness follow the same pattern)</span>
+</code><button>Copy</button></pre>
+
+<blockquote>
+<p>All enum values are URI strings. This makes them immediately usable as RDF
+property values in JSON-LD output without any mapping step.</p>
+</blockquote>
+<hr>
+<h2 id="6-json-ld-strategy" class="tsd-anchor-link">6. JSON-LD Strategy<a href="#6-json-ld-strategy" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<h3 id="61-the-standard-etrog-context" class="tsd-anchor-link">6.1 The Standard Etrog Context<a href="#61-the-standard-etrog-context" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p>The library ships a canonical JSON-LD <code>@context</code> document that:</p>
+<ol>
+<li>Declares all OntoLex-Lemon module namespaces (<code>ontolex:</code>, <code>lime:</code>,
+<code>vartrans:</code>, <code>decomp:</code>, <code>synsem:</code>, <code>lexicog:</code>)</li>
+<li>Declares companion namespaces (<code>lexinfo:</code>, <code>skos:</code>, <code>wn:</code>, <code>dbnary:</code>,
+<code>dcterms:</code>, <code>owl:</code>, <code>rdf:</code>, <code>rdfs:</code>)</li>
+<li>Provides shorthand property aliases for the most commonly used properties so
+that compacted documents are legible (e.g., <code>&quot;language&quot;</code> → <code>&quot;lime:language&quot;</code>,
+<code>&quot;canonicalForm&quot;</code> → <code>&quot;ontolex:canonicalForm&quot;</code>)</li>
+<li>Specifies <code>@type</code> coercions for known URI-valued properties (so values are
+treated as IRIs, not strings)</li>
+<li>Specifies <code>@language</code> coercions for <code>LangString</code>-valued properties</li>
+</ol>
+<p>The context is published at a stable URL and versioned. Consumers that do not
+want the Etrog runtime can reference it by URL in their own JSON-LD documents.</p>
+<h3 id="62-compaction-vs-expansion" class="tsd-anchor-link">6.2 Compaction vs. Expansion<a href="#62-compaction-vs-expansion" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<ul>
+<li><strong>Expanded form</strong> (internal representation): every property is a full URI
+string, every value is an array, language-tagged strings are objects with
+<code>@value</code> and <code>@language</code>. This is the canonical form inside Etrog.</li>
+<li><strong>Compacted form</strong> (output for humans and most consumers): produced by running
+JSON-LD compaction with the standard Etrog context. Shorter property names,
+inline values where possible.</li>
+<li><strong>Framed form</strong> (structured output for specific entry shapes): JSON-LD framing
+can be used to produce output shaped like <code>{ entry: [...], concepts: [...] }</code>
+etc. The <code>@etrog/rdf</code> package exposes a <code>frame()</code> helper.</li>
+</ul>
+<h3 id="63-relationship-to-the-gwa-wordnet-json-ld-context" class="tsd-anchor-link">6.3 Relationship to the GWA WordNet JSON-LD Context<a href="#63-relationship-to-the-gwa-wordnet-json-ld-context" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p>The Global WordNet Association publishes a JSON-LD context for WordNet data at:
+<code>http://globalwordnet.github.io/schemas/wn-json-context-1.4.json</code></p>
+<p>Etrog's <code>@etrog/wordnet</code> package uses this context as a basis for reading and
+writing GWA-format JSON. The Etrog standard context is <strong>compatible</strong> with the
+GWA context but broader (it covers all OntoLex modules, not just core + lime +
+vartrans as the GWA context does).</p>
+<hr>
+<h2 id="7-rdf-round-trip-strategy" class="tsd-anchor-link">7. RDF Round-Trip Strategy<a href="#7-rdf-round-trip-strategy" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<h3 id="71-supported-formats" class="tsd-anchor-link">7.1 Supported Formats<a href="#71-supported-formats" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<table>
+<thead>
+<tr>
+<th>Format</th>
+<th>Read</th>
+<th>Write</th>
+<th>MIME type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>JSON-LD 1.1</td>
+<td>✅</td>
+<td>✅</td>
+<td><code>application/ld+json</code></td>
+</tr>
+<tr>
+<td>Turtle (TTL)</td>
+<td>✅</td>
+<td>✅</td>
+<td><code>text/turtle</code></td>
+</tr>
+<tr>
+<td>RDF/XML</td>
+<td>✅</td>
+<td>✅</td>
+<td><code>application/rdf+xml</code></td>
+</tr>
+<tr>
+<td>N-Triples</td>
+<td>✅</td>
+<td>✅</td>
+<td><code>application/n-triples</code></td>
+</tr>
+</tbody>
+</table>
+<p>The <code>@etrog/rdf</code> package exposes a unified I/O API across all supported formats:</p>
+<pre><code><span class="hl-6">// @etrog/rdf</span><br/><span class="hl-8">export</span><span class="hl-1"> </span><span class="hl-4">async</span><span class="hl-1"> </span><span class="hl-4">function</span><span class="hl-1"> </span><span class="hl-3">parseTurtle</span><span class="hl-1">(</span><span class="hl-0">input</span><span class="hl-1">: </span><span class="hl-5">string</span><span class="hl-1"> | </span><span class="hl-5">ReadableStream</span><span class="hl-1">, </span><span class="hl-0">baseIri</span><span class="hl-1">?: </span><span class="hl-5">string</span><span class="hl-1">): </span><span class="hl-5">Promise</span><span class="hl-1">&lt;</span><span class="hl-5">EtrogDataset</span><span class="hl-1">&gt;</span><br/><span class="hl-8">export</span><span class="hl-1"> </span><span class="hl-4">async</span><span class="hl-1"> </span><span class="hl-4">function</span><span class="hl-1"> </span><span class="hl-3">parseRdfXml</span><span class="hl-1">(</span><span class="hl-0">input</span><span class="hl-1">: </span><span class="hl-5">string</span><span class="hl-1"> | </span><span class="hl-5">ReadableStream</span><span class="hl-1">, </span><span class="hl-0">baseIri</span><span class="hl-1">?: </span><span class="hl-5">string</span><span class="hl-1">): </span><span class="hl-5">Promise</span><span class="hl-1">&lt;</span><span class="hl-5">EtrogDataset</span><span class="hl-1">&gt;</span><br/><span class="hl-8">export</span><span class="hl-1"> </span><span class="hl-4">async</span><span class="hl-1"> </span><span class="hl-4">function</span><span class="hl-1"> </span><span class="hl-3">parseJsonLd</span><span class="hl-1">(</span><span class="hl-0">input</span><span class="hl-1">: </span><span class="hl-5">object</span><span class="hl-1"> | </span><span class="hl-5">string</span><span class="hl-1">, </span><span class="hl-0">context</span><span class="hl-1">?: </span><span class="hl-5">object</span><span class="hl-1">): </span><span class="hl-5">Promise</span><span class="hl-1">&lt;</span><span class="hl-5">EtrogDataset</span><span class="hl-1">&gt;</span><br/><br/><span class="hl-8">export</span><span class="hl-1"> </span><span class="hl-4">async</span><span class="hl-1"> </span><span class="hl-4">function</span><span class="hl-1"> </span><span class="hl-3">serializeTurtle</span><span class="hl-1">(</span><span class="hl-0">dataset</span><span class="hl-1">: </span><span class="hl-5">EtrogDataset</span><span class="hl-1">, </span><span class="hl-0">prefixes</span><span class="hl-1">?: </span><span class="hl-5">NamespaceMap</span><span class="hl-1">): </span><span class="hl-5">Promise</span><span class="hl-1">&lt;</span><span class="hl-5">string</span><span class="hl-1">&gt;</span><br/><span class="hl-8">export</span><span class="hl-1"> </span><span class="hl-4">async</span><span class="hl-1"> </span><span class="hl-4">function</span><span class="hl-1"> </span><span class="hl-3">serializeRdfXml</span><span class="hl-1">(</span><span class="hl-0">dataset</span><span class="hl-1">: </span><span class="hl-5">EtrogDataset</span><span class="hl-1">, </span><span class="hl-0">prefixes</span><span class="hl-1">?: </span><span class="hl-5">NamespaceMap</span><span class="hl-1">): </span><span class="hl-5">Promise</span><span class="hl-1">&lt;</span><span class="hl-5">string</span><span class="hl-1">&gt;</span><br/><span class="hl-8">export</span><span class="hl-1"> </span><span class="hl-4">async</span><span class="hl-1"> </span><span class="hl-4">function</span><span class="hl-1"> </span><span class="hl-3">serializeJsonLd</span><span class="hl-1">(</span><span class="hl-0">dataset</span><span class="hl-1">: </span><span class="hl-5">EtrogDataset</span><span class="hl-1">, </span><span class="hl-0">context</span><span class="hl-1">?: </span><span class="hl-5">object</span><span class="hl-1">): </span><span class="hl-5">Promise</span><span class="hl-1">&lt;</span><span class="hl-5">object</span><span class="hl-1">&gt;</span><br/><br/><span class="hl-6">// JSON-LD operations</span><br/><span class="hl-8">export</span><span class="hl-1"> </span><span class="hl-4">async</span><span class="hl-1"> </span><span class="hl-4">function</span><span class="hl-1"> </span><span class="hl-3">expand</span><span class="hl-1">(</span><span class="hl-0">doc</span><span class="hl-1">: </span><span class="hl-5">object</span><span class="hl-1">): </span><span class="hl-5">Promise</span><span class="hl-1">&lt;</span><span class="hl-5">object</span><span class="hl-1">[]&gt;</span><br/><span class="hl-8">export</span><span class="hl-1"> </span><span class="hl-4">async</span><span class="hl-1"> </span><span class="hl-4">function</span><span class="hl-1"> </span><span class="hl-3">compact</span><span class="hl-1">(</span><span class="hl-0">doc</span><span class="hl-1">: </span><span class="hl-5">object</span><span class="hl-1">, </span><span class="hl-0">context</span><span class="hl-1">: </span><span class="hl-5">object</span><span class="hl-1">): </span><span class="hl-5">Promise</span><span class="hl-1">&lt;</span><span class="hl-5">object</span><span class="hl-1">&gt;</span><br/><span class="hl-8">export</span><span class="hl-1"> </span><span class="hl-4">async</span><span class="hl-1"> </span><span class="hl-4">function</span><span class="hl-1"> </span><span class="hl-3">frame</span><span class="hl-1">(</span><span class="hl-0">doc</span><span class="hl-1">: </span><span class="hl-5">object</span><span class="hl-1">, </span><span class="hl-0">frame</span><span class="hl-1">: </span><span class="hl-5">object</span><span class="hl-1">): </span><span class="hl-5">Promise</span><span class="hl-1">&lt;</span><span class="hl-5">object</span><span class="hl-1">&gt;</span><br/><br/><span class="hl-6">// Conversion helpers</span><br/><span class="hl-8">export</span><span class="hl-1"> </span><span class="hl-4">function</span><span class="hl-1"> </span><span class="hl-3">datasetToLexicon</span><span class="hl-1">(</span><span class="hl-0">dataset</span><span class="hl-1">: </span><span class="hl-5">EtrogDataset</span><span class="hl-1">): </span><span class="hl-5">Lexicon</span><br/><span class="hl-8">export</span><span class="hl-1"> </span><span class="hl-4">function</span><span class="hl-1"> </span><span class="hl-3">lexiconToDataset</span><span class="hl-1">(</span><span class="hl-0">lexicon</span><span class="hl-1">: </span><span class="hl-5">Lexicon</span><span class="hl-1">): </span><span class="hl-5">EtrogDataset</span>
+</code><button>Copy</button></pre>
+
+<h3 id="72-round-trip-fidelity" class="tsd-anchor-link">7.2 Round-Trip Fidelity<a href="#72-round-trip-fidelity" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p>All tests must verify that:</p>
+<ol>
+<li>A <code>Lexicon</code> object serialized to JSON-LD and parsed back produces an
+object that is deep-equal to the original (<code>lexicon → jsonld → lexicon</code>).</li>
+<li>A <code>Lexicon</code> serialized to Turtle, parsed with N3, re-serialized to JSON-LD,
+and parsed back produces an object deep-equal to the original
+(<code>lexicon → ttl → n3-dataset → jsonld → lexicon</code>).</li>
+<li>A <code>Lexicon</code> serialized to RDF/XML and parsed back passes the same check.</li>
+</ol>
+<hr>
+<h2 id="8-export-targets" class="tsd-anchor-link">8. Export Targets<a href="#8-export-targets" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<h3 id="81-dict-format-" class="tsd-anchor-link">8.1 DICT Format (<code>@etrog/export-dict</code>)<a href="#81-dict-format-" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p>The DICT protocol (RFC 2229, port 2628) uses a simple pair of files:</p>
+<ul>
+<li><strong><code>.index</code></strong> — tab-delimited: <code>&lt;headword&gt;\t&lt;base64-offset&gt;\t&lt;base64-length&gt;\n</code></li>
+<li><strong><code>.dict</code></strong> (or <code>.dict.dz</code>, dictzip-compressed) — sequential text blocks,
+seekable via the index</li>
+</ul>
+<h4 id="mapping-from-ontolex-to-dict" class="tsd-anchor-link">Mapping from OntoLex to DICT<a href="#mapping-from-ontolex-to-dict" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h4>
+<table>
+<thead>
+<tr>
+<th>DICT concept</th>
+<th>OntoLex source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Headword</td>
+<td><code>ontolex:writtenRep</code> of the <code>ontolex:canonicalForm</code></td>
+</tr>
+<tr>
+<td>Definition block</td>
+<td>One per <code>ontolex:LexicalSense</code> with a <code>skos:definition</code></td>
+</tr>
+<tr>
+<td>Cross-references</td>
+<td><code>vartrans:senseRel</code> targets rendered as <code>{see also: word}</code> markup</td>
+</tr>
+<tr>
+<td>Part of speech</td>
+<td><code>lexinfo:partOfSpeech</code> value, mapped to a human-readable string</td>
+</tr>
+<tr>
+<td>Pronunciation</td>
+<td><code>ontolex:phoneticRep</code> (IPA)</td>
+</tr>
+</tbody>
+</table>
+<p>DICT definition text uses a simple plain-text convention. Etrog will produce
+output compatible with the <code>dictd</code> server format and DICT protocol clients.</p>
+<p><strong>Dictzip compression</strong> (a seekable gzip variant used by dictd): Implement using
+Bun's built-in <code>Bun.gzip</code>, producing a header-compatible dictzip
+stream. Alternatively, write an uncompressed <code>.dict</code> and document that users can
+compress with the <code>dictzip</code> CLI tool from the <code>dictd</code> package.</p>
+<h3 id="82-apple-dictionary-services-xml-" class="tsd-anchor-link">8.2 Apple Dictionary Services XML (<code>@etrog/export-apple</code>)<a href="#82-apple-dictionary-services-xml-" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<p>Apple's Dictionary Development Kit (DDK) accepts source files in a <strong>custom XML
+format</strong> with a RELAX NG schema. The XML namespace is:
+<code>http://www.apple.com/DTDs/DictionaryService-1.0.rng</code> (prefix <code>d:</code>).</p>
+<p>The content inside <code>&lt;d:entry&gt;</code> is standard XHTML. Apple's DDK build tool
+processes the XML + CSS + Info.plist into a <code>.dictionary</code> bundle.</p>
+<h4 id="element-mapping" class="tsd-anchor-link">Element mapping<a href="#element-mapping" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h4>
+<table>
+<thead>
+<tr>
+<th>Apple XML element</th>
+<th>OntoLex source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>&lt;d:entry id=&quot;…&quot; d:title=&quot;…&quot;&gt;</code></td>
+<td>One per <code>LexicalEntry</code>; <code>d:title</code> = canonical written rep</td>
+</tr>
+<tr>
+<td><code>&lt;d:index d:value=&quot;…&quot;&gt;</code></td>
+<td>One per <code>ontolex:Form</code> (canonical + other forms), for lookup indexing</td>
+</tr>
+<tr>
+<td><code>&lt;d:index d:value=&quot;…&quot; d:yomi=&quot;…&quot;&gt;</code></td>
+<td>For Japanese/CJK entries: <code>d:value</code> = romanization, <code>d:yomi</code> = reading</td>
+</tr>
+<tr>
+<td><code>&lt;h1&gt;</code> (XHTML)</td>
+<td>Headword (canonical written rep)</td>
+</tr>
+<tr>
+<td><code>&lt;span class=&quot;part-of-speech&quot;&gt;</code></td>
+<td>LexInfo PoS value, mapped to human-readable string</td>
+</tr>
+<tr>
+<td><code>&lt;span class=&quot;pronunciation&quot;&gt;</code></td>
+<td><code>ontolex:phoneticRep</code> (IPA)</td>
+</tr>
+<tr>
+<td><code>&lt;ol class=&quot;senses&quot;&gt;</code> + <code>&lt;li&gt;</code></td>
+<td>One <code>&lt;li&gt;</code> per <code>ontolex:LexicalSense</code></td>
+</tr>
+<tr>
+<td><code>&lt;p class=&quot;definition&quot;&gt;</code></td>
+<td><code>skos:definition</code> for the sense</td>
+</tr>
+<tr>
+<td><code>&lt;p class=&quot;example&quot;&gt;</code></td>
+<td><code>lexicog:usageExample</code> text</td>
+</tr>
+<tr>
+<td><code>&lt;span class=&quot;translation&quot;&gt;</code></td>
+<td><code>vartrans:translation</code> target (written rep + language tag)</td>
+</tr>
+<tr>
+<td><code>&lt;d:parental-control/&gt;</code></td>
+<td>Triggered by <code>lexinfo:register</code> = <code>lexinfo:vulgar</code> or similar</td>
+</tr>
+</tbody>
+</table>
+<p>The exporter must produce well-formed XML. Use Bun's built-in text handling or a
+lightweight XML builder (no heavyweight DOM library required). The output is a
+single UTF-8 encoded <code>.xml</code> file ready for use with Apple's DDK <code>build_dict.sh</code>
+script.</p>
+<blockquote>
+<p><strong>No DDK dependency.</strong> Etrog only generates the XML source. Users must install
+Apple's Dictionary Development Kit (available from Apple Developer Downloads as
+part of &quot;Additional Tools for Xcode&quot;) to build the final <code>.dictionary</code> bundle.
+Etrog should document this requirement clearly in <code>@etrog/export-apple</code>'s
+README.</p>
+</blockquote>
+<hr>
+<h2 id="9-ai-usage-disclosure" class="tsd-anchor-link">9. AI Usage Disclosure<a href="#9-ai-usage-disclosure" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<p>Generative AI was used in the development of this project to accelerate
+the implementation of the OntoLex and related ontologies as TypeScript
+types and related functions, fulfilling much the same role a traditional
+codegen framework would have.</p>
+<p>Why not use a traditional codegen tool then? While there's certainly a lot of
+interesting work happening to better integrate Semantic Web technologies with
+the modern JavaScript/TypeScript ecosystem, much of which has been documented
+at <a href="https://rdfjs.dev">RDF + JS = ❤️</a>, I <a href="https://github.com/dsifriend">@dsifriend</a>
+wanted to offer something more ergonomic and domain-specific.</p>
+<p>All AI contributions to the <a href="https://github.com/dsifriend/etrog/tree/main">main branch</a>
+of this project have already undergone careful manual review.</p>
+<hr>
+<h2 id="10-contribution-guidelines" class="tsd-anchor-link">10. Contribution Guidelines<a href="#10-contribution-guidelines" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<p>Contributions Welcome! If you'd like to help grow:</p>
+<ol>
+<li>
+<p><strong>Open an issue</strong> for feature requests, bug reports, or discussion about significant changes.
+This helps coordinate work and ensures your effort is aligned with the project's direction.</p>
+</li>
+<li>
+<p><strong>Submit a pull request</strong> with your changes. Please ensure that:</p>
+<ul>
+<li>You've run the <strong>linting script</strong> (<code>bun run lint</code>) to check code style</li>
+<li>You've run the <strong>formatting script</strong> (<code>bun run format</code>) to apply consistent formatting</li>
+<li>You've run <strong>type-checking</strong> (<code>bun run typecheck</code>) to ensure there are no TypeScript errors</li>
+<li>All tests pass (<code>bun test</code>)</li>
+</ul>
+</li>
+<li>
+<p><strong>Reference the issue</strong> in your PR description if your changes address an open issue.</p>
+</li>
+<li>
+<p><strong>AI Contributions</strong> <em>may</em> be accepted, but please disclose how and where it was used
+like in the project's <a href="#9-ai-usage-disclosure">AI Usage Disclosure</a> as part of the PR.
+Please review all such contributions before making a pull request.
+If we suspect any AI-generated code was left unchecked or was not disclosed properly,
+the PR <em>will</em> be rejected, and your account <em>may</em> be barred from contributing in the future.</p>
+<p><strong>Agents</strong> should follow the guidelines set out in <a href="media/AGENTS.md"><code>AGENTS.md</code></a>.
+Human contributors may also benefit from skimming it to learn our preferred style conventions.</p>
+</li>
+</ol>
+<hr>
+<h2 id="11-glossary" class="tsd-anchor-link">11. Glossary<a href="#11-glossary" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>BCP 47</strong></td>
+<td>IETF language tag standard (e.g., <code>en</code>, <code>de</code>, <code>he</code>, <code>yi-Latn</code>). Used for <code>lime:language</code> and <code>@language</code> in LangStrings.</td>
+</tr>
+<tr>
+<td><strong>Blank node</strong></td>
+<td>An RDF resource with no global URI, identified by a local <code>_:bN</code> identifier within a document.</td>
+</tr>
+<tr>
+<td><strong>Compaction</strong></td>
+<td>JSON-LD operation that applies a <code>@context</code> to shorten expanded property URIs to prefixed names.</td>
+</tr>
+<tr>
+<td><strong>ConceptSet</strong></td>
+<td><code>ontolex:ConceptSet</code> — a <code>skos:ConceptScheme</code> organizing <code>LexicalConcept</code> instances.</td>
+</tr>
+<tr>
+<td><strong>DBnary</strong></td>
+<td>A project extracting structured RDF from 26+ Wiktionary editions using OntoLex-Lemon + <code>dbnary:</code> extensions.</td>
+</tr>
+<tr>
+<td><strong>DDK</strong></td>
+<td>Apple Dictionary Development Kit — the toolchain for building <code>.dictionary</code> bundles from XML source files.</td>
+</tr>
+<tr>
+<td><strong>DICT</strong></td>
+<td>RFC 2229 dictionary access protocol (TCP port 2628). Used by <code>dict.org</code> and the <code>dictd</code> server.</td>
+</tr>
+<tr>
+<td><strong>Expanded JSON-LD</strong></td>
+<td>JSON-LD form where all property names are full URIs and all values are arrays. The canonical form inside Etrog.</td>
+</tr>
+<tr>
+<td><strong>GWA</strong></td>
+<td>Global WordNet Association — publishes the GWA-LMF format and the <code>wn:</code> RDF schema used by Open English WordNet.</td>
+</tr>
+<tr>
+<td><strong>LangString</strong></td>
+<td>A string value paired with a BCP 47 language tag. Represented as <code>{ &quot;@value&quot;: &quot;…&quot;, &quot;@language&quot;: &quot;…&quot; }</code> in expanded JSON-LD.</td>
+</tr>
+<tr>
+<td><strong>LIME</strong></td>
+<td>Linguistic Metadata module of OntoLex-Lemon. Provides <code>lime:Lexicon</code>, the top-level lexicon container.</td>
+</tr>
+<tr>
+<td><strong>LexInfo</strong></td>
+<td>Companion OWL ontology providing a vocabulary of morphosyntactic feature values and syntactic frames for OntoLex.</td>
+</tr>
+<tr>
+<td><strong>LLOD</strong></td>
+<td>Linguistic Linked Open Data — the body of language resources published as RDF on the Web.</td>
+</tr>
+<tr>
+<td><strong>OntoLex-Lemon</strong></td>
+<td>W3C Community Group specification for encoding lexical information as Linked Data. Six published modules.</td>
+</tr>
+<tr>
+<td><strong>OEWN</strong></td>
+<td>Open English WordNet — an open-source fork of Princeton WordNet published in RDF using OntoLex.</td>
+</tr>
+<tr>
+<td><strong>Reification</strong></td>
+<td>Modeling a relation as a named RDF node (instead of a direct triple) so that it can carry metadata (provenance, category). Used in <code>vartrans:LexicoSemanticRelation</code>.</td>
+</tr>
+<tr>
+<td><strong>SKOS</strong></td>
+<td>W3C Simple Knowledge Organization System. <code>ontolex:LexicalConcept</code> is a subclass of <code>skos:Concept</code>.</td>
+</tr>
+<tr>
+<td><strong>Turtle (TTL)</strong></td>
+<td>Terse RDF Triple Language — a compact RDF serialization format. Primary format for OEWN and DBnary dumps.</td>
+</tr>
+<tr>
+<td><strong>UUIDv5</strong></td>
+<td>Deterministic UUID generated by hashing a namespace UUID and a local name string (SHA-1). Used for minting stable, reproducible URIs.</td>
+</tr>
+<tr>
+<td><strong>vartrans</strong></td>
+<td>OntoLex-Lemon module for modeling lexical variation, sense relations, and translation equivalences.</td>
+</tr>
+</tbody>
+</table>
+</div></div><div class="col-sidebar"><div class="page-menu"><div class="tsd-navigation settings"><details class="tsd-accordion"><summary class="tsd-accordion-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="assets/icons.svg#icon-chevronDown"></use></svg><h3>Settings</h3></summary><div class="tsd-accordion-details"><div class="tsd-filter-visibility"><span class="settings-label">Member Visibility</span><ul id="tsd-filter-options"><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-protected" name="protected"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Protected</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-inherited" name="inherited" checked/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Inherited</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-external" name="external"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>External</span></label></li></ul></div><div class="tsd-theme-toggle"><label class="settings-label" for="tsd-theme">Theme</label><select id="tsd-theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div><details open class="tsd-accordion tsd-page-navigation"><summary class="tsd-accordion-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="assets/icons.svg#icon-chevronDown"></use></svg><h3>On This Page</h3></summary><div class="tsd-accordion-details"><a href="#etrog"><span>Etrog</span></a><ul><li><a href="#table-of-contents"><span>Table of <wbr/>Contents</span></a></li><li><a href="#1-project-philosophy"><span>1. <wbr/>Project <wbr/>Philosophy</span></a></li><li><a href="#2-standards-coverage"><span>2. <wbr/>Standards <wbr/>Coverage</span></a></li><li><ul><li><a href="#21-ontolex-lemon-modules"><span>2.1 <wbr/>Onto<wbr/>Lex-<wbr/>Lemon <wbr/>Modules</span></a></li><li><a href="#22-companion-ontologies"><span>2.2 <wbr/>Companion <wbr/>Ontologies</span></a></li><li><a href="#23-export-targets"><span>2.3 <wbr/>Export <wbr/>Targets</span></a></li></ul></li><li><a href="#3-repository-layout"><span>3. <wbr/>Repository <wbr/>Layout</span></a></li><li><a href="#4-architecture-overview"><span>4. <wbr/>Architecture <wbr/>Overview</span></a></li><li><ul><li><a href="#41-data-model"><span>4.1 <wbr/>Data <wbr/>Model</span></a></li><li><a href="#42-layered-design"><span>4.2 <wbr/>Layered <wbr/>Design</span></a></li><li><a href="#43-uri-strategy"><span>4.3 <wbr/>URI <wbr/>Strategy</span></a></li></ul></li><li><a href="#5-module-specifications"><span>5. <wbr/>Module <wbr/>Specifications</span></a></li><li><ul><li><a href="#51-ontolex-module"><span>5.1  — ontolex <wbr/>Module</span></a></li><li><ul><li><a href="#key-interfaces"><span>Key interfaces</span></a></li></ul></li><li><a href="#52-lime-module"><span>5.2  — lime <wbr/>Module</span></a></li><li><a href="#53-vartrans-module"><span>5.3  — vartrans <wbr/>Module</span></a></li><li><ul><li><a href="#classes"><span>Classes</span></a></li><li><a href="#shortcut-properties"><span>Shortcut properties</span></a></li><li><a href="#reification-properties"><span>Reification properties</span></a></li></ul></li><li><a href="#54-decomp-module"><span>5.4  — decomp <wbr/>Module</span></a></li><li><a href="#55-synsem-module"><span>5.5  — synsem <wbr/>Module</span></a></li><li><a href="#56-lexicog-module"><span>5.6  — lexicog <wbr/>Module</span></a></li><li><a href="#57-lexinfo-30-enumerations"><span>5.7  — <wbr/>Lex<wbr/>Info 3.0 <wbr/>Enumerations</span></a></li></ul></li><li><a href="#6-json-ld-strategy"><span>6. <wbr/>JSON-<wbr/>LD <wbr/>Strategy</span></a></li><li><ul><li><a href="#61-the-standard-etrog-context"><span>6.1 <wbr/>The <wbr/>Standard <wbr/>Etrog <wbr/>Context</span></a></li><li><a href="#62-compaction-vs-expansion"><span>6.2 <wbr/>Compaction vs. <wbr/>Expansion</span></a></li><li><a href="#63-relationship-to-the-gwa-wordnet-json-ld-context"><span>6.3 <wbr/>Relationship to the <wbr/>GWA <wbr/>Word<wbr/>Net <wbr/>JSON-<wbr/>LD <wbr/>Context</span></a></li></ul></li><li><a href="#7-rdf-round-trip-strategy"><span>7. <wbr/>RDF <wbr/>Round-<wbr/>Trip <wbr/>Strategy</span></a></li><li><ul><li><a href="#71-supported-formats"><span>7.1 <wbr/>Supported <wbr/>Formats</span></a></li><li><a href="#72-round-trip-fidelity"><span>7.2 <wbr/>Round-<wbr/>Trip <wbr/>Fidelity</span></a></li></ul></li><li><a href="#8-export-targets"><span>8. <wbr/>Export <wbr/>Targets</span></a></li><li><ul><li><a href="#81-dict-format-"><span>8.1 <wbr/>DICT <wbr/>Format ()</span></a></li><li><ul><li><a href="#mapping-from-ontolex-to-dict"><span>Mapping from <wbr/>Onto<wbr/>Lex to <wbr/>DICT</span></a></li></ul></li><li><a href="#82-apple-dictionary-services-xml-"><span>8.2 <wbr/>Apple <wbr/>Dictionary <wbr/>Services <wbr/>XML ()</span></a></li><li><ul><li><a href="#element-mapping"><span>Element mapping</span></a></li></ul></li></ul></li><li><a href="#9-ai-usage-disclosure"><span>9. <wbr/>AI <wbr/>Usage <wbr/>Disclosure</span></a></li><li><a href="#10-contribution-guidelines"><span>10. <wbr/>Contribution <wbr/>Guidelines</span></a></li><li><a href="#11-glossary"><span>11. <wbr/>Glossary</span></a></li></ul></div></details></div><div class="site-menu"><nav class="tsd-navigation"><a href="modules.html">Etrog</a><ul class="tsd-small-nested-navigation" id="tsd-nav-container"><li>Loading...</li></ul></nav></div></div></div><footer><p class="tsd-generator">Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a> with <a href="https://github.com/JulianWowra/typedoc-github-theme" target="_blank">typedoc-github-theme</a></p></footer><div class="overlay"></div></body></html>
