@@ -2,6 +2,13 @@
 	"name": "@etrog/export-apple",
 	"version": "1.0.0",
 	"type": "module",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/dsifriend/etrog.git",
+		"directory": "packages/export-apple"
+	},
+	"homepage": "https://github.com/dsifriend/etrog#readme",
 	"main": "./dist/index.js",
 	"types": "./dist/index.d.ts",
 	"files": [
