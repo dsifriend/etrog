@@ -331,6 +331,20 @@ describe("LexiconBuilder", () => {
 		]);
 	});
 
+	test("setLicense sets dcterms:license", () => {
+		const license = "https://creativecommons.org/licenses/by/4.0/" as URI;
+		const lex = new LexiconBuilder(lexId, en).setLicense(license).build();
+		expect(lex["dcterms:license"]).toBe(license);
+	});
+
+	test("addCreator appends dcterms:creator names", () => {
+		const lex = new LexiconBuilder(lexId, en)
+			.addCreator("Jane Smith")
+			.addCreator("Etrog Project")
+			.build();
+		expect(lex["dcterms:creator"]).toEqual(["Jane Smith", "Etrog Project"]);
+	});
+
 	test("setMetadata merges arbitrary fields", () => {
 		const lex = new LexiconBuilder(lexId, en)
 			.setMetadata({ "owl:versionInfo": "1.0.0" })
