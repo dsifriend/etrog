@@ -54,6 +54,8 @@ Every `package.json` under `packages/` must include:
 {
   "scripts": {
     "build": "bun build ./src/index.ts --outdir ./dist --target bun",
+    "prepack": "bun run build",
+    "prepublishOnly": "bun run build",
     "test": "bun test",
     "typecheck": "tsc --noEmit",
     "lint": "bunx @biomejs/biome check ./src",
@@ -61,6 +63,9 @@ Every `package.json` under `packages/` must include:
   }
 }
 ```
+
+`prepack` and `prepublishOnly` are required to guarantee that published artifacts in
+`dist/` are rebuilt from current source before packaging/publishing.
 
 All packages are scoped to `@etrog` and versioned in lockstep. Breaking changes
 to public TypeScript types require a major version bump.
