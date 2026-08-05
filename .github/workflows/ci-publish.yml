@@ -89,7 +89,19 @@ jobs:
           for pkg in core rdf export-apple export-dict dbnary wordnet; do
             (
               cd "packages/$pkg"
-              tarball=$(bun pm pack --gzip-level 9 --quiet)
+
+              # Remove stale package archives so the archive found below is
+              # guaranteed to have been created by this invocation.
+              rm -f ./*.tgz
+
+              bun pm pack --gzip-level 9 --quiet
+
+              tarball=$(find . -maxdepth 1 -type f -name '*.tgz' -print -quit)
+              if [ -z "$tarball" ]; then
+                echo "No package archive was created for $pkg" >&2
+                exit 1
+              fi
+
               npm publish "$tarball" --access public
             )
           done
