@@ -3,7 +3,7 @@ import { langString } from "../langstring.js";
 import type { LexInfoPoS } from "../lexinfo/index.js";
 import type { Form, LexicalEntry, LexicalSense } from "../ontolex/index.js";
 import type { SyntacticFrame } from "../synsem/index.js";
-import type { LanguageTag, URI } from "../types/index.js";
+import type { LangString, LanguageTag, URI } from "../types/index.js";
 
 /**
  * Fluent builder for `ontolex:LexicalEntry` objects.
@@ -223,6 +223,21 @@ export class LexicalEntryBuilder {
 		this.data["rdfs:label"] ??= [];
 		const labels = this.data["rdfs:label"];
 		labels.push(langString(value, lang));
+		return this;
+	}
+
+	/**
+	 * Adds a comment in the given language.
+	 * @param text - The multilingual comment text.
+	 * @returns `this` for chaining.
+	 *
+	 * @example
+	 * builder.addComment(langString("A temporary note", "en" as LanguageTag))
+	 */
+	addComment(text: LangString): this {
+		this.data["rdfs:comment"] ??= [];
+		const comments = this.data["rdfs:comment"];
+		comments.push(text);
 		return this;
 	}
 

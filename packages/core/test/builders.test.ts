@@ -238,6 +238,19 @@ describe("LexicalEntryBuilder", () => {
 		expect(entry["ontolex:otherForm"]).toHaveLength(1);
 	});
 
+	test("addComment appends multilingual comments", () => {
+		const firstComment = { "@value": "A temporary note", "@language": en };
+		const secondComment = {
+			"@value": "Une note temporaire",
+			"@language": "fr" as LanguageTag,
+		};
+		const entry = new LexicalEntryBuilder(entryId, form, en)
+			.addComment(firstComment)
+			.addComment(secondComment)
+			.build();
+		expect(entry["rdfs:comment"]).toEqual([firstComment, secondComment]);
+	});
+
 	test("addSubterm is idempotent", () => {
 		const subterm = "urn:uuid:entry-fever" as URI;
 		const entry = new LexicalEntryBuilder(entryId, form, en)
