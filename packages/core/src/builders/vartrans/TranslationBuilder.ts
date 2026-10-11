@@ -64,6 +64,23 @@ export class TranslationBuilder {
 	}
 
 	/**
+	 * Adds a resource URI linked by the generic `vartrans:relates` property.
+	 * @param resource - The related resource `URI`.
+	 * @returns `this` for chaining.
+	 *
+	 * @example
+	 * builder.addRelates("urn:uuid:entry-1" as URI)
+	 */
+	addRelates(resource: URI): this {
+		this.data["vartrans:relates"] ??= [];
+		const relates = this.data["vartrans:relates"];
+		if (!relates.includes(resource)) {
+			relates.push(resource);
+		}
+		return this;
+	}
+
+	/**
 	 * Returns the built `Translation` plain object.
 	 * @returns The constructed `Translation`.
 	 *

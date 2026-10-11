@@ -410,6 +410,15 @@ describe("TranslationBuilder", () => {
 			"@type": "vartrans:Translation",
 		});
 	});
+
+	test("addRelates is idempotent", () => {
+		const resource = "urn:uuid:entry-1" as URI;
+		const tr = new TranslationBuilder(trId)
+			.addRelates(resource)
+			.addRelates(resource)
+			.build();
+		expect(tr["vartrans:relates"]).toEqual([resource]);
+	});
 });
 
 describe("TranslationSetBuilder", () => {
