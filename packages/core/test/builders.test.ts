@@ -29,7 +29,7 @@ import {
 	LexInfoPoS,
 	LexInfoRegister,
 } from "../src/lexinfo/index.js";
-import type { LanguageTag, URI } from "../src/types/index.js";
+import type { LanguageTag, URI, XSDDate } from "../src/types/index.js";
 
 const en = "en" as LanguageTag;
 const formId = "urn:uuid:form-1" as URI;
@@ -235,6 +235,41 @@ describe("LexicalEntryBuilder", () => {
 		expect(entry["ontolex:morphologicalPattern"]).toEqual([pattern]);
 	});
 
+	test("addLexicalForm and addEvokes are idempotent by @id", () => {
+		const lexicalForm = new FormBuilder("urn:uuid:form-lexical" as URI)
+			.addWrittenRep("house", en)
+			.build();
+		const concept = new LexicalConceptBuilder(conceptId).build();
+		const entry = new LexicalEntryBuilder(entryId, form, en)
+			.addLexicalForm(lexicalForm)
+			.addLexicalForm(lexicalForm)
+			.addEvokes(concept)
+			.addEvokes(concept)
+			.build();
+		expect(entry["ontolex:lexicalForm"]).toEqual([lexicalForm]);
+		expect(entry["ontolex:evokes"]).toEqual([concept]);
+	});
+
+	test("adds lexical entry metadata", () => {
+		const source = "https://example.org/source" as URI;
+		const related = "https://example.org/related" as URI;
+		const created = "2025-01-15" as XSDDate;
+		const modified = "2025-02-01" as XSDDate;
+		const entry = new LexicalEntryBuilder(entryId, form, en)
+			.setSource(source)
+			.setCreated(created)
+			.setModified(modified)
+			.setCreator("Etrog Project")
+			.addSeeAlso(related)
+			.addSeeAlso(related)
+			.build();
+		expect(entry["dcterms:source"]).toBe(source);
+		expect(entry["dcterms:created"]).toBe(created);
+		expect(entry["dcterms:modified"]).toBe(modified);
+		expect(entry["dcterms:creator"]).toBe("Etrog Project");
+		expect(entry["rdfs:seeAlso"]).toEqual([related]);
+	});
+
 	test("addOtherForm is idempotent by @id", () => {
 		const plural = new FormBuilder("urn:uuid:form-2" as URI)
 			.addWrittenRep("houses", en)
@@ -365,6 +400,31 @@ describe("LexiconBuilder", () => {
 			.addCreator("Etrog Project")
 			.build();
 		expect(lex["dcterms:creator"]).toEqual(["Jane Smith", "Etrog Project"]);
+	});
+
+	test("sets all declared lexicon metadata fields", () => {
+		const catalog = "https://example.org/catalog" as URI;
+		const created = "2025-01-15" as XSDDate;
+		const modified = "2025-02-01" as XSDDate;
+		const context = { ex: "https://example.org/" };
+		const lex = new LexiconBuilder(lexId, en)
+			.addDescription("A lexicon of English words", en)
+			.setLexicalEntries(155287)
+			.setLinguisticCatalog(catalog)
+			.setCreated(created)
+			.setModified(modified)
+			.setVersionInfo("1.0.0")
+			.setContext(context)
+			.build();
+		expect(lex["dcterms:description"]).toEqual([
+			{ "@value": "A lexicon of English words", "@language": en },
+		]);
+		expect(lex["lime:lexicalEntries"]).toBe(155287);
+		expect(lex["lime:linguisticCatalog"]).toBe(catalog);
+		expect(lex["dcterms:created"]).toBe(created);
+		expect(lex["dcterms:modified"]).toBe(modified);
+		expect(lex["owl:versionInfo"]).toBe("1.0.0");
+		expect(lex["@context"]).toEqual(context);
 	});
 
 	test("setMetadata merges arbitrary fields", () => {

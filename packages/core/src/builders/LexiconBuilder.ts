@@ -1,7 +1,12 @@
 import { langString } from "../langstring.js";
 import type { Lexicon } from "../lime/index.js";
 import type { LexicalEntry } from "../ontolex/index.js";
-import type { LanguageTag, URI } from "../types/index.js";
+import type {
+	JsonLdContext,
+	LanguageTag,
+	URI,
+	XSDDate,
+} from "../types/index.js";
 
 /**
  * Fluent builder for `lime:Lexicon` objects.
@@ -61,6 +66,22 @@ export class LexiconBuilder {
 	}
 
 	/**
+	 * Adds a description in the given language.
+	 * @param value - The description text.
+	 * @param lang - The BCP 47 language tag.
+	 * @returns `this` for chaining.
+	 *
+	 * @example
+	 * builder.addDescription("A lexicon of English words", "en" as LanguageTag)
+	 */
+	addDescription(value: string, lang: LanguageTag): this {
+		this.data["dcterms:description"] ??= [];
+		const descriptions = this.data["dcterms:description"];
+		descriptions.push(langString(value, lang));
+		return this;
+	}
+
+	/**
 	 * Sets the license URI for this lexicon.
 	 * @param uri - The license URI.
 	 * @returns `this` for chaining.
@@ -85,6 +106,84 @@ export class LexiconBuilder {
 		this.data["dcterms:creator"] ??= [];
 		const creators = this.data["dcterms:creator"];
 		creators.push(name);
+		return this;
+	}
+
+	/**
+	 * Sets the number of lexical entries in this lexicon.
+	 * @param count - The lexical entry count.
+	 * @returns `this` for chaining.
+	 *
+	 * @example
+	 * builder.setLexicalEntries(155287)
+	 */
+	setLexicalEntries(count: number): this {
+		this.data["lime:lexicalEntries"] = count;
+		return this;
+	}
+
+	/**
+	 * Sets the URI of the linguistic catalog for this lexicon.
+	 * @param uri - The linguistic catalog URI.
+	 * @returns `this` for chaining.
+	 *
+	 * @example
+	 * builder.setLinguisticCatalog("https://example.org/catalog" as URI)
+	 */
+	setLinguisticCatalog(uri: URI): this {
+		this.data["lime:linguisticCatalog"] = uri;
+		return this;
+	}
+
+	/**
+	 * Sets the creation date of this lexicon.
+	 * @param date - The creation date as an XSD date.
+	 * @returns `this` for chaining.
+	 *
+	 * @example
+	 * builder.setCreated("2025-01-15" as XSDDate)
+	 */
+	setCreated(date: XSDDate): this {
+		this.data["dcterms:created"] = date;
+		return this;
+	}
+
+	/**
+	 * Sets the last modification date of this lexicon.
+	 * @param date - The modification date as an XSD date.
+	 * @returns `this` for chaining.
+	 *
+	 * @example
+	 * builder.setModified("2025-02-01" as XSDDate)
+	 */
+	setModified(date: XSDDate): this {
+		this.data["dcterms:modified"] = date;
+		return this;
+	}
+
+	/**
+	 * Sets the version information for this lexicon.
+	 * @param version - The version information.
+	 * @returns `this` for chaining.
+	 *
+	 * @example
+	 * builder.setVersionInfo("1.0.0")
+	 */
+	setVersionInfo(version: string): this {
+		this.data["owl:versionInfo"] = version;
+		return this;
+	}
+
+	/**
+	 * Sets the JSON-LD context for this lexicon.
+	 * @param context - The context object.
+	 * @returns `this` for chaining.
+	 *
+	 * @example
+	 * builder.setContext({ ex: "https://example.org/" })
+	 */
+	setContext(context: JsonLdContext): this {
+		this.data["@context"] = context;
 		return this;
 	}
 
