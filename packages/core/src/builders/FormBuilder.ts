@@ -96,6 +96,19 @@ export class FormBuilder {
 	}
 
 	/**
+	 * Sets the grammatical genders.
+	 * @param genders - An array of `LexInfoGender` values.
+	 * @returns `this` for chaining.
+	 *
+	 * @example
+	 * builder.setGenders([LexInfoGender.masculine, LexInfoGender.feminine])
+	 */
+	setGenders(genders: LexInfoGender[]): this {
+		this.data["lexinfo:gender"] = genders;
+		return this;
+	}
+
+	/**
 	 * Sets the grammatical number.
 	 * @param n - A `LexInfoNumber` value.
 	 * @returns `this` for chaining.

@@ -87,6 +87,15 @@ describe("FormBuilder", () => {
 		expect(form["lexinfo:gender"]).toEqual([LexInfoGender.masculine]);
 	});
 
+	test("setGenders sets multiple lexinfo:gender values", () => {
+		const genders = [LexInfoGender.masculine, LexInfoGender.feminine];
+		const form = new FormBuilder(formId)
+			.addWrittenRep("chat", "fr" as LanguageTag)
+			.setGenders(genders)
+			.build();
+		expect(form["lexinfo:gender"]).toEqual(genders);
+	});
+
 	test("addRepresentation appends ontolex:representation", () => {
 		const form = new FormBuilder(formId)
 			.addWrittenRep("house", en)
